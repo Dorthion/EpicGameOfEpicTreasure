@@ -15,14 +15,11 @@ Bohater::Bohater(){//Wyzerowanie statystyk
 	this->pktum = 0;
 }
 
-
 Bohater::~Bohater(){
 }
 
-Bohater::Bohater(string nazwa, int poziom, int exp,
-	int expnextlvl, int hp, int hpmax, int sila,
-	int zrecznosc, int magia, int szczescie,
-	int obrona, int pktum){//Pocz¹tkowe statystyki
+Bohater::Bohater(string nazwa, int poziom, int exp, int expnextlvl, int hp, int hpmax, int sila, //Pocz¹tkowe statystyki
+	int zrecznosc, int magia, int szczescie, int obrona, int pktum){
 	this->nazwa = nazwa;
 	this->poziom = poziom;
 	this->exp = exp;
@@ -63,7 +60,8 @@ void Bohater::Wyswietl() const{
 	Kolory kolor;
 	system("cls");
 	kolor.gold(); cout << " ===============================================" << endl;
-	kolor.blue(); cout << "//"; kolor.red(); cout<< "\tStatystyki Bohatera : "; kolor.blue(); cout <<"\t\t\t\\\\" << endl;
+	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
+	kolor.blue(); cout << "//"; kolor.red(); cout<< "\t\tStatystyki Bohatera : "; kolor.blue(); cout <<"\t\t\\\\" << endl;
 	kolor.blue(); cout << "||\tNazwa: "; kolor.green(); cout<< this->nazwa; kolor.blue(); cout << "\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tPoziom: "; kolor.green(); cout << this->poziom; kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tExp: "; kolor.green(); cout << this->exp; kolor.blue(); cout << "\t\t\t\t\t||" << endl;
@@ -82,27 +80,24 @@ void Bohater::Wyswietl() const{
 }
 
 void Bohater::lvlup(){
-	if (this->exp >= this->expnextlvl){
-		this->exp -= this->expnextlvl;
+	//if (this->exp >= this->expnextlvl){
+		//this->exp -= this->expnextlvl;
+		this->exp = 0;
+		this->expnextlvl = 100 + (100 * (this->poziom + 1));
 		this->poziom++;
-		this->expnextlvl = static_cast<int>((50 / 3)*((pow(poziom, 3)
+		/*this->expnextlvl = static_cast<int>((50 / 3)*((pow(poziom, 3)
 			- 6 * pow(poziom, 2))
-			+ 17 * poziom - 12)) + 100;
-
-		this->pktum++;
-
+			+ 17 * poziom - 12)) + 100;*/
+		this->pktum += 3;
 		this->update();
-		cout << "Zwiêkszono poziom bohatera " << this->poziom << "!" << "\n\n";
-	} else {
-		cout << "Potrzeba wiêcej doœwiadczenia" << endl;
-	}
+		cout << "Zwiêkszono poziom bohatera " << this->poziom << "!" << endl;
 }
 
 void Bohater::update(){
-	this->expnextlvl = static_cast<int>(
+	/*this->expnextlvl = static_cast<int>(
 		(50 / 3)*((pow(poziom, 3)
 			- 6 * pow(poziom, 2))
-			+ 17 * poziom - 12)) + 100;
+			+ 17 * poziom - 12)) + 100;*/
 
 	//this->hpmax = (this->hp) + this->poziom * 5;
 }
@@ -121,5 +116,5 @@ void Bohater::odpoczynek() {
 
 void Bohater::zranienie() {
 	cout << "Zostales zraniony" << endl;
-	this->hp = this->hp - 5;
+	this->exp += 50;
 }

@@ -44,8 +44,8 @@ public:
 	inline const int graczszczescie() { return this->szczescie > 0; }
 	inline const int graczobrona() { return this->obrona > 0; }
 	inline const int graczpoziom() { return this->poziom > 0; }
-	inline const int graczexp() { return this->exp > 0; }
-	inline const int graczexpnextlvl() { return this->expnextlvl > 0; }
+	inline const int graczexp() { return this->exp; }
+	inline const int graczexpnextlvl() { return this->expnextlvl; }
 	inline const int graczhp() { return this->hp > 0; }
 	inline const int graczhpmax() { return this->hpmax > 0; }
 	inline const int graczpktum() { return this->pktum > 0; }

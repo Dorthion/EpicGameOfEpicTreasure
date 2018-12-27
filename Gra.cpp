@@ -24,9 +24,15 @@ void Gra::InitGry() {
 	cout << "Login: " << endl;
 	cin >> nazwagracza;
 	cout << "Haslo: " << endl;
+	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
+	DWORD mode = 0;
+	GetConsoleMode(hStdin, &mode);
+	SetConsoleMode(hStdin, mode & (~ENABLE_ECHO_INPUT));
 	cin >> haslogracza;
 	cin.clear();
 	cin.ignore();
+	SetConsoleMode(hStdin, mode);
+	//tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 	pliklogowanie.open("Logowanie.txt");
 	while (!pliklogowanie.eof()) {
 		pliklogowanie >> nazwagracza2 >> haslogracza2;
@@ -80,6 +86,8 @@ void Gra::stworzKonto() {
 		cout << this->plik << endl;
 		stworzBohatera();
 		this->saveBohater();
+		//DWORD attributes = GetFileAttributes(nazwaKonta);
+		//SetFileAttributes("MyFile.txt", attributes + FILE_ATTRIBUTE_HIDDEN);
 	}
 	plik.close();
 }
@@ -91,6 +99,10 @@ void Gra::Menu(){
 	if (this->Bohaterzy[activeCharacter].graczgra()) {
 		if (this->Bohaterzy[activeCharacter].graczpktum() >= 1){
 			cout << "Posiadasz nie wykorzystane punkty!"<<endl<<endl;
+		}
+		if (this->Bohaterzy[activeCharacter].graczexp() >=
+			this->Bohaterzy[activeCharacter].graczexpnextlvl()){
+			this->Bohaterzy[activeCharacter].lvlup();
 		}
 		kolor.gold();
 		cout << "\t>>>>>MENU<<<<<<" << endl;

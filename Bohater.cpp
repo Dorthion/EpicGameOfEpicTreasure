@@ -60,21 +60,25 @@ void Bohater::inicjalizacja(const string nazwa){
 }
 
 void Bohater::Wyswietl() const{
+	Kolory kolor;
 	system("cls");
-	cout << "Statystyki Bohatera: " << endl;
-	cout << "Nazwa: " << this->nazwa << endl;
-	cout << "Poziom: " << this->poziom << endl;
-	cout << "Exp: " << this->exp << endl;
-	cout << "Exp do kolejnego poziomu: " << this->expnextlvl << endl << endl;
-	cout << "Punkty umiejetnosci: " << this->pktum << endl;
-	cout << endl;
-	cout << "Sila: " << this->sila << endl;
-	cout << "Zrecznosc: " << this->zrecznosc << endl;
-	cout << "Magia: " << this->magia << endl;
-	cout << "Szczescie: " << this->szczescie << endl;
-	cout << "Obrona: " << this->obrona << endl;
-	cout << endl;
-	cout << "Hp " << this->hp << " / " << this->hpmax << endl;
+	kolor.gold(); cout << " ===============================================" << endl;
+	kolor.blue(); cout << "//"; kolor.red(); cout<< "\tStatystyki Bohatera : "; kolor.blue(); cout <<"\t\t\t\\\\" << endl;
+	kolor.blue(); cout << "||\tNazwa: "; kolor.green(); cout<< this->nazwa; kolor.blue(); cout << "\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tPoziom: "; kolor.green(); cout << this->poziom; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tExp: "; kolor.green(); cout << this->exp; kolor.blue(); cout << "\t\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tExp do kolejnego poziomu: "; kolor.green(); cout << this->expnextlvl; kolor.blue(); cout << "\t\t||" << endl;
+	kolor.blue(); cout << "||\tPunkty umiejetnosci: "; kolor.green(); cout << this->pktum; kolor.blue(); cout << "\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tSila: "; kolor.green(); cout << this->sila; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tZrecznosc: "; kolor.green(); cout << this->zrecznosc; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tMagia: "; kolor.green(); cout << this->magia; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tSzczescie: "; kolor.green(); cout << this->szczescie; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tObrona: "; kolor.green(); cout << this->obrona; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tHp "; kolor.green(); cout << this->hp << " / " << this->hpmax; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "\\\\\t" << "\t\t\t\t\t//" << endl;
+	kolor.gold(); cout << " ===============================================" << endl;
 }
 
 void Bohater::lvlup(){

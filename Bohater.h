@@ -1,5 +1,6 @@
 #pragma once
 #include "Biblioteki.h"
+#include "Kolory.h"
 class Bohater
 {
 private:

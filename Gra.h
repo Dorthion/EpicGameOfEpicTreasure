@@ -11,7 +11,6 @@ private:
 	string nazwakonta;
 	int activeCharacter;
 	std::vector<Bohater> Bohaterzy;
-	
 	//std::vector<Przeciwnik> Przeciwnicy;
 
 public:
@@ -27,10 +26,8 @@ public:
 	void saveBohater();
 	void stworzBohatera();
 	void stworzKonto();
-	//void red();
 
 	//Jakieœ dodatki
 	inline bool CzyGra() const { return this->playing; }
-	//void red(){ SetConsoleTextAttribute(hOut, FOREGROUND_RED); }
 };
 

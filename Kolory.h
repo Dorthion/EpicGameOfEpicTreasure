@@ -11,8 +11,5 @@ public:
 	void blue();
 	void gold();
 	void silver();
-	//void red();
-	//void red();
-	//void red();
 };
 

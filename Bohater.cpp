@@ -41,6 +41,9 @@ void Bohater::inicjalizacja(const string nazwa){
 	this->nazwa = nazwa;
 	this->poziom = 1;
 	this->exp = 0;
+	this->expnextlvl = 100;
+	this->hp = 100;
+	this->hpmax = 100;
 
 	//Statystyki gracza
 	this->sila = 10;
@@ -56,8 +59,8 @@ void Bohater::inicjalizacja(const string nazwa){
 	this->update();
 }
 
-void Bohater::Wyswietl() const
-{
+void Bohater::Wyswietl() const{
+	system("cls");
 	cout << "Statystyki Bohatera: " << endl;
 	cout << "Nazwa: " << this->nazwa << endl;
 	cout << "Poziom: " << this->poziom << endl;
@@ -69,31 +72,26 @@ void Bohater::Wyswietl() const
 	cout << "Zrecznosc: " << this->zrecznosc << endl;
 	cout << "Magia: " << this->magia << endl;
 	cout << "Szczescie: " << this->szczescie << endl;
-	cout << "Obrana: " << this->obrona << endl;
+	cout << "Obrona: " << this->obrona << endl;
 	cout << endl;
 	cout << "Hp " << this->hp << " / " << this->hpmax << endl;
-	/*cout << "= Stamina: " << this->stamina << " / " << this->staminaMax << endl;
-	cout << "= Damage: " << this->damageMin << "( +" << this->weapon.getDamageMin() << ")" << " - " << this->damageMax << "( +" << this->weapon.getDamageMax() << ")" << "\n";
-	cout << "= Defence: " << this->defence << "( +" << std::to_string(this->getAddedDefence()) << ")" << "\n";
-	cout << "= Accuracy: " << this->accuracy << endl;
-	cout << "= Distance Travelled: " << this->distanceTravelled << "\n";
-	cout << "= Gold: " << this->gold << "\n";
-	cout << "\n";
-	cout << "= Weapon: " << this->weapon.getName()
-		<< " Lvl: " << this->weapon.getLevel()
-		<< " Dam: " << this->weapon.getDamageMin() << " - " << this->weapon.getDamageMax() << "\n";
-	cout << "= Armor Head: " << this->armor_head.getName()
-		<< " Lvl: " << this->armor_head.getLevel()
-		<< " Def: " << this->armor_head.getDefence() << "\n";
-	cout << "= Armor Chest: " << this->armor_chest.getName()
-		<< " Lvl: " << this->armor_chest.getLevel()
-		<< " Def: " << this->armor_chest.getDefence() << "\n";
-	cout << "= Armor Arms: " << this->armor_arms.getName()
-		<< " Lvl: " << this->armor_arms.getLevel()
-		<< " Def: " << this->armor_arms.getDefence() << "\n";
-	cout << "= Armor Legs: " << this->armor_legs.getName()
-		<< " Lvl: " << this->armor_legs.getLevel()
-		<< " Def: " << this->armor_legs.getDefence() << endl << endl;*/
+}
+
+void Bohater::lvlup(){
+	if (this->exp >= this->expnextlvl){
+		this->exp -= this->expnextlvl;
+		this->poziom++;
+		this->expnextlvl = static_cast<int>((50 / 3)*((pow(poziom, 3)
+			- 6 * pow(poziom, 2))
+			+ 17 * poziom - 12)) + 100;
+
+		this->pktum++;
+
+		this->update();
+		cout << "Zwiêkszono poziom bohatera " << this->poziom << "!" << "\n\n";
+	} else {
+		cout << "Potrzeba wiêcej doœwiadczenia" << endl;
+	}
 }
 
 void Bohater::update(){
@@ -102,12 +100,22 @@ void Bohater::update(){
 			- 6 * pow(poziom, 2))
 			+ 17 * poziom - 12)) + 100;
 
-	this->hpmax = (this->sila) + this->poziom * 5;
-	//this->damageMin = this->strength;
-	//this->damageMax = this->strength + 2;
-	//this->defence = this->dexterity + (this->intelligence / 2);
-	//this->accuracy = (this->dexterity / 2) + intelligence;
-	//this->luck = this->intelligence;
+	//this->hpmax = (this->hp) + this->poziom * 5;
+}
 
-	//this->hp = this->hpMax;
+string Bohater::getAsString() const{
+	return nazwa + " " + to_string(poziom) + " "+ to_string(exp) + " "
+	+ to_string(expnextlvl) + " " + to_string(hp) + " " + to_string(hpmax) + " "
+	+ to_string(sila) + " " + to_string(zrecznosc) + " "+ to_string(magia) + " "
+	+ to_string(szczescie) + " " + to_string(szczescie) + " "+ to_string(pktum);
+}
+
+void Bohater::odpoczynek() {
+	cout << "W³aœnie odpoczywasz"<<endl;
+	this->hp = this->hpmax;
+}
+
+void Bohater::zranienie() {
+	cout << "Zostales zraniony" << endl;
+	this->hp = this->hp - 5;
 }

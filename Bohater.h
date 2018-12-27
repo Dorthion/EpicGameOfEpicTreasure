@@ -30,6 +30,24 @@ public:
 
 	void inicjalizacja(const string nazwa);
 	void Wyswietl()const;
+	void lvlup();
 	void update();
+	void odpoczynek();
+	void zranienie();
+	string getAsString() const;
+
+	inline const bool graczgra() { return this->hp > 0; }
+	inline const int graczsila() { return this->sila > 0; }
+	inline const int graczzrecznosc() { return this->zrecznosc > 0; }
+	inline const int graczmagia() { return this->magia > 0; }
+	inline const int graczszczescie() { return this->szczescie > 0; }
+	inline const int graczobrona() { return this->obrona > 0; }
+	inline const int graczpoziom() { return this->poziom > 0; }
+	inline const int graczexp() { return this->exp > 0; }
+	inline const int graczexpnextlvl() { return this->expnextlvl > 0; }
+	inline const int graczhp() { return this->hp > 0; }
+	inline const int graczhpmax() { return this->hpmax > 0; }
+	inline const int graczpktum() { return this->pktum > 0; }
+	inline const std::string& getName() const { return this->nazwa; }
 };
 

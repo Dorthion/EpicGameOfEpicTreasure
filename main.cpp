@@ -1,9 +1,9 @@
 #include "Gra.h"
-
 int main() {
-	//srand(time(NULL));
-	Gra OgolnieGra;
+	srand(time(NULL));
 	setlocale(LC_ALL, "");
+	Gra OgolnieGra;
+	OgolnieGra.InitGry();
 	while (OgolnieGra.CzyGra()) {
 		OgolnieGra.Menu();
 	}

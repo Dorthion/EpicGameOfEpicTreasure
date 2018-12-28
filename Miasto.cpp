@@ -22,9 +22,11 @@ Miasto::Miasto(int numermiasta, string nazwa, int nrbudynku1, int nrbudynku2, in
 Miasto::~Miasto(){
 }
 
-void Miasto::inicjalizacja(string nazwa) {
+void Miasto::inicjalizacja(string nazwa, int max) {
 	system("cls");
 	int wybor, i=1;
+	this->nazwa = nazwa;
+	this->numermiasta = max + 1;
 	cout << "Chcesz losowo czy recznie dodac budynki do miasta?" << endl;
 	cout << "1 - losowo" << endl <<"2 - recznie" << endl;
 	cin >> wybor;
@@ -36,7 +38,7 @@ void Miasto::inicjalizacja(string nazwa) {
 		this->nrbudynku3 = rand() % 9;
 	}
 	else {
-		while (i < 3) {
+		while (i < 4) {
 			system("cls");
 			cout << "Wybór budynku" << i << ": \n" << endl;
 			cout << "1 - Tawerna" << endl;

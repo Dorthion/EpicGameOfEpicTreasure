@@ -171,6 +171,10 @@ void Gra::Menu(){
 			cout << "miasto: " << endl;
 			wybormiasta();
 			break;
+		case 12:
+			cout << "zapisz miasto: " << endl;
+			saveMiasto();
+			break;
 		default:
 			break;
 		}
@@ -346,24 +350,26 @@ cout << "@@@@@@@@@@@@@@@@#=============#######################==================
 
 void Gra::NoweMiasto() {
 	string nazwa = "";
+	int max = 0;
 	cout << "Nazwa miasta: ";
 	getline(cin, nazwa);
-
 	for (size_t i = 0; i < this->Miasta.size(); i++) {
 		while (nazwa == this->Miasta[i].getName()) {
 			cout << "Miasto o takiej nazwie istnieje!" << "\n";
 			cout << "Nazwa name: ";
 			getline(cin, nazwa);
 		}
+		if (max <= this->Miasta[i].gracznrmiasta()) {
+			max = this->Miasta[i].gracznrmiasta();
+		}
 	}
-
 	Miasta.push_back(Miasto());
 	activemiasto = Miasta.size() - 1;
-	Miasta[activemiasto].inicjalizacja(nazwa);
+	Miasta[activemiasto].inicjalizacja(nazwa, max);
 }
 
 void Gra::wybormiasta(){
-	cout << "Wybor miasta: " << "\n\n";
+	cout << "Wybór miasta: " << endl << endl;
 	for (size_t i = 0; i < this->Miasta.size(); i++){
 		cout << "Index: " << i << " = " << this->Miasta[i].getName() << "\n";
 	}
@@ -374,8 +380,7 @@ void Gra::wybormiasta(){
 		cout << "Faulty input!" << "\n";
 		cin.clear();
 		cin.ignore(100, '\n');
-
-		cout << "Select character: " << "\n";
+		cout << "Wybór miasta: " << "\n";
 		cin >> this->wybor;
 	}
 	cin.ignore(100, '\n');

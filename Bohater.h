@@ -1,8 +1,8 @@
 #pragma once
 #include "Biblioteki.h"
 #include "Kolory.h"
-class Bohater
-{
+#include "Miasto.h"
+class Bohater{
 private:
 	//G³ówne elementy postaci
 	string nazwa;		//Nazwa postaci
@@ -22,10 +22,13 @@ private:
 	//Dodatki
 	int pktum;			//Punkty umiejêtnoœci
 	int miasto;			//Miasto w którym siê znajduje
-
+	
 	//Temp
-	string nazwamiasta;
+	
+	//std::vector<Miasto> Miasta;
+
 public:
+	std::string nazwamiasta;
 	Bohater();
 	Bohater(string nazwa, int poziom, int exp,
 		int expnextlvl, int hp, int hpmax, int sila,
@@ -38,6 +41,7 @@ public:
 	void lvlup();
 	void update();
 	void odpoczynek();
+	void odczytnazwy();
 	void zranienie();
 	string getAsString() const;
 

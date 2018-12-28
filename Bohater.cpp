@@ -22,6 +22,7 @@ Bohater::~Bohater(){
 
 Bohater::Bohater(string nazwa, int poziom, int exp, int expnextlvl, int hp, int hpmax, int sila, //Pocz¹tkowe statystyki
 	int zrecznosc, int magia, int szczescie, int obrona, int pktum, int miasto){
+	//Miasto temp;
 	this->nazwa = nazwa;
 	this->poziom = poziom;
 	this->exp = exp;
@@ -35,6 +36,8 @@ Bohater::Bohater(string nazwa, int poziom, int exp, int expnextlvl, int hp, int 
 	this->obrona = obrona;
 	this->pktum = pktum;
 	this->miasto = miasto;
+	odczytnazwy();
+	//przekaz();
 }
 void Bohater::inicjalizacja(const string nazwa){
 	//G³ówne elementy postaci
@@ -112,7 +115,7 @@ string Bohater::getAsString() const{
 	+ to_string(expnextlvl) + " " + to_string(hp) + " " + to_string(hpmax) + " "
 	+ to_string(sila) + " " + to_string(zrecznosc) + " "+ to_string(magia) + " "
 	+ to_string(szczescie) + " " + to_string(szczescie) + " "+ to_string(pktum)
-	+ " " + to_string(pktum)+ " " + to_string(miasto);
+	+ " " + to_string(miasto);
 }
 
 void Bohater::odpoczynek() {
@@ -123,4 +126,27 @@ void Bohater::odpoczynek() {
 void Bohater::zranienie() {
 	cout << "Zostales zraniony" << endl;
 	this->exp += 50;
+}
+
+void Bohater::odczytnazwy() {
+	ifstream PlikMiasto("Miasta.txt");
+	string nazwa = "";
+	int numermiasta = 0;
+	string line = "";
+	stringstream str;
+	if (PlikMiasto.is_open()) {
+		while (getline(PlikMiasto, line)) {
+			str.str(line);
+			str >> nazwa;
+			str >> numermiasta; 
+			cout << nazwa << "\t" << numermiasta << endl;
+			cout << miasto << "\t" << this->miasto << endl;
+			//Miasto temp(numermiasta, nazwa, nrbudynku1, nrbudynku2, nrbudynku3);
+			if (miasto == numermiasta) {
+				this->nazwamiasta = nazwa;
+			}
+			str.clear();
+		}
+	}
+	PlikMiasto.close();
 }

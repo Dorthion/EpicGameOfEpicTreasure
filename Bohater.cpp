@@ -13,13 +13,15 @@ Bohater::Bohater(){//Wyzerowanie statystyk
 	this->szczescie = 0;
 	this->obrona = 0;
 	this->pktum = 0;
+	this->miasto = 1;
+	this->nazwamiasta = "";
 }
 
 Bohater::~Bohater(){
 }
 
 Bohater::Bohater(string nazwa, int poziom, int exp, int expnextlvl, int hp, int hpmax, int sila, //Pocz¹tkowe statystyki
-	int zrecznosc, int magia, int szczescie, int obrona, int pktum){
+	int zrecznosc, int magia, int szczescie, int obrona, int pktum, int miasto){
 	this->nazwa = nazwa;
 	this->poziom = poziom;
 	this->exp = exp;
@@ -32,6 +34,7 @@ Bohater::Bohater(string nazwa, int poziom, int exp, int expnextlvl, int hp, int 
 	this->szczescie = szczescie;
 	this->obrona = obrona;
 	this->pktum = pktum;
+	this->miasto = miasto;
 }
 void Bohater::inicjalizacja(const string nazwa){
 	//G³ówne elementy postaci
@@ -51,6 +54,7 @@ void Bohater::inicjalizacja(const string nazwa){
 
 	//Dodatki
 	this->pktum = 0;
+	this->miasto = 1;
 
 	//Update
 	this->update();
@@ -60,8 +64,8 @@ void Bohater::Wyswietl() const{
 	Kolory kolor;
 	system("cls");
 	kolor.gold(); cout << " ===============================================" << endl;
-	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
 	kolor.blue(); cout << "//"; kolor.red(); cout<< "\t\tStatystyki Bohatera : "; kolor.blue(); cout <<"\t\t\\\\" << endl;
+	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tNazwa: "; kolor.green(); cout<< this->nazwa; kolor.blue(); cout << "\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tPoziom: "; kolor.green(); cout << this->poziom; kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tExp: "; kolor.green(); cout << this->exp; kolor.blue(); cout << "\t\t\t\t\t||" << endl;
@@ -75,6 +79,7 @@ void Bohater::Wyswietl() const{
 	kolor.blue(); cout << "||\tObrona: "; kolor.green(); cout << this->obrona; kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tHp "; kolor.green(); cout << this->hp << " / " << this->hpmax; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tMiasto "; kolor.green(); cout << this->nazwamiasta; kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "\\\\\t" << "\t\t\t\t\t//" << endl;
 	kolor.gold(); cout << " ===============================================" << endl;
 }
@@ -106,11 +111,12 @@ string Bohater::getAsString() const{
 	return nazwa + " " + to_string(poziom) + " "+ to_string(exp) + " "
 	+ to_string(expnextlvl) + " " + to_string(hp) + " " + to_string(hpmax) + " "
 	+ to_string(sila) + " " + to_string(zrecznosc) + " "+ to_string(magia) + " "
-	+ to_string(szczescie) + " " + to_string(szczescie) + " "+ to_string(pktum);
+	+ to_string(szczescie) + " " + to_string(szczescie) + " "+ to_string(pktum)
+	+ " " + to_string(pktum)+ " " + to_string(miasto);
 }
 
 void Bohater::odpoczynek() {
-	cout << "W³aœnie odpoczywasz"<<endl;
+	cout << "W³aœnie odpoczywasz w "<<endl;
 	this->hp = this->hpmax;
 }
 

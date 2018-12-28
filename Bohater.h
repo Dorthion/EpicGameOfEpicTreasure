@@ -5,7 +5,7 @@ class Bohater
 {
 private:
 	//G³ówne elementy postaci
-	string nazwa;
+	string nazwa;		//Nazwa postaci
 	int poziom;			//Aktualny poziom
 	int exp;			//Ilosc doswiadczenia
 	int expnextlvl;		//Ilosc doswiadczenia do kolejnego lvl
@@ -21,12 +21,16 @@ private:
 
 	//Dodatki
 	int pktum;			//Punkty umiejêtnoœci
+	int miasto;			//Miasto w którym siê znajduje
+
+	//Temp
+	string nazwamiasta;
 public:
 	Bohater();
 	Bohater(string nazwa, int poziom, int exp,
 		int expnextlvl, int hp, int hpmax, int sila,
 		int zrecznosc, int magia, int szczescie, 
-		int obrona, int pktum);
+		int obrona, int pktum, int miasto);
 	virtual ~Bohater();
 
 	void inicjalizacja(const string nazwa);
@@ -49,6 +53,7 @@ public:
 	inline const int graczhp() { return this->hp > 0; }
 	inline const int graczhpmax() { return this->hpmax > 0; }
 	inline const int graczpktum() { return this->pktum > 0; }
+	inline const int graczmiasto() { return this->miasto; }
 	inline const std::string& getName() const { return this->nazwa; }
 };
 

@@ -5,7 +5,9 @@ Gra::Gra(){
 	playing = true;
 	nazwakonta = "";
 	plik = "";
+	plikmiasto = "Miasta.txt";
 	activeCharacter = 0;
+	activemiasto = 1;
 }
 
 Gra::~Gra(){
@@ -56,6 +58,7 @@ void Gra::InitGry() {
 		}
 	}
 	plik.close();
+	this->loadMiasto();
 }
 
 //Tworzenie Konta
@@ -147,8 +150,10 @@ void Gra::Menu(){
 			Bohaterzy[activeCharacter].odpoczynek();
 			break;
 		case 7:
-			cout << "Zraniono" << endl;
-			Bohaterzy[activeCharacter].zranienie();
+			//cout << "To Remek robi grê RPG??" << endl << endl;
+			//Bohaterzy[activeCharacter].zranienie();
+			//poke();
+			NoweMiasto();
 			break;
 		case 8:
 			cout << "Odczytuje";
@@ -157,6 +162,14 @@ void Gra::Menu(){
 		case 9:
 			cout << "Zapisuje";
 			saveBohater();
+			break;
+		case 10:
+			cout << "miasto: " << endl;
+			Miasta[activemiasto].Wyswietl();
+			break;
+		case 11:
+			cout << "miasto: " << endl;
+			wybormiasta();
 			break;
 		default:
 			break;
@@ -170,23 +183,60 @@ void Gra::Menu(){
 	}
 }
 
-void Gra::saveBohater()
-{
+void Gra::saveBohater(){
 	ofstream PlikGry(plik);
-
-	if (PlikGry.is_open())
-	{
-		for (size_t i = 0; i < this->Bohaterzy.size(); i++)
-		{
+	if (PlikGry.is_open()){
+		for (size_t i = 0; i < this->Bohaterzy.size(); i++){
 			PlikGry << this->Bohaterzy[i].getAsString() << "\n";
-			//PlikGry << this->Bohaterzy[i].getInvAsStringSave() << "\n";
 		}
 	}
-
 	PlikGry.close();
 }
 
-void Gra::loadBohater(){
+void Gra::saveMiasto() {
+	ofstream PlikMiasto(plikmiasto);
+	if (PlikMiasto.is_open()) {
+		for (size_t i = 0; i < this->Miasta.size(); i++) {
+			PlikMiasto << this->Miasta[i].getAsString() << endl;
+		}
+	}
+	PlikMiasto.close();
+}
+
+void Gra::loadMiasto(){
+	ifstream PlikMiasto(plikmiasto);
+	this->Miasta.clear();
+
+	string nazwa = "";
+	int numermiasta = 0;
+	int nrbudynku1 = 0;
+	int nrbudynku2 = 0;
+	int nrbudynku3 = 0;
+
+	string line = "";
+	stringstream str;
+
+	if (PlikMiasto.is_open()){
+		while (getline(PlikMiasto, line)){
+			str.str(line);
+			str >> nazwa;
+			str >> numermiasta;
+			str >> nrbudynku1;
+			str >> nrbudynku2;
+			str >> nrbudynku3;
+			Miasto temp(numermiasta, nazwa, nrbudynku1, nrbudynku2, nrbudynku3);
+			this->Miasta.push_back(Miasto(temp));
+			cout << "Miast " << temp.getName() << " zaladowano!" << endl;
+			str.clear();
+		}
+	}
+	PlikMiasto.close();
+	if (this->Miasta.size() <= 0){
+		throw "Brak miast";
+	}
+}
+
+void Gra::loadBohater() {
 	ifstream PlikGry(plik);
 
 	this->Bohaterzy.clear();
@@ -203,6 +253,7 @@ void Gra::loadBohater(){
 	int szczescie = 0;
 	int obrona = 0;
 	int pktum = 0;
+	int miasto = 0;
 
 	string line = "";
 	stringstream str;
@@ -224,17 +275,17 @@ void Gra::loadBohater(){
 			str >> szczescie;
 			str >> obrona;
 			str >> pktum;
+			str >> miasto;
 
 			Bohater temp(nazwa, poziom, exp, expnextlvl, hp, hpmax,
-				sila, zrecznosc, magia, szczescie,
-				obrona, pktum);
+				sila, zrecznosc, magia, szczescie, obrona, pktum, miasto);
 
 			this->Bohaterzy.push_back(Bohater(temp));
 			cout << "Bohater " << temp.getName() << " zaladowano!" << endl;
 		}
 	}
 	PlikGry.close();
-	if (this->Bohaterzy.size() <= 0){
+	if (this->Bohaterzy.size() <= 0) {
 		throw "Nie za³adowano bohatera";
 	}
 }
@@ -257,4 +308,78 @@ void Gra::stworzBohatera(){
 	Bohaterzy[activeCharacter].inicjalizacja(nazwa);
 }
 
+void Gra::poke() {
+cout << "##############@@@@@@@@########################===========#@@@@@@@@@@@@@@@@@@@@@" << endl;
+cout << "#############@@@@@@@@@@#######################===========#@@@@@@@@@@@@@@@@@@@@@" << endl;
+cout << "############@@@@@@@@@@@@#####################============#@@@@@@@@@@@@@@@@@@@@@" << endl;
+cout << "############@@@@@@@@@@@@#####################=============@@@@@@@@@@@@@@@@@@@@@" << endl;
+cout << "###########@@@@@@@@@@@@@@###################==============#@@@@@@@@@@@@@@@@@@@@" << endl;
+cout << "##########@@@##=#@@@@@@@@##################==========###==#@@@@@@@@@@@@@@@@@@@@" << endl;
+cout << "#########@@@@@@###==#@@@@##################========########@@@@@@@@@@@@@@@@@@@@" << endl;
+cout << "#########@@@@@@@@=+:::+#@@##################################@@@@@@@@@@@@@@@=**=" << endl;
+cout << "########@@@@@@@@#*+++:::::=#################################@@@@@@@@@@@=:-::::*" << endl;
+cout << "#######@@@@@@@@@=***++++:::::=@@@#@#########################@@@@@@#+:--::::::++" << endl;
+cout << "######@@@@@@@@@@#=****++++:::::+#@@@@@@@###@@@@@@@@@@@@@@###@#+:--::::::::++++*" << endl;
+cout << "######@@@@@@@@@@@===****+++++::::*@@@@@@@@@@@@@@@@@@@@@@@#+--::::::::::+++++***" << endl;
+cout << "#####@@@@@@@@@@@@@====*****+++++:::::::::::::::::::::::::::::::::::++++++*****#" << endl;
+cout << "#####@@@@@@@@@@@@@@#=====*****++++::::::::::::::::::::::::::::+++++++*******=@@" << endl;
+cout << "####@@@@@@@@@@@@@@@@@#=====***+++++:::::::::::::::::::::::::+++++*********#@@@@" << endl;
+cout << "####@@@@@@@@@@@@@@@@@@@#===****++++++:::::::::::::::::::::::+++********=#@@@@@@" << endl;
+cout << "######@@@@@@@@@@@@@@@@@@@==****++++++++++++++::::::::::::::::++****==#@@@@@@@@@" << endl;
+cout << "######@@@@@@@@@@@@@@@@@@==*******++++++++++++++++++:::::::::::+++***+=@@@@@@@@@" << endl;
+cout << "#####@@@@@@@@@@@@@@@@@@====****=###******++++++++++++*==##@=+++++++++:=@@@@@@@@" << endl;
+cout << "#####@@@@@@@@@@@@@@@@@#=====*=@@@@@#*********+++++++*#@@@@@@#++++++++++#@@@@@@@" << endl;
+cout << "####@@@@@@@@@@@@@@@@@@=======#@@@@@#***********+++++*@@@@@@@@*+++++++++*@@@@@@@" << endl;
+cout << "####@@@@@@@@@@@@@@@@@========#@@@@=***********+**++++*#@###@=+++++++++++#@@@@@@" << endl;
+cout << "###@@@@@@@@@@@@@@@@@###==========*******=@@@=+++++++++++*******+++++++**=@@@@@@" << endl;
+cout << "###@@@@@@@@@@@@@@@@###=================**********************************#@@@@@" << endl;
+cout << "##@@@@@@@@@@@@@@@@@######================******************=*************=#@@@@" << endl;
+cout << "##@@@@@@@@@@@@@@@@@#######===============@@@@@@#====******========********#@@@@" << endl;
+cout << "#@@@@@@@@@@@@@@@@@@#######==============@WWWWWW@#==================*******#@@@@" << endl;
+cout << "#@@@@@@@@@@@@@@@@@@@##########==========#@@@@@@@#==================*******=@@@@" << endl;
+cout << "@@@@@@@@@@@@@@@@@@@@@@==#################==#####==================********=@@@@" << endl;
+cout << "@@@@@@@@@@@@@@@@@@@@@@@########################===================********=#@@@" << endl;
+cout << "@@@@@@@@@@@@@@@@@@@@@#==#############################=======================@@@" << endl;
+cout << "@@@@@@@@@@@@@@@@@@#=====###############################=====================#@@" << endl;
+cout << "@@@@@@@@@@@@@@@@#=============#######################========================@@" << endl;
+}
 
+void Gra::NoweMiasto() {
+	string nazwa = "";
+	cout << "Nazwa miasta: ";
+	getline(cin, nazwa);
+
+	for (size_t i = 0; i < this->Miasta.size(); i++) {
+		while (nazwa == this->Miasta[i].getName()) {
+			cout << "Miasto o takiej nazwie istnieje!" << "\n";
+			cout << "Nazwa name: ";
+			getline(cin, nazwa);
+		}
+	}
+
+	Miasta.push_back(Miasto());
+	activemiasto = Miasta.size() - 1;
+	Miasta[activemiasto].inicjalizacja(nazwa);
+}
+
+void Gra::wybormiasta(){
+	cout << "Wybor miasta: " << "\n\n";
+	for (size_t i = 0; i < this->Miasta.size(); i++){
+		cout << "Index: " << i << " = " << this->Miasta[i].getName() << "\n";
+	}
+	cout << "\n";
+	cout << "Choice: ";
+	cin >> this->wybor;
+	while (cin.fail() || this->wybor >= this->Miasta.size() || this->wybor < 0){
+		cout << "Faulty input!" << "\n";
+		cin.clear();
+		cin.ignore(100, '\n');
+
+		cout << "Select character: " << "\n";
+		cin >> this->wybor;
+	}
+	cin.ignore(100, '\n');
+	cout << "\n";
+	this->activemiasto = this->wybor;
+	cout << this->Miasta[this->activemiasto].getName() << " is SELECTED!" << "\n\n";
+}

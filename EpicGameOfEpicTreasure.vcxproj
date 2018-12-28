@@ -119,6 +119,7 @@
     <ClCompile Include="Gra.cpp" />
     <ClCompile Include="Kolory.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Miasto.cpp" />
     <ClCompile Include="Potwory.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +127,7 @@
     <ClInclude Include="Bohater.h" />
     <ClInclude Include="Gra.h" />
     <ClInclude Include="Kolory.h" />
+    <ClInclude Include="Miasto.h" />
     <ClInclude Include="Potwory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

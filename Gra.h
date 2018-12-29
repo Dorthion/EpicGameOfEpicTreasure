@@ -1,9 +1,7 @@
 #pragma once
 //Pod³¹czenia
 #include "Biblioteki.h"
-#include "Bohater.h"
-#include "Miasto.h"
-#include "Kolory.h"
+#include "LinkiDoGry.h"
 class Gra{
 private:
 	int wybor;
@@ -11,19 +9,22 @@ private:
 	string plik;
 	string plikmiasto;
 	string nazwakonta;
+	string plikpotwor;
+	//string plikludzi;
 	int activeCharacter;
 	int activemiasto;
+	int activeMonster;
 	std::vector<Bohater> Bohaterzy;
 	std::vector<Miasto> Miasta;
-	//std::vector<Przeciwnik> Przeciwnicy;
+	std::vector<Potwory> PPotwory;
+	//std::vector<Potwory> PPotwory;
 
 public:
-	
-
+	//Podstawa
 	Gra();
 	virtual ~Gra();
 
-	//G³ówne funcke
+	//G³ówne funkcje
 	void Menu();
 	void InitGry();
 	void loadBohater();
@@ -34,7 +35,11 @@ public:
 	void stworzKonto();
 	void poke();
 	void NoweMiasto();
+	void Podroz();
 	void wybormiasta();
+	void DodPotwor();
+	void savePotwor();
+	void loadPotwor();
 
 	//Jakieœ dodatki
 	inline bool CzyGra() const { return this->playing; }

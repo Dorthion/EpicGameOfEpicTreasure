@@ -1,7 +1,7 @@
 ﻿  Bohater.cpp
+  Event.cpp
   Gra.cpp
-d:\programowanie\smieci\epicgameofepictreasure\epicgameofepictreasure\gra.cpp(379): warning C4018: ">=": niezgodność typu ze znakiem/bez znaku
-  Miasto.cpp
+d:\programowanie\smieci\epicgameofepictreasure\epicgameofepictreasure\gra.cpp(384): warning C4018: ">=": niezgodność typu ze znakiem/bez znaku
   main.cpp
 d:\programowanie\smieci\epicgameofepictreasure\epicgameofepictreasure\main.cpp(3): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
   Generowanie kodu...

@@ -14,6 +14,8 @@ Bohater::Bohater(){//Wyzerowanie statystyk
 	this->obrona = 0;
 	this->pktum = 0;
 	this->miasto = 1;
+	this->kasa = 0;
+
 	this->nazwamiasta = "";
 }
 
@@ -21,8 +23,7 @@ Bohater::~Bohater(){
 }
 
 Bohater::Bohater(string nazwa, int poziom, int exp, int expnextlvl, int hp, int hpmax, int sila, //Pocz¹tkowe statystyki
-	int zrecznosc, int magia, int szczescie, int obrona, int pktum, int miasto){
-	//Miasto temp;
+	int zrecznosc, int magia, int szczescie, int obrona, int pktum, int miasto, int kasa){
 	this->nazwa = nazwa;
 	this->poziom = poziom;
 	this->exp = exp;
@@ -36,8 +37,8 @@ Bohater::Bohater(string nazwa, int poziom, int exp, int expnextlvl, int hp, int 
 	this->obrona = obrona;
 	this->pktum = pktum;
 	this->miasto = miasto;
+	this->kasa = kasa;
 	odczytnazwy();
-	//przekaz();
 }
 void Bohater::inicjalizacja(const string nazwa){
 	//G³ówne elementy postaci
@@ -58,6 +59,7 @@ void Bohater::inicjalizacja(const string nazwa){
 	//Dodatki
 	this->pktum = 0;
 	this->miasto = 1;
+	this->kasa = 20;
 
 	//Update
 	this->update();
@@ -83,6 +85,7 @@ void Bohater::Wyswietl() const{
 	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tHp "; kolor.green(); cout << this->hp << " / " << this->hpmax; kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tMiasto "; kolor.green(); cout << this->nazwamiasta; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tKasa "; kolor.green(); cout << this->kasa; kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "\\\\\t" << "\t\t\t\t\t//" << endl;
 	kolor.gold(); cout << " ===============================================" << endl;
 }
@@ -115,7 +118,7 @@ string Bohater::getAsString() const{
 	+ to_string(expnextlvl) + " " + to_string(hp) + " " + to_string(hpmax) + " "
 	+ to_string(sila) + " " + to_string(zrecznosc) + " "+ to_string(magia) + " "
 	+ to_string(szczescie) + " " + to_string(szczescie) + " "+ to_string(pktum)
-	+ " " + to_string(miasto);
+	+ " " + to_string(miasto) + " " + to_string(kasa);
 }
 
 void Bohater::odpoczynek() {
@@ -149,4 +152,20 @@ void Bohater::odczytnazwy() {
 		}
 	}
 	PlikMiasto.close();
+}
+
+void Bohater::zlespanie() {
+	if ((hp - 5) >= 0) 
+		this->hp -= 5;
+	else {
+		system("cls");
+		cout << "Twój bohater zgin¹³" << endl;
+	}
+}
+
+void Bohater::GraczObrazenia(const int Obrazenia){
+	this->hp -= Obrazenia;
+	if (this->hp <= 0){
+		this->hp = 0;
+	}
 }

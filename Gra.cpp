@@ -8,6 +8,8 @@ Gra::Gra(){
 	plikmiasto = "Miasta.txt";
 	activeCharacter = 0;
 	activemiasto = 1;
+	activeMonster = 0;
+	plikpotwor = "Potwor.txt";
 }
 
 Gra::~Gra(){
@@ -59,6 +61,7 @@ void Gra::InitGry() {
 	}
 	plik.close();
 	this->loadMiasto();
+	this->loadPotwor();
 }
 
 //Tworzenie Konta
@@ -76,7 +79,6 @@ void Gra::stworzKonto() {
 	}
 	else {
 		plik.close();
-		//cout << "Nowe konto zostanie stworzone" << endl;
 		plik.open(nazwaKonta + ".txt", ios::out);
 		plikhasla.open("logowanie.txt", ios::app);
 		cout << "Podaj haslo do konta: " << endl;
@@ -138,7 +140,8 @@ void Gra::Menu(){
 			cout << "Wchodzisz na tereny Podlasia";
 			break;
 		case 3:
-			cout << "Poszed³eœ na przygodê";
+			cout << "Poszed³eœ na przygodê"<<endl;
+			Podroz();
 			break;
 		case 4:
 			cout << "Poszed³eœ ubijaæ gobliny";
@@ -165,7 +168,7 @@ void Gra::Menu(){
 			break;
 		case 10:
 			cout << "miasto: " << endl;
-			Miasta[activemiasto].Wyswietl();
+			//PPotwory[activeMonster].Wyswietl();
 			break;
 		case 11:
 			cout << "miasto: " << endl;
@@ -258,6 +261,7 @@ void Gra::loadBohater() {
 	int obrona = 0;
 	int pktum = 0;
 	int miasto = 0;
+	int kasa = 0;
 
 	string line = "";
 	stringstream str;
@@ -280,9 +284,10 @@ void Gra::loadBohater() {
 			str >> obrona;
 			str >> pktum;
 			str >> miasto;
+			str >> kasa;
 
 			Bohater temp(nazwa, poziom, exp, expnextlvl, hp, hpmax,
-				sila, zrecznosc, magia, szczescie, obrona, pktum, miasto);
+				sila, zrecznosc, magia, szczescie, obrona, pktum, miasto, kasa);
 
 			this->Bohaterzy.push_back(Bohater(temp));
 			cout << "Bohater " << temp.getName() << " zaladowano!" << endl;
@@ -387,4 +392,84 @@ void Gra::wybormiasta(){
 	cout << "\n";
 	this->activemiasto = this->wybor;
 	cout << this->Miasta[this->activemiasto].getName() << " is SELECTED!" << "\n\n";
+}
+
+void Gra::Podroz() {
+	Event ev;
+	ev.LosEvent(this->Bohaterzy[activeCharacter], this->PPotwory[activeMonster]);
+}
+
+void Gra::DodPotwor() {
+	string nazwa = "";
+	int max = 0;
+	cout << "Nazwa potwora: ";
+	getline(cin, nazwa);
+	for (size_t i = 0; i < this->PPotwory.size(); i++) {
+		while (nazwa == this->PPotwory[i].getName()) {
+			cout << "Potwor o takiej nazwie istnieje!" << "\n";
+			cout << "Podaj nazwe potwora: ";
+			getline(cin, nazwa);
+		}
+		if (max <= this->PPotwory[i].nrpotwora()) {
+			max = this->PPotwory[i].nrpotwora();
+		}
+	}
+	PPotwory.push_back(Potwory());
+	activemiasto = PPotwory.size() - 1;
+	PPotwory[activeMonster].inicjalizacja(nazwa, max);
+}
+
+void Gra::savePotwor() {
+	ofstream PlikPotwor(plikpotwor);
+	if (PlikPotwor.is_open()) {
+		for (size_t i = 0; i < this->PPotwory.size(); i++) {
+			PlikPotwor << this->PPotwory[i].GetAsString() << endl;
+		}
+	}
+	PlikPotwor.close();
+}
+
+void Gra::loadPotwor() {
+	ifstream PlikPotwor(plikpotwor);
+	this->PPotwory.clear();
+
+	string nazwa = "";
+	int numerpotwora = 0;
+	int poziom = 0;
+	int hp = 0;
+	int maxhp = 0;
+	int mindmg = 0;
+	int maxdmg = 0;
+	int kasa = 0;
+	int obrona = 0;
+	int szansa = 0;
+
+	string line = "";
+	stringstream str;
+
+	if (PlikPotwor.is_open()) {
+		while (getline(PlikPotwor, line)) {
+			str.str(line);
+			str >> nazwa;
+			str >> numerpotwora;
+			str >> poziom;
+			str >> hp;
+			str >> maxhp;
+			str >> mindmg;
+			str >> maxdmg;
+			str >> kasa;
+			str >> obrona;
+			str >> szansa;
+			
+			Potwory temp(nazwa, numerpotwora, poziom, hp,
+				maxhp, mindmg, maxdmg, kasa, obrona, szansa);
+			this->PPotwory.push_back(Potwory(temp));
+			cout << "Potwór " << temp.getName() << " zaladowano!" << endl;
+			str.clear();
+		}
+	}
+	PlikPotwor.close();
+	if (this->PPotwory.size() <= 0) {
+		throw "Brak potworów!";
+	}
 }

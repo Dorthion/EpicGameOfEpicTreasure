@@ -116,18 +116,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bohater.cpp" />
+    <ClCompile Include="Event.cpp" />
     <ClCompile Include="Gra.cpp" />
     <ClCompile Include="Kolory.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Miasto.cpp" />
+    <ClCompile Include="PanelAdministratorski.cpp" />
     <ClCompile Include="Potwory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Biblioteki.h" />
     <ClInclude Include="Bohater.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="Gra.h" />
     <ClInclude Include="Kolory.h" />
+    <ClInclude Include="LinkiDoGry.h" />
     <ClInclude Include="Miasto.h" />
+    <ClInclude Include="PanelAdministratorski.h" />
     <ClInclude Include="Potwory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

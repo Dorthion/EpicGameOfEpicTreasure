@@ -88,7 +88,7 @@ void Gra::stworzKonto() {
 		plikhasla << endl << nazwaKonta << " " << hasloKonta;
 		this->nazwakonta = nazwaKonta;
 		this->plik = nazwaKonta + ".txt";
-		cout << this->plik << endl;
+		//cout << this->plik << endl;
 		stworzBohatera();
 		this->saveBohater();
 		//DWORD attributes = GetFileAttributes(nazwaKonta);
@@ -238,19 +238,22 @@ void Gra::loadMiasto(){
 			str >> nrbudynku3;
 			Miasto temp(numermiasta, nazwa, nrbudynku1, nrbudynku2, nrbudynku3);
 			this->Miasta.push_back(Miasto(temp));
-			cout << "Miast " << temp.getName() << " zaladowano!" << endl;
+			//cout << "Miast " << temp.getName() << " zaladowano!" << endl;
 			str.clear();
 		}
 	}
-	PlikMiasto.close();
 	if (this->Miasta.size() <= 0){
-		throw "Brak miast";
+		string blad = "Brak miast do wczytania";
+		cout << "Brak miast do wczytania!" << endl;
+		PlikBledu(blad, 2);
+		system("pause");
+		exit(2);
 	}
+	PlikMiasto.close();
 }
 
 void Gra::loadBohater() {
 	ifstream PlikGry(plik);
-
 	this->Bohaterzy.clear();
 
 	string nazwa = "";
@@ -293,13 +296,17 @@ void Gra::loadBohater() {
 				sila, zrecznosc, magia, szczescie, obrona, pktum, miasto, kasa);
 
 			this->Bohaterzy.push_back(Bohater(temp));
-			cout << "Bohater " << temp.getName() << " zaladowano!" << endl;
+			//cout << "Bohater " << temp.getName() << " zaladowano!" << endl;
 		}
 	}
-	PlikGry.close();
 	if (this->Bohaterzy.size() <= 0) {
-		throw "Nie za³adowano bohatera";
+		string blad = "Brak bohaterów do wczytania";
+		cout << "Brak bohaterów do odczytania!" << endl;
+		PlikBledu(blad, 1);
+		system("pause");
+		exit(1);
 	}
+	PlikGry.close();
 }
 
 void Gra::stworzBohatera(){
@@ -470,12 +477,29 @@ void Gra::loadPotwor() {
 
 			Potwory temp(nazwa, numerpotwora, poziom, hp, maxhp, mindmg, maxdmg, kasa, obrona, szansa);
 			this->PPotwory.push_back(Potwory(temp));
-			cout << "Potwór " << temp.getName() << " zaladowano!" << endl;
+			//cout << "Potwór " << temp.getName() << " zaladowano!" << endl;
 			str.clear();
 		}
 	}
-	PlikPotwor.close();
+	
 	if (this->PPotwory.size() <= 0) {
-		throw "Brak potworów!";
+		string blad = "Brak potworów do wczytania";
+		cout<<"Brak potworów!"<<endl;
+		PlikBledu(blad, 3);
+		system("pause");
+		exit(3);
 	}
+	PlikPotwor.close();
+}
+
+void Gra::PlikBledu(string nazwa, int kod) {
+	fstream plik;
+	plik.open("KodBledu.txt", ios::app);
+	time_t rawtime;
+	struct tm * timeinfo;
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	plik << "Kod bledu: " << kod << endl <<
+		"Prawdopodobnie wywolany przez: " << nazwa << endl <<
+		"Data: " << asctime(timeinfo) << endl << endl;
 }

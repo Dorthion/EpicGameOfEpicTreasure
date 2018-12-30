@@ -142,8 +142,8 @@ void Bohater::odczytnazwy() {
 			str.str(line);
 			str >> nazwa;
 			str >> numermiasta; 
-			cout << nazwa << "\t" << numermiasta << endl;
-			cout << miasto << "\t" << this->miasto << endl;
+			//cout << nazwa << "\t" << numermiasta << endl;
+			//cout << miasto << "\t" << this->miasto << endl;
 			//Miasto temp(numermiasta, nazwa, nrbudynku1, nrbudynku2, nrbudynku3);
 			if (miasto == numermiasta) {
 				this->nazwamiasta = nazwa;

@@ -40,6 +40,7 @@ public:
 	void DodPotwor();
 	void savePotwor();
 	void loadPotwor();
+	void PlikBledu(string nazwa, int kod);
 
 	//Jakieœ dodatki
 	inline bool CzyGra() const { return this->playing; }

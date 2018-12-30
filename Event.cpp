@@ -59,9 +59,16 @@ void Event::LosMalyEvent(Bohater &character) {
 }
 
 void Event::enemyEncouter(Bohater &character, Potwory& enemies){
+	cout << endl << "Spotykasz potwora po twojej drodze!" << endl;
+	cout << "Nazwa: " << enemies.getName() << " - " <<
+		"Poziom: " << enemies.plvl() << " - " <<
+		"HP: " << enemies.php() << "/" << enemies.pmaxhp() << " - " <<
+		"Obrona: " << enemies.pobrona() << " - " <<
+		"Kasa: " << enemies.pkasa() << " - " <<
+		"Damage: " << enemies.pmindmg() << " - " << enemies.pmaxdmg() << endl;
 	//Zmienne 1
 	bool playerTurn = false;
-	int choice = 0;
+	int wybor = 0;
 	int coinToss = rand() % 2 + 1;
 	//Losuj ture
 	if (coinToss == 1)
@@ -85,81 +92,46 @@ void Event::enemyEncouter(Bohater &character, Potwory& enemies){
 	while (!escape && !playerDefeated && !enemiesDefeated){
 		if (playerTurn && !playerDefeated){
 			system("cls");
-			cout << "= PLAYER TURN =" << "\n\n";
-			cout << "Continue..." << "\n\n";
-			cin.get();
-			system("CLS");
-
-			cout << "= BATTLE MENU =" << "\n\n";
-			cout << "HP: " << character.graczhp() << " / " << character.graczhpmax() << "\n\n";
-
-			cout << "0: Escape" << "\n";
-			cout << "1: Attack" << "\n";
-			cout << "2: Defend" << "\n";
-			cout << "\n";
-
-			cout << "Choice: ";
-			cin >> choice;
-
-			while (cin.fail() || choice > 2 || choice < 0){
-				system("CLS");
-				cout << "Faulty input!" << "\n";
-				cin.clear();
-				cin.ignore(100, '\n');
-
-				cout << "= BATTLE MENU =" << "\n\n";
-
-				cout << "0: Escape" << "\n";
-				cout << "1: Attack" << "\n";
-				cout << "2: Defend" << "\n";
-				cout << "\n";
-
-				cout << "Choice: ";
-				cin >> choice;
+			cout << ">>>>>Tura gracza<<<<<" << endl;
+			Czekanie();
+			cout << ">>>>>MENU WOJNY<<<<<" << endl << endl;
+			cout << "HP: " << character.graczhp() << " / " << character.graczhpmax() << endl << endl;
+			cout << "0: Escape" << endl;
+			cout << "1: Attack" << endl;
+			cout << "2: Defend" << endl << endl;
+			cout << "Wybor: ";
+			cin >> wybor;
+			while (cin.fail() || wybor > 2 || wybor < 0){
+				cout << "Faulty input!" << endl;
+				Czekanie();
+				cout << ">>>>>MENU WOJNY<<<<<" << endl << endl;
+				cout << "0: Ucieczka" << endl;
+				cout << "1: Atak" << endl;
+				cout << "2: Obrona" << endl << endl;
+				cout << "Wybor: ";
+				cin >> wybor;
 			}
-			cin.ignore(100, '\n');
-			cout << "\n";
+			Czekanie();
 
-			switch (choice){
-			case 0: //ESCAPE
+			switch (wybor){
+			case 0: //Ucieczka
 				escape = true;
 				break;
 
-			case 1: //ATTACK
-				cout << "Wybierz potwora: " << "\n\n";
-				
-				cout << "Poziom: " << enemies.plvl() << " - " <<
+			case 1://Atak
+				cout << "Nazwa: " << enemies.getName() << " - " <<
+					"Poziom: " << enemies.plvl() << " - " <<
 					"HP: " << enemies.php() << "/" << enemies.pmaxhp() << " - " <<
 					"Obrona: " << enemies.pobrona() << " - " <<
 					"Kasa: " << enemies.pkasa() << " - " <<
-					"Damage: " << enemies.pmindmg() << " - " << enemies.pmaxdmg() <<
-					"\n";
-
-				cout << "\n";
-				cout << "Choice: ";
-				cin >> choice;
-
-				while (cin.fail() || choice < 0)
-				{
-					cout << "Faulty input!" << "\n";
-					cin.clear();
-					cin.ignore(100, '\n');
-
-					cout << "Select enemy: " << "\n\n";
-					cout << "Choice: ";
-					cin >> choice;
-				}
-
-				cin.ignore(100, '\n');
-				cout << "\n";
-
+					"Damage: " << enemies.pmindmg() << " - " << enemies.pmaxdmg() << endl;
 				//Attack roll
 				combatTotal = enemies.pobrona();
-				enemyTotal = enemies.pobrona() / (int)combatTotal * 100;
-				playerTotal = character.graczsila() / (int)combatTotal * 100;
+				enemyTotal =( enemies.pobrona() + enemies.pmaxdmg() + enemies.plvl()) / (int)combatTotal;
+				playerTotal = (character.graczdmg() + character.graczmagia()) / (int)combatTotal;
 				combatRollPlayer = rand() % playerTotal + 1;
 				combatRollEnemy = rand() % enemyTotal + 1;
-
+				
 				cout << "Combat total: " << combatTotal << "\n";
 				cout << "Enemy percent: " << enemyTotal << "\n";
 				cout << "Player percent: " << playerTotal << "\n\n";
@@ -167,15 +139,13 @@ void Event::enemyEncouter(Bohater &character, Potwory& enemies){
 				cout << "Enemy roll: " << combatRollEnemy << "\n\n";
 
 				if (combatRollPlayer > combatRollEnemy) { //Hit
-					cout << "HIT! " << "\n\n";
-
+					cout << "Trafiono! " << endl;
 					damage = character.graczdmg();
+					cout << damage;
 					enemies.Obrazenia(damage);
-
-					cout << "Damage: " << damage << "!" << "\n\n";
-
+					cout << "Zadano: " << damage << "!" << endl;
 					if (!enemies.isAlive()){
-						cout << "ENEMY DEFEATED!" << "\n\n";
+						cout << "Przeciwnik pokonany!" << endl;
 						gainExp = enemies.pexp();
 						character.graczdodexp(gainExp);
 						gainGold = rand() % enemies.plvl() * 10 + 1;
@@ -185,131 +155,67 @@ void Event::enemyEncouter(Bohater &character, Potwory& enemies){
 						enemiesDefeated = true;
 					}
 				}
-				else { //Miss
-					cout << "Trafienie nie udane! \n\n";
-				}
+				else { cout << "Trafienie nie udane!" << endl << endl; } //Unik
 				break;
 
-			case 2: //DEFEND
+			case 2: //Obrona
 				break;
 
 			default:
 				break;
 			}
 
-			//End turn
+			//Koniec tury - Tura przeciwnika
 			playerTurn = false;
 		} 
 		if (!playerTurn && !playerDefeated && !escape && !enemiesDefeated){
-			cout << "= ENEMY TURN =" << "\n";
+			int dmgpotwora = rand() % enemies.pmaxdmg() + enemies.pmindmg();
+			cout << ">>>>>Tura przeciwnika<<<<<" << endl;//Enemy attack
+			Czekanie();
+			//Attack roll
+			combatTotal = enemies.pmaxdmg();
+			enemyTotal = (int)dmgpotwora;
+			playerTotal = (int)((character.graczobrona() + character.graczszczescie()) / combatTotal);
+			combatRollPlayer = rand() % playerTotal + 1;
+			combatRollEnemy = rand() % enemyTotal + 1;
 
-			cout << "Continue..." << "\n\n";
-			cin.get();
-			system("CLS");
+			cout << "Combat total: " << combatTotal << "\n";
+			cout << "Enemy percent: " << enemyTotal << "\n";
+			cout << "Player percent: " << playerTotal << "\n\n";
+			cout << "Player roll: " << combatRollPlayer << "\n";
+			cout << "Enemy roll: " << combatRollEnemy << "\n\n";
 
-			//Enemy attack
-				cout << "Continue..." << "\n\n";
-				cin.get();
-				system("CLS");
+			if (combatRollPlayer < combatRollEnemy) { //Hit
+				cout << "Trafienie! " << "\n\n";
 
-				//cout << "Enemy: " << i << "\n\n";
-				int unik = character.graczobrona() - character.graczszczescie();
-				//Attack roll
-				combatTotal = enemies.pobrona() + unik;
-				enemyTotal = enemies.pmindmg() / (int)combatTotal * 100;
-				playerTotal = (character.graczobrona() + unik) / (int)combatTotal * 100;
-				combatRollPlayer = rand() % playerTotal + 1;
-				combatRollEnemy = rand() % enemyTotal + 1;
+				damage = dmgpotwora;
+				character.GraczObrazenia(damage);
 
-				cout << "Combat total: " << combatTotal << "\n";
-				cout << "Enemy percent: " << enemyTotal << "\n";
-				cout << "Player percent: " << playerTotal << "\n\n";
-				cout << "Player roll: " << combatRollPlayer << "\n";
-				cout << "Enemy roll: " << combatRollEnemy << "\n\n";
-
-				if (combatRollPlayer < combatRollEnemy) { //Hit
-					cout << "HIT! " << "\n\n";
-
-					damage = enemies.pdmg();
-					character.GraczObrazenia(damage);
-
-					cout << "Damage: " << damage << "!" << "\n";
-					cout << "HP: " << character.graczhp() << " / " << character.graczhpmax() << "\n\n";
-
-					if (!character.graczgra()){
-						cout << "YOU ARE DEFEATED!" << "\n\n";
-						playerDefeated = true;
-					}
+				cout << "Damage: " << damage << "!" << endl;
+				cout << "HP: " << character.graczhp() << " / " << character.graczhpmax() << endl << endl;
+				if (!character.graczgra()){
+					cout << "Twoja postaæ umar³a!" << endl;
+					playerDefeated = true;
 				}
-				else { //MISS
-					cout << "MISSED! \n\n";
-				}
-			
-
-			//End turn
+			} else { cout << "Unik!"<<endl; }//Unik
+			//Koniec tury - Tura gracza
 			playerTurn = true;
+			Czekanie();
 		}
-
-		//Conditions
+		//Warunki koñca gry
 		if (!character.graczgra()){
 			playerDefeated = true;
 		}
-		else if (enemies.isAlive()){
-			enemiesDefeated = true;
+		if (enemies.isAlive()){
+			enemiesDefeated = false;
 		}
 	}
+	Czekanie();
 }
 
-/*void Event::puzzleEncouter(Bohater &character)
-{
-	bool completed = false;
-	int userAns = 0;
-	int chances = 3;
-	int gainExp = (chances * character.getLevel() * (rand() % 10 + 1));
-	int gainGold = (chances * character.getLevel() * (rand() % 10 + 1));
-	//H:\ConsoleRPG\ConsoleRPG\
-	
-	Puzzle puzzle("Puzzles/1.txt");
-
-	while (!completed && chances > 0)
-	{
-		std::cout << "Chances: " << chances << "\n\n";
-		chances--;
-		std::cout << puzzle.getAsString() << "\n";
-
-		cout << "\nYour ANSWER: ";
-		cin >> userAns;
-
-		while (cin.fail())
-		{
-			cout << "Faulty input!" << "\n";
-			cin.clear();
-			cin.ignore(100, '\n');
-
-			cout << "\nYour ANSWER: ";
-			cin >> userAns;
-		}
-
-		cin.ignore(100, '\n');
-		cout << "\n";
-
-		if (puzzle.getCorrectAns() == userAns)
-		{
-			completed = true;
-
-			character.gainExp(gainExp);
-			character.gainExp(gainGold);
-			std::cout << "YOU GAINED " << gainExp << " EXP!" << "\n";
-			std::cout << "YOU GAINED " << gainGold << " GOLD!" << "\n\n";
-		}
-	}
-
-	if (completed)
-	{
-		std::cout << "CONGRATZ YOU SUCCEDED! \n\n";
-	}
-	else
-	{
-		std::cout << "YOU FAILED BRAH! \n\n";
-	}
-}*/
+void Event::Czekanie() {
+	cout << endl << "Czekanie na potwierdzenie..."<<endl;
+	cin.clear();
+	cin.ignore();
+	system("cls");
+}

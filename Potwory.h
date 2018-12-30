@@ -30,9 +30,9 @@ public:
 
 	//Inline
 	inline int plvl()const { return this->poziom; }
-	inline int pmindmg()const { return this->mindmg; }
-	inline int pmaxdmg()const { return this->maxdmg; }
-	inline int pdmg()const { return rand() % this->maxdmg + this->mindmg; }
+	inline int pmindmg() { return this->mindmg; }
+	inline int pmaxdmg() { return this->maxdmg; }
+	//inline int pdmg()const { return rand() % this->maxdmg + this->mindmg; }
 	inline int pexp()const { return this->poziom * 15; }
 	inline int php()const { return this->hp; }
 	inline int pmaxhp()const { return this->maxhp; }

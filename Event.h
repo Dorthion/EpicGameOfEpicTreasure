@@ -9,6 +9,7 @@ public:
 	static int nrOfEvents;
 	Event();
 	virtual ~Event();
+	void Czekanie();
 	void LosEvent(Bohater &character, Potwory &enemy);
 	void LosMalyEvent(Bohater &character);
 	void enemyEncouter(Bohater &character, Potwory& enemies);

@@ -142,6 +142,7 @@ void Gra::Menu(){
 		case 3:
 			cout << "Poszed³eœ na przygodê"<<endl;
 			Podroz();
+			loadPotwor();
 			break;
 		case 4:
 			cout << "Poszed³eœ ubijaæ gobliny";

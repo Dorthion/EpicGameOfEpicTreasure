@@ -22,10 +22,11 @@ public:
 	std::string GetAsString()const;
 	inline bool isAlive() { return this->hp > 0; }
 	void Obrazenia(int sila);
+	std::string Wyswietl()const;
 	Potwory(string nazwa, int numerpotwora, int poziom, int hp,
 	int maxhp, int mindmg, int maxdmg, int kasa,
 	int obrona, int szansa);
-	void inicjalizacja(std::string nazwa, int max);
+	void inicjalizacja(std::string nazwa, int max, int poziom);
 
 	//Inline
 	inline int plvl()const { return this->poziom; }

@@ -145,9 +145,13 @@ void Gra::Menu(){
 			break;
 		case 4:
 			cout << "Poszed³eœ ubijaæ gobliny";
+			DodPotwor();
+			savePotwor();
+			loadPotwor();
 			break;
 		case 5:
 			cout << "Poszed³eœ grabowaæ najbli¿sze miasto";
+			savePotwor();
 			break;
 		case 6:
 			Bohaterzy[activeCharacter].odpoczynek();
@@ -266,10 +270,8 @@ void Gra::loadBohater() {
 	string line = "";
 	stringstream str;
 
-	if (PlikGry.is_open())
-	{
-		while (getline(PlikGry, line))
-		{
+	if (PlikGry.is_open()){
+		while (getline(PlikGry, line)){
 			str.str(line);
 			str >> nazwa;
 			str >> poziom;
@@ -401,7 +403,7 @@ void Gra::Podroz() {
 
 void Gra::DodPotwor() {
 	string nazwa = "";
-	int max = 0;
+	int max = 0, poziomp = 0;
 	cout << "Nazwa potwora: ";
 	getline(cin, nazwa);
 	for (size_t i = 0; i < this->PPotwory.size(); i++) {
@@ -414,9 +416,13 @@ void Gra::DodPotwor() {
 			max = this->PPotwory[i].nrpotwora();
 		}
 	}
+	cout << "Podaj poziom potwora" << endl;
+	cin >> poziomp;
+	cin.clear();
+	cin.ignore();
 	PPotwory.push_back(Potwory());
-	activemiasto = PPotwory.size() - 1;
-	PPotwory[activeMonster].inicjalizacja(nazwa, max);
+	activeMonster = PPotwory.size() - 1;
+	PPotwory[activeMonster].inicjalizacja(nazwa, max, poziomp);
 }
 
 void Gra::savePotwor() {
@@ -460,9 +466,8 @@ void Gra::loadPotwor() {
 			str >> kasa;
 			str >> obrona;
 			str >> szansa;
-			
-			Potwory temp(nazwa, numerpotwora, poziom, hp,
-				maxhp, mindmg, maxdmg, kasa, obrona, szansa);
+
+			Potwory temp(nazwa, numerpotwora, poziom, hp, maxhp, mindmg, maxdmg, kasa, obrona, szansa);
 			this->PPotwory.push_back(Potwory(temp));
 			cout << "Potwór " << temp.getName() << " zaladowano!" << endl;
 			str.clear();

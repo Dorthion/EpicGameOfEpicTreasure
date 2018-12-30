@@ -59,20 +59,20 @@ void Event::LosMalyEvent(Bohater &character) {
 }
 
 void Event::enemyEncouter(Bohater &character, Potwory& enemies){
+	//Zmienne 1
 	bool playerTurn = false;
 	int choice = 0;
-
 	int coinToss = rand() % 2 + 1;
-
+	//Losuj ture
 	if (coinToss == 1)
 		playerTurn = true;
 	else
 		playerTurn = false;
-
+	//Zmienne 2
 	bool escape = false;
 	bool playerDefeated = false;
 	bool enemiesDefeated = false;
-
+	//Zmienne 3
 	int damage = 0;
 	int gainExp = 0;
 	int gainGold = 0;
@@ -81,7 +81,7 @@ void Event::enemyEncouter(Bohater &character, Potwory& enemies){
 	int combatTotal = 0;
 	int combatRollPlayer = 0;
 	int combatRollEnemy = 0;
-
+	//G£ÓWNA PÊTLA WHILE CO MIA£A DZIA£AÆ
 	while (!escape && !playerDefeated && !enemiesDefeated){
 		if (playerTurn && !playerDefeated){
 			system("cls");
@@ -182,6 +182,7 @@ void Event::enemyEncouter(Bohater &character, Potwory& enemies){
 						character.graczdodkasa(gainGold);
 						cout << "EXP GAINED: " << gainExp << "\n";
 						cout << "GOLD GAINED: " << gainGold << "\n\n";
+						enemiesDefeated = true;
 					}
 				}
 				else { //Miss
@@ -198,7 +199,8 @@ void Event::enemyEncouter(Bohater &character, Potwory& enemies){
 
 			//End turn
 			playerTurn = false;
-		} else if (!playerTurn && !playerDefeated && !escape && !enemiesDefeated){
+		} 
+		if (!playerTurn && !playerDefeated && !escape && !enemiesDefeated){
 			cout << "= ENEMY TURN =" << "\n";
 
 			cout << "Continue..." << "\n\n";

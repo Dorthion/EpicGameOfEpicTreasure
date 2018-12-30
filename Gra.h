@@ -17,7 +17,6 @@ private:
 	std::vector<Bohater> Bohaterzy;
 	std::vector<Miasto> Miasta;
 	std::vector<Potwory> PPotwory;
-	//std::vector<Potwory> PPotwory;
 
 public:
 	//Podstawa
@@ -40,6 +39,7 @@ public:
 	void DodPotwor();
 	void savePotwor();
 	void loadPotwor();
+	void DodawanieStat();
 	void PlikBledu(string nazwa, int kod);
 
 	//Jakieœ dodatki

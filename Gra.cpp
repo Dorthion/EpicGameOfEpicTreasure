@@ -113,7 +113,7 @@ void Gra::Menu(){
 		cout << "\t>>>>>MENU<<<<<<" << endl;
 		cout << "Podaj swój wybor: \n" << endl;
 		cout << "1 - Postac" << endl;
-		cout << "2 - Miasto" << endl;
+		cout << "2 - Dodawanie statystyk" << endl;
 		cout << "3 - Podroz" << endl;
 		cout << "4 - Dungeon" << endl;
 		cout << "5 - Krucjata" << endl;
@@ -137,7 +137,7 @@ void Gra::Menu(){
 			Bohaterzy[activeCharacter].Wyswietl();
 			break;
 		case 2:
-			cout << "Wchodzisz na tereny Podlasia";
+			DodawanieStat();
 			break;
 		case 3:
 			cout << "Poszed³eœ na przygodê"<<endl;
@@ -183,6 +183,10 @@ void Gra::Menu(){
 			cout << "zapisz miasto: " << endl;
 			saveMiasto();
 			break;
+		case 99:
+			cout << "EXP: " << endl;
+			this->Bohaterzy[activeCharacter].cheat();
+			break;
 		default:
 			break;
 		}
@@ -219,12 +223,12 @@ void Gra::loadMiasto(){
 	ifstream PlikMiasto(plikmiasto);
 	this->Miasta.clear();
 
-	string nazwa = "";
 	int numermiasta = 0;
 	int nrbudynku1 = 0;
 	int nrbudynku2 = 0;
 	int nrbudynku3 = 0;
 
+	string nazwa = "";
 	string line = "";
 	stringstream str;
 
@@ -238,7 +242,6 @@ void Gra::loadMiasto(){
 			str >> nrbudynku3;
 			Miasto temp(numermiasta, nazwa, nrbudynku1, nrbudynku2, nrbudynku3);
 			this->Miasta.push_back(Miasto(temp));
-			//cout << "Miast " << temp.getName() << " zaladowano!" << endl;
 			str.clear();
 		}
 	}
@@ -256,7 +259,6 @@ void Gra::loadBohater() {
 	ifstream PlikGry(plik);
 	this->Bohaterzy.clear();
 
-	string nazwa = "";
 	int poziom = 0;
 	int exp = 0;
 	int expnextlvl = 0;
@@ -271,6 +273,7 @@ void Gra::loadBohater() {
 	int miasto = 0;
 	int kasa = 0;
 
+	string nazwa = "";
 	string line = "";
 	stringstream str;
 
@@ -293,10 +296,8 @@ void Gra::loadBohater() {
 			str >> kasa;
 
 			Bohater temp(nazwa, poziom, exp, expnextlvl, hp, hpmax,
-				sila, zrecznosc, magia, szczescie, obrona, pktum, miasto, kasa);
-
+			sila, zrecznosc, magia, szczescie, obrona, pktum, miasto, kasa);
 			this->Bohaterzy.push_back(Bohater(temp));
-			//cout << "Bohater " << temp.getName() << " zaladowano!" << endl;
 		}
 	}
 	if (this->Bohaterzy.size() <= 0) {
@@ -447,7 +448,6 @@ void Gra::loadPotwor() {
 	ifstream PlikPotwor(plikpotwor);
 	this->PPotwory.clear();
 
-	string nazwa = "";
 	int numerpotwora = 0;
 	int poziom = 0;
 	int hp = 0;
@@ -458,6 +458,7 @@ void Gra::loadPotwor() {
 	int obrona = 0;
 	int szansa = 0;
 
+	string nazwa = "";
 	string line = "";
 	stringstream str;
 
@@ -477,11 +478,9 @@ void Gra::loadPotwor() {
 
 			Potwory temp(nazwa, numerpotwora, poziom, hp, maxhp, mindmg, maxdmg, kasa, obrona, szansa);
 			this->PPotwory.push_back(Potwory(temp));
-			//cout << "Potwór " << temp.getName() << " zaladowano!" << endl;
 			str.clear();
 		}
 	}
-	
 	if (this->PPotwory.size() <= 0) {
 		string blad = "Brak potworów do wczytania";
 		cout<<"Brak potworów!"<<endl;
@@ -502,4 +501,53 @@ void Gra::PlikBledu(string nazwa, int kod) {
 	plik << "Kod bledu: " << kod << endl <<
 		"Prawdopodobnie wywolany przez: " << nazwa << endl <<
 		"Data: " << asctime(timeinfo) << endl << endl;
+}
+
+void Gra::DodawanieStat() {
+	if (this->Bohaterzy[activeCharacter].graczpktum() > 0){
+		system("cls");
+		cout << "Statystyki, które mo¿esz ulepszyæ za darmo: " << endl;
+		cout << "0: Si³a " << endl;
+		cout << "1: Zrêcznoœæ " << endl;
+		cout << "2: Magia " << endl;
+		cout << "3: Szczêœcie " << endl;
+		cout << "4: obrona " << endl;
+		cin >> this->wybor;
+
+		while (cin.fail() || this->wybor > 4){
+			cout << "Wpisz poprawn¹ cyfrê z zakresu 0 - 4!" << endl;
+			cin.clear();
+			cin.ignore();
+			cout << "Statystyki, które mo¿esz ulepszyæ za darmo : " << endl;
+			cin >> this->wybor;
+		}
+		cin.ignore();
+
+		switch (this->wybor){
+		case 0:
+			this->Bohaterzy[activeCharacter].DodawanieStatystyk(0, 1);
+			break;
+
+		case 1:
+			this->Bohaterzy[activeCharacter].DodawanieStatystyk(1, 1);
+			break;
+
+		case 2:
+			this->Bohaterzy[activeCharacter].DodawanieStatystyk(2, 1);
+			break;
+
+		case 3:
+			this->Bohaterzy[activeCharacter].DodawanieStatystyk(3, 1);
+			break;
+
+		default:
+
+			break;
+		}
+	} else {
+		system("cls");
+		cout << "Brak punktów umiejêtnoœci, nie mo¿na dodaæ wiêcej statystyk" << endl;
+		system("pause");
+		system("cls");
+	}
 }

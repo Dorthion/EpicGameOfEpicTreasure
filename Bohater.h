@@ -22,7 +22,7 @@ private:
 	//Dodatki
 	int pktum;			//Punkty umiejêtnoœci
 	int miasto;			//Miasto w którym siê znajduje
-	int kasa;
+	int kasa;			//Pieni¹dze gracza
 
 public:
 	//Temp
@@ -46,6 +46,7 @@ public:
 	void zranienie();
 	void zlespanie();
 	void GraczObrazenia(const int Obrazenia);
+	void DodawanieStatystyk(int stat, int value);
 	string getAsString() const;
 
 	//Inline
@@ -56,16 +57,19 @@ public:
 	inline const int graczszczescie() { return this->szczescie; }
 	inline const int graczobrona() { return this->obrona; }
 	inline const int graczpoziom() { return this->poziom; }
-	inline const int graczexp() { return this->exp; }
-	inline const int graczdodexp(int dod) { return this->exp + dod; }
-	inline const int graczdodkasa(int dod) { return this->kasa + dod; }
+	inline const int& graczexp() { return this->exp; }
+	inline void graczdodexp(const int exp) { this->exp += exp; }
+	inline void graczdodkasa(const int kasa) { this->kasa += kasa; }
+	inline void graczodekasa(const int kasa) { this->kasa -= kasa; }
+	inline void graczzerokasa() { this->kasa = 0; }
+	inline void cheat() { this->exp += 50; }
 	inline const int graczexpnextlvl() { return this->expnextlvl; }
 	inline const int graczhp() { return this->hp ; }
 	inline const int graczhpmax() { return this->hpmax; }
-	inline const int graczpktum() { return this->pktum; }
+	inline const int& graczpktum() { return this->pktum; }
 	inline const int graczmiasto() { return this->miasto; }
 	inline int graczdmg() { return rand() % (this->sila + 4) + (this->sila - 4); } // + this->weapon.getDamageMax()) + (this->damageMin + this->weapon.getDamageMin()); }
-	inline const int graczkasa() { return this->kasa; }
+	inline const int& graczkasa() { return this->kasa; }
 	inline const std::string& getName() const { return this->nazwa; }
 };
 

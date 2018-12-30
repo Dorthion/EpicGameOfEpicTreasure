@@ -88,6 +88,7 @@ void Event::enemyEncouter(Bohater &character, Potwory& enemies){
 	int combatTotal = 0;
 	int combatRollPlayer = 0;
 	int combatRollEnemy = 0;
+	int tymczasowypancerz = 0;
 	//G£ÓWNA PÊTLA WHILE CO MIA£A DZIA£AÆ
 	while (!escape && !playerDefeated && !enemiesDefeated){
 		if (playerTurn && !playerDefeated){
@@ -96,13 +97,13 @@ void Event::enemyEncouter(Bohater &character, Potwory& enemies){
 			Czekanie();
 			cout << ">>>>>MENU WOJNY<<<<<" << endl << endl;
 			cout << "HP: " << character.graczhp() << " / " << character.graczhpmax() << endl << endl;
-			cout << "0: Escape" << endl;
-			cout << "1: Attack" << endl;
-			cout << "2: Defend" << endl << endl;
+			cout << "0: Ucieczka" << endl;
+			cout << "1: Atak" << endl;
+			cout << "2: Obrona" << endl << endl;
 			cout << "Wybor: ";
 			cin >> wybor;
 			while (cin.fail() || wybor > 2 || wybor < 0){
-				cout << "Faulty input!" << endl;
+				cout << "Z³y wybór, wybierz jeszcze raz!" << endl;
 				Czekanie();
 				cout << ">>>>>MENU WOJNY<<<<<" << endl << endl;
 				cout << "0: Ucieczka" << endl;
@@ -116,6 +117,8 @@ void Event::enemyEncouter(Bohater &character, Potwory& enemies){
 			switch (wybor){
 			case 0: //Ucieczka
 				escape = true;
+				character.graczodekasa(enemies.pmaxdmg());
+				if (character.graczkasa() <= 0) character.graczzerokasa();
 				break;
 
 			case 1://Atak
@@ -150,8 +153,8 @@ void Event::enemyEncouter(Bohater &character, Potwory& enemies){
 						character.graczdodexp(gainExp);
 						gainGold = rand() % enemies.plvl() * 10 + 1;
 						character.graczdodkasa(gainGold);
-						cout << "EXP GAINED: " << gainExp << "\n";
-						cout << "GOLD GAINED: " << gainGold << "\n\n";
+						cout << "Zdobyto exp: " << gainExp << "\n";
+						cout << "Zdobyto kasy: " << gainGold << "\n\n";
 						enemiesDefeated = true;
 					}
 				}
@@ -159,6 +162,7 @@ void Event::enemyEncouter(Bohater &character, Potwory& enemies){
 				break;
 
 			case 2: //Obrona
+				
 				break;
 
 			default:

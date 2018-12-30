@@ -40,6 +40,7 @@ Bohater::Bohater(string nazwa, int poziom, int exp, int expnextlvl, int hp, int 
 	this->kasa = kasa;
 	odczytnazwy();
 }
+
 void Bohater::inicjalizacja(const string nazwa){
 	//G³ówne elementy postaci
 	this->nazwa = nazwa;
@@ -91,26 +92,15 @@ void Bohater::Wyswietl() const{
 }
 
 void Bohater::lvlup(){
-	//if (this->exp >= this->expnextlvl){
-		//this->exp -= this->expnextlvl;
-		this->exp = 0;
-		this->expnextlvl = 100 + (100 * (this->poziom + 1));
-		this->poziom++;
-		/*this->expnextlvl = static_cast<int>((50 / 3)*((pow(poziom, 3)
-			- 6 * pow(poziom, 2))
-			+ 17 * poziom - 12)) + 100;*/
-		this->pktum += 3;
-		this->update();
-		cout << "Zwiêkszono poziom bohatera " << this->poziom << "!" << endl;
+	this->exp = 0;
+	this->expnextlvl = 100 + (100 * (this->poziom + 1));
+	this->poziom++;
+	this->pktum += 3;
+	this->update();
+	cout << "Zwiêkszono poziom bohatera " << this->poziom << "!" << endl;
 }
 
 void Bohater::update(){
-	/*this->expnextlvl = static_cast<int>(
-		(50 / 3)*((pow(poziom, 3)
-			- 6 * pow(poziom, 2))
-			+ 17 * poziom - 12)) + 100;*/
-
-	//this->hpmax = (this->hp) + this->poziom * 5;
 }
 
 string Bohater::getAsString() const{
@@ -142,9 +132,6 @@ void Bohater::odczytnazwy() {
 			str.str(line);
 			str >> nazwa;
 			str >> numermiasta; 
-			//cout << nazwa << "\t" << numermiasta << endl;
-			//cout << miasto << "\t" << this->miasto << endl;
-			//Miasto temp(numermiasta, nazwa, nrbudynku1, nrbudynku2, nrbudynku3);
 			if (miasto == numermiasta) {
 				this->nazwamiasta = nazwa;
 			}
@@ -167,5 +154,47 @@ void Bohater::GraczObrazenia(const int Obrazenia){
 	this->hp -= Obrazenia;
 	if (this->hp <= 0){
 		this->hp = 0;
+	}
+}
+
+void Bohater::DodawanieStatystyk(int stat, int pkt){
+	if (this->pktum < pkt) {
+		system("cls");
+		cout << "Brak punktów umiejêtnoœci, nie mo¿na dodaæ wiêcej statystyk" << endl;
+		system("pause");
+		system("cls");
+	} else {
+		switch (stat){
+		case 0:
+			this->sila += pkt;
+			cout << "Ulepszono poziom si³y!" << endl;
+
+			break;
+
+		case 1:
+			this->zrecznosc += pkt;
+			cout << "Ulepszono poziom zrêcznoœci!" << endl;
+			break;
+
+		case 2:
+			this->magia += pkt;
+			cout << "Ulepszono poziom magii!" << endl;
+			break;
+
+		case 3:
+			this->szczescie += pkt;
+			cout << "Ulepszono poziom szczêœcia!" << endl;
+			break;
+
+		case 4:
+			this->obrona += pkt;
+			cout << "Ulepszono poziom obrony!" << endl;
+			break;
+
+		default:
+			cout << "Nie ma takiej umiejêtnoœci" << endl;
+			break;
+		}
+		this->pktum -= pkt;
 	}
 }

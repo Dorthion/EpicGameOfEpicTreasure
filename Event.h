@@ -2,7 +2,7 @@
 #include "Biblioteki.h"
 #include "Bohater.h"
 #include "Potwory.h"
-//#include "Wydarzenie.h"
+#include "Zagadka.h"
 
 class Event{
 public:
@@ -10,8 +10,9 @@ public:
 	Event();
 	virtual ~Event();
 	void Czekanie();
-	void LosEvent(Bohater &character, Potwory &enemy);
-	void LosMalyEvent(Bohater &character);
-	void enemyEncouter(Bohater &character, Potwory& enemies);
+	void LosEvent(Bohater &bohater, Potwory &przeciwnik);
+	void LosMalyEventSpanie(Bohater &bohater);
+	void Wydarzenie(Bohater &bohater);
+	void Walka(Bohater &bohater, Potwory& przeciwnik);
 	//void puzzleEncouter(Bohater &character);
 };

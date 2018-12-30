@@ -112,15 +112,21 @@ void Gra::Menu(){
 		kolor.gold();
 		cout << "\t>>>>>MENU<<<<<<" << endl;
 		cout << "Podaj swój wybor: \n" << endl;
-		cout << "1 - Postac" << endl;
+		cout << "1 - Statystyki postaci" << endl;
 		cout << "2 - Dodawanie statystyk" << endl;
-		cout << "3 - Podroz" << endl;
-		cout << "4 - Dungeon" << endl;
-		cout << "5 - Krucjata" << endl;
-		cout << "6 - Odpoczynek" << endl;
-		cout << "7 - Stworz" << endl;
-		cout << "8 - Wczytaj" << endl;
-		cout << "9 - Zapisz" << endl;
+		cout << "3 - Wyœwietlenie miasta" << endl;
+		cout << "4 - Wybór budynku" << endl;
+		cout << "5 - Zmiana miasta" << endl;
+		cout << "6 - Odpoczynek na dworze" << endl;
+		cout << "7 - Odpoczynek w mieœcie" << endl;
+		cout << "8 - Podró¿ w poszukiwaniu przygód" << endl;
+		cout << "9 - Poka¿ ekwipunek" << endl;
+		cout << "10 - Zmieñ przedmiot" << endl;
+		cout << "11 - Œwiêta Krucjata" << endl;
+		cout << "12 - Boss ostateczny" << endl;
+
+		cout << "\n-1 - Zapisz" << endl;
+		cout << "-2 - Wczytaj" << endl;
 		cout << "\n0 - Wyjscie" << endl;
 
 		cout << endl << "Jaki jest twoj wybor??: ";
@@ -130,20 +136,13 @@ void Gra::Menu(){
 		cin.ignore();
 
 		switch (this->wybor) {
-		case 0:
-			playing = false;
-			break;
 		case 1:
 			Bohaterzy[activeCharacter].Wyswietl();
 			break;
 		case 2:
 			DodawanieStat();
 			break;
-		case 3:
-			cout << "Poszed³eœ na przygodê"<<endl;
-			Podroz();
-			loadPotwor();
-			break;
+		
 		case 4:
 			cout << "Poszed³eœ ubijaæ gobliny";
 			DodPotwor();
@@ -163,17 +162,14 @@ void Gra::Menu(){
 			//poke();
 			NoweMiasto();
 			break;
+
 		case 8:
-			cout << "Odczytuje";
-			loadBohater();
+			Podroz();
+			loadPotwor();
 			break;
-		case 9:
-			cout << "Zapisuje";
-			saveBohater();
-			break;
+		
 		case 10:
 			cout << "miasto: " << endl;
-			//PPotwory[activeMonster].Wyswietl();
 			break;
 		case 11:
 			cout << "miasto: " << endl;
@@ -183,10 +179,29 @@ void Gra::Menu(){
 			cout << "zapisz miasto: " << endl;
 			saveMiasto();
 			break;
+		
+		case -1:
+			system("cls");
+			cout << "=====Zapisuje====="<<endl;
+			saveBohater();
+			break;
+
+		case -2:
+			system("cls");
+			cout << "======Wczytano bohatera======";
+			loadBohater();
+			break;
+
+		case 0:
+			playing = false;
+			break;
+
 		case 99:
-			cout << "EXP: " << endl;
+			system("cls");
+			cout << endl << "EXP: +50" << endl;
 			this->Bohaterzy[activeCharacter].cheat();
 			break;
+
 		default:
 			break;
 		}
@@ -538,6 +553,10 @@ void Gra::DodawanieStat() {
 
 		case 3:
 			this->Bohaterzy[activeCharacter].DodawanieStatystyk(3, 1);
+			break;
+
+		case 4:
+			this->Bohaterzy[activeCharacter].DodawanieStatystyk(4, 1);
 			break;
 
 		default:

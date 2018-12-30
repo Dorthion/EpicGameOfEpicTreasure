@@ -39,6 +39,9 @@
     <ClCompile Include="PanelAdministratorski.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="Zagadka.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gra.h">
@@ -66,6 +69,9 @@
       <Filter>Pliki zasobów</Filter>
     </ClInclude>
     <ClInclude Include="PanelAdministratorski.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="Zagadka.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>

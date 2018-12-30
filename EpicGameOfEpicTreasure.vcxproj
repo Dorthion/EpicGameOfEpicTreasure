@@ -123,6 +123,7 @@
     <ClCompile Include="Miasto.cpp" />
     <ClCompile Include="PanelAdministratorski.cpp" />
     <ClCompile Include="Potwory.cpp" />
+    <ClCompile Include="Zagadka.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Biblioteki.h" />
@@ -134,6 +135,7 @@
     <ClInclude Include="Miasto.h" />
     <ClInclude Include="PanelAdministratorski.h" />
     <ClInclude Include="Potwory.h" />
+    <ClInclude Include="Zagadka.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

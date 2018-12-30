@@ -63,9 +63,13 @@ public:
 	inline void graczodekasa(const int kasa) { this->kasa -= kasa; }
 	inline void graczzerokasa() { this->kasa = 0; }
 	inline void cheat() { this->exp += 50; }
+	inline void graczdodmagia(const int magia) { this->magia += magia; }
+	inline void graczodemagia(const int magia) { this->magia -= magia; }
+	inline void graczzeromagia() { this->magia = 0; }
 	inline const int graczexpnextlvl() { return this->expnextlvl; }
-	inline const int graczhp() { return this->hp ; }
+	inline const int graczhp() { return this->hp; }
 	inline const int graczhpmax() { return this->hpmax; }
+	inline void wyspanie() { this->hp = this->hpmax; }
 	inline const int& graczpktum() { return this->pktum; }
 	inline const int graczmiasto() { return this->miasto; }
 	inline int graczdmg() { return rand() % (this->sila + 4) + (this->sila - 4); } // + this->weapon.getDamageMax()) + (this->damageMin + this->weapon.getDamageMin()); }

@@ -2,7 +2,7 @@
 #include "Biblioteki.h"
 class Zagadka{
 private:
-	string question;
+	string pytanie;
 	string ciekawostka;
 	std::vector<std::string> MozliweOdpowiedzi;
 	int Odp;

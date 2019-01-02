@@ -10,7 +10,7 @@ private:
 	int nrbudynku2;
 	int nrbudynku3;
 	int activemiasto;
-	std::string budynki[9] = { "Tawerna","Gospoda", "Kowal", "KuŸnia",
+	string budynki[9] = { "Tawerna","Gospoda", "Kowal", "KuŸnia",
 	"Koszary", "Magiczna Wie¿a", "Gildia Zlodziei", "Rynek", "Palac" };
 	
 
@@ -25,5 +25,8 @@ public:
 
 	inline const std::string& getName() const { return this->nazwa; }
 	inline const int gracznrmiasta() { return this->numermiasta; }
+	inline const int bud1() { return this->nrbudynku1; }
+	inline const int bud2() { return this->nrbudynku2; }
+	inline const int bud3() { return this->nrbudynku3; }
 };
 

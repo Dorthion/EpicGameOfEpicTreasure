@@ -116,6 +116,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bohater.cpp" />
+    <ClCompile Include="Bronie.cpp" />
+    <ClCompile Include="Ekwipunek.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="Gra.cpp" />
     <ClCompile Include="Kolory.cpp" />
@@ -123,11 +125,14 @@
     <ClCompile Include="Miasto.cpp" />
     <ClCompile Include="PanelAdministratorski.cpp" />
     <ClCompile Include="Potwory.cpp" />
+    <ClCompile Include="Przedmiot.cpp" />
     <ClCompile Include="Zagadka.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Biblioteki.h" />
     <ClInclude Include="Bohater.h" />
+    <ClInclude Include="Bronie.h" />
+    <ClInclude Include="Ekwipunek.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Gra.h" />
     <ClInclude Include="Kolory.h" />
@@ -135,6 +140,8 @@
     <ClInclude Include="Miasto.h" />
     <ClInclude Include="PanelAdministratorski.h" />
     <ClInclude Include="Potwory.h" />
+    <ClInclude Include="Przedmiot.h" />
+    <ClInclude Include="wsk.h" />
     <ClInclude Include="Zagadka.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

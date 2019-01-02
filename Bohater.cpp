@@ -63,6 +63,7 @@ void Bohater::inicjalizacja(const string nazwa){
 	this->kasa = 20;
 
 	//Update
+	odczytnazwy();
 	this->update();
 }
 
@@ -107,8 +108,8 @@ string Bohater::getAsString() const{
 	return nazwa + " " + to_string(poziom) + " "+ to_string(exp) + " "
 	+ to_string(expnextlvl) + " " + to_string(hp) + " " + to_string(hpmax) + " "
 	+ to_string(sila) + " " + to_string(zrecznosc) + " "+ to_string(magia) + " "
-	+ to_string(szczescie) + " " + to_string(szczescie) + " "+ to_string(pktum)
-	+ " " + to_string(miasto) + " " + to_string(kasa);
+	+ to_string(szczescie) + " " + to_string(obrona) + " "+ to_string(pktum)
+	+ " " + to_string(miasto) + " " + to_string(kasa) + " " + this->bron.toStringSave();
 }
 
 void Bohater::odpoczynek() {
@@ -147,6 +148,7 @@ void Bohater::zlespanie() {
 	else {
 		system("cls");
 		cout << "Twój bohater zgin¹³" << endl;
+		Czekanie();
 	}
 }
 
@@ -168,7 +170,6 @@ void Bohater::DodawanieStatystyk(int stat, int pkt){
 		case 0:
 			this->sila += pkt;
 			cout << "Ulepszono poziom si³y!" << endl;
-
 			break;
 
 		case 1:
@@ -197,4 +198,200 @@ void Bohater::DodawanieStatystyk(int stat, int pkt){
 		}
 		this->pktum -= pkt;
 	}
+}
+
+string Bohater::loadekwipunek(bool shop){
+	string inv;
+	for (size_t i = 0; i < this->ekwipunek.size(); i++){
+		if (shop){
+			inv += to_string(i) + ": " + this->ekwipunek[i].toString() + "\n" + " - Cena sprzeda¿y: "
+				+ std::to_string(this->ekwipunek[i].getSellValue()) + "\n";
+		} else {
+			inv += to_string(i) + ": " + this->ekwipunek[i].toString() + "\n";
+		}
+	}
+	return inv;
+}
+
+string Bohater::saveekwipunek(){
+	string inv;
+	for (size_t i = 0; i < this->ekwipunek.size(); i++){
+			inv += this->ekwipunek[i].toStringSave();
+	}
+
+	inv += "\n";
+
+	return inv;
+}
+
+void Bohater::zalozprzedmiot(unsigned index){
+	if (index < 0 || index >= this->ekwipunek.size()){
+		cout << "No valid item selected!" << "\n\n";
+	} else {
+		Bronie *w = nullptr;
+		w = dynamic_cast<Bronie*>(&this->ekwipunek[index]);
+
+		if (w != nullptr){
+			if (this->bron.getRarity() >= 0)
+				this->ekwipunek.addItem(this->bron);
+			this->bron = *w;
+			this->ekwipunek.removeItem(index);
+		} else {
+			cout << "ERROR EQUIP ITEM, ITEM IS NOT ARMOR OR WEAPON!";
+		}
+	}
+}
+
+void Bohater::usunprzedmiot(const int index){
+	if (index < 0 || index >= this->ekwipunek.size())
+		cout << "ERROR, NOT POSSIBLE TO REMOVE ITEM, removeItem Character" << "\n\n";
+	else{ this->ekwipunek.removeItem(index); }
+}
+
+const Przedmiot& Bohater::getItem(const int index){
+	if (index < 0 || index >= this->ekwipunek.size()){
+		cout << "ERROR, NOT POSSIBLE TO REMOVE ITEM, getItem Character" << "\n\n";
+		throw("ERROR OUT OF BOUNDS, GETITEM CHARACTER");
+	}
+
+	return this->ekwipunek[index];
+}
+
+void Bohater::Czekanie() {
+	cout << endl << "Czekanie na potwierdzenie..." << endl;
+	cin.clear();
+	cin.ignore();
+	system("cls");
+}
+
+void Bohater::sklep(int nrbudynku){
+	int choice = 0;
+	bool shopping = true;
+	Ekwipunek merchantInv;
+	string inv;
+
+	int nrOfItems = rand() % 10 + 3;
+
+	for (size_t i = 0; i < nrOfItems; i++){
+		merchantInv.addItem(Bronie(nrbudynku, graczpoziom() + rand() % 5, rand() % 4));
+	}
+	if (nrbudynku > 1 && nrbudynku<7) {
+		while (shopping) {
+			system("cls");
+			cout << ">>>>>" << budynki[nrbudynku] << " w " << nazwamiasta << " <<<<<<<" << endl << endl;
+			cout << "0: WyjdŸ ze sklepu" << endl << "1: Kup" << endl << endl << "Wybór: ";
+			cin >> choice;
+			cin.ignore();
+			while (cin.fail() || choice > 3 || choice < 0) {
+				system("cls");
+				cout << "B³êdny zakres." << endl;
+				cin.clear();
+				cin.ignore();
+				cout << ">>>>>" << budynki[nrbudynku] << " w " << nazwamiasta << " <<<<<<<" << endl << endl;
+				cout << "0: WyjdŸ ze sklepu" << endl << "1: Kup" << endl << endl << "Wybór: ";
+				cin >> choice;
+			}
+
+			//cin.ignore();
+			switch (choice) {
+			case 0:
+				shopping = false;
+				break;
+
+			case 1:
+				cout << ">>>>> Kupujesz" << " w " << budynki[nrbudynku] << " <<<<<<<" << endl << endl;
+				cout << " - Kasa: " << graczkasa() << "\n\n";
+				inv.clear();
+
+				for (size_t i = 0; i < merchantInv.size(); i++) {
+					inv += to_string(i) + ": " + merchantInv[i].toString() + "\n - Cena: " + to_string(merchantInv[i].getBuyValue()) + "\n";
+				}
+
+				cout << inv << "\n";
+
+				cout << "Kasa: " << graczkasa() << "\n";
+				cout << "Wybierz przedmiot (-1, aby anulowaæ): ";
+
+				cin >> choice;
+
+				while (cin.fail() || choice > merchantInv.size() || choice < -1) {
+					system("cls");
+
+					cout << "B³êdny zakres!" << "\n";
+					cin.clear();
+					cin.ignore();
+
+					cout << "Kasa: " << graczkasa() << "\n";
+					cout << "Wybierz przedmiot (-1, aby wyjœæ): ";
+					cin >> choice;
+				}
+				cin.ignore();
+
+				if (choice == -1) {
+					cout << ">>>Cofaniecie<<<" << endl;
+				}
+				else if (graczkasa() >= merchantInv[choice].getBuyValue()) {
+					graczodekasa(merchantInv[choice].getBuyValue());
+					addItem(merchantInv[choice]);
+
+					cout << "Kupi³eœ przedmiot: " << merchantInv[choice].getName() << " -" << merchantInv[choice].getBuyValue() << "\n";
+
+					merchantInv.removeItem(choice);
+				}
+				else {
+					cout << "Nie staæ Ciê na to!" << endl;
+				}
+
+				break;
+			default:
+				break;
+			}
+			Czekanie();
+		}
+	}
+
+	if (nrbudynku == 7) {
+		cout << loadekwipunek(true) << endl;
+
+		cout << "= SELL MENU =" << endl << endl;
+		cout << " - Kasa: " << graczkasa() << endl << endl;
+
+		if (getInventorySize() > 0) {
+			cout << "Kasa: " << graczkasa() << endl;
+			cout << "Choice of item (-1 to cancel): ";
+
+			cin >> choice;
+
+			while (cin.fail() || choice > getInventorySize() || choice < -1)
+			{
+				system("cls");
+
+				cout << "B³êdny zakres!" << endl;
+				cin.clear();
+				cin.ignore();
+
+				cout << "Kasa: " << graczkasa() << "\n";
+				cout << "Wybierz przedmiot (-1, aby anulowaæ): ";
+				cin >> choice;
+			}
+
+			cin.ignore(100, '\n');
+			cout << "\n";
+
+			if (choice == -1) {
+				cout << ">>>Cofaniecie<<<" << endl;
+			}
+			else {
+				graczdodkasa(getItem(choice).getSellValue());
+
+				cout << "Sprzedano przedmiot" << endl;
+				cout << "Zarobiono: " << getItem(choice).getSellValue() << "!" << endl << endl;
+				usunprzedmiot(choice);
+			}
+		}
+		else {
+			cout << "Pusty ekwipunek" << endl;
+		}
+	}
+	cout << "Wychodzisz ze sklepu" << endl << endl;
 }

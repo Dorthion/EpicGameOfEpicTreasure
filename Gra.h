@@ -14,6 +14,10 @@ private:
 	int activeCharacter;
 	int activemiasto;
 	int activeMonster;
+	int bud1;
+	int bud2;
+	int bud3;
+	int ukryj;
 	std::vector<Bohater> Bohaterzy;
 	std::vector<Miasto> Miasta;
 	std::vector<Potwory> PPotwory;
@@ -34,12 +38,15 @@ public:
 	void stworzKonto();
 	void poke();
 	void NoweMiasto();
+	void Czekanie();
+	void Czekanie2();
 	void Podroz();
 	void wybormiasta();
 	void DodPotwor();
 	void savePotwor();
 	void loadPotwor();
 	void DodawanieStat();
+	void cheatengine();
 	void PlikBledu(string nazwa, int kod);
 
 	//Jakieœ dodatki

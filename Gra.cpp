@@ -10,6 +10,10 @@ Gra::Gra(){
 	activemiasto = 1;
 	activeMonster = 0;
 	plikpotwor = "Potwor.txt";
+	bud1 = 0;
+	bud2 = 0;
+	bud3 = 0;
+	ukryj = 0;
 }
 
 Gra::~Gra(){
@@ -52,15 +56,20 @@ void Gra::InitGry() {
 		this->loadBohater();
 	}
 	else {
+		system("cls");
 		cout << "Nie ma takiego konta, chcesz stworzyæ nowe?" << endl;
+		cout << "1 - tak, 0 - nie" << endl;
 		cin >> wyborotwarcia;
 		if (wyborotwarcia != 0) {
 			stworzKonto();
 			this->InitGry();
-		}
+		} else { exit(999); }
 	}
 	plik.close();
 	this->loadMiasto();
+	this->bud1 = Miasta[this->activemiasto].bud1();
+	this->bud2 = Miasta[this->activemiasto].bud2();
+	this->bud3 = Miasta[this->activemiasto].bud3();
 	this->loadPotwor();
 }
 
@@ -76,8 +85,7 @@ void Gra::stworzKonto() {
 	plik.open(nazwaKonta + ".txt");
 	if (plik.is_open()) {
 		cout << "Konto juz istnieje o takiej nazwie! (Ponowne logowanie)" << endl;
-	}
-	else {
+	} else {
 		plik.close();
 		plik.open(nazwaKonta + ".txt", ios::out);
 		plikhasla.open("logowanie.txt", ios::app);
@@ -101,6 +109,8 @@ void Gra::Menu(){
 	Kolory kolor;
 	HANDLE hOut;
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	//Do cheatu
+	
 	if (this->Bohaterzy[activeCharacter].graczgra()) {
 		if (this->Bohaterzy[activeCharacter].graczpktum() >= 1){
 			cout << "Posiadasz nie wykorzystane punkty!"<<endl<<endl;
@@ -109,7 +119,12 @@ void Gra::Menu(){
 			this->Bohaterzy[activeCharacter].graczexpnextlvl()){
 			this->Bohaterzy[activeCharacter].lvlup();
 		}
-		kolor.gold();
+		if (this->ukryj == 1) {
+			Czekanie2();
+			this->ukryj = 0;
+		}
+			
+		kolor.gold();	
 		cout << "\t>>>>>MENU<<<<<<" << endl;
 		cout << "Podaj swój wybor: \n" << endl;
 		cout << "1 - Statystyki postaci" << endl;
@@ -168,9 +183,32 @@ void Gra::Menu(){
 			loadPotwor();
 			break;
 		
-		case 10:
-			cout << "miasto: " << endl;
+		case 9:
+			system("cls");
+			cout << this->Bohaterzy[this->activeCharacter].loadekwipunek();
+			Czekanie();
 			break;
+
+		case 10:
+			system("cls");
+			cout << this->Bohaterzy[this->activeCharacter].loadekwipunek();
+
+			cout << "Item index: ";
+			cin >> this->wybor;
+
+			while (cin.fail() || this->wybor < 0 || this->wybor >= this->Bohaterzy[this->activeCharacter].getInventorySize() ){
+				cout << "B³êdny wybór!" << "\n";
+				cin.clear();
+				cin.ignore();
+				cout << "Item index: ";
+				cin >> this->wybor;
+			}
+			cin.ignore();
+
+			this->Bohaterzy[this->activeCharacter].zalozprzedmiot(this->wybor);
+			system("cls");
+			break;
+
 		case 11:
 			cout << "miasto: " << endl;
 			wybormiasta();
@@ -179,11 +217,39 @@ void Gra::Menu(){
 			cout << "zapisz miasto: " << endl;
 			saveMiasto();
 			break;
-		
+
+		case 13:
+			cout << "Wybierz budynek: " << endl;
+			cin >> wybor;
+			switch (wybor) {
+			case 1:
+				wybor = this->bud1 - 1;
+				break;
+			case 2:
+				wybor = this->bud2 - 1;
+				break;
+			case 3:
+				wybor = this->bud3 - 1;
+				break;
+			}
+			Bohaterzy[activeCharacter].sklep(wybor);
+			break;
+
+		case 14:
+			cout << "BUDYNKI: " << endl;
+			cout << bud1 << "\t" << bud2 << "\t" << bud3 << "\t" << endl;
+			break;
+
+		case 1000:
+			if (ukryj == 0) ukryj = 1;
+			else ukryj = 0;
+			break;
+
 		case -1:
 			system("cls");
 			cout << "=====Zapisuje====="<<endl;
 			saveBohater();
+			loadBohater();
 			break;
 
 		case -2:
@@ -194,12 +260,6 @@ void Gra::Menu(){
 
 		case 0:
 			playing = false;
-			break;
-
-		case 99:
-			system("cls");
-			cout << endl << "EXP: +50" << endl;
-			this->Bohaterzy[activeCharacter].cheat();
 			break;
 
 		default:
@@ -219,8 +279,12 @@ void Gra::saveBohater(){
 	if (PlikGry.is_open()){
 		for (size_t i = 0; i < this->Bohaterzy.size(); i++){
 			PlikGry << this->Bohaterzy[i].getAsString() << "\n";
+			PlikGry << this->Bohaterzy[i].saveekwipunek() << "\n";
 		}
 	}
+	Bohaterzy.clear();
+	this->Bohaterzy.clear();		//Nie potrzebne??
+	
 	PlikGry.close();
 }
 
@@ -256,6 +320,7 @@ void Gra::loadMiasto(){
 			str >> nrbudynku2;
 			str >> nrbudynku3;
 			Miasto temp(numermiasta, nazwa, nrbudynku1, nrbudynku2, nrbudynku3);
+
 			this->Miasta.push_back(Miasto(temp));
 			str.clear();
 		}
@@ -272,8 +337,10 @@ void Gra::loadMiasto(){
 
 void Gra::loadBohater() {
 	ifstream PlikGry(plik);
-	this->Bohaterzy.clear();
-
+	Bohaterzy.clear();
+	this->Bohaterzy.clear();		//Nie potrzebne??
+	
+	//Bohater
 	int poziom = 0;
 	int exp = 0;
 	int expnextlvl = 0;
@@ -288,7 +355,24 @@ void Gra::loadBohater() {
 	int miasto = 0;
 	int kasa = 0;
 
+	//Bron
+	int minsila = 0;
+	int maxsila = 0;
+	int minzre = 0;
+	int maxzre = 0;
+	int minmagia = 0;
+	int maxmagia = 0;
+	int minszcz = 0;
+	int maxszcz = 0;
+	int minobr = 0;
+	int maxobr = 0;
+	int lvl = 0;
+	int rzadkosc = 0;
+	int cenagora = 0;
+	int cenadol = 0;
+
 	string nazwa = "";
+	string nazwa2 = "";
 	string line = "";
 	stringstream str;
 
@@ -312,6 +396,34 @@ void Gra::loadBohater() {
 
 			Bohater temp(nazwa, poziom, exp, expnextlvl, hp, hpmax,
 			sila, zrecznosc, magia, szczescie, obrona, pktum, miasto, kasa);
+
+			str >> nazwa2 >> lvl >> rzadkosc >> cenagora >> cenadol 
+				>> minsila >> maxsila >> minzre >> maxzre >> minmagia
+				>> maxmagia >> minszcz >> maxszcz >> minobr >> maxobr;
+
+			Bronie bron(minsila, maxsila, minzre, maxzre,
+				minmagia, maxmagia, minszcz, maxszcz, minobr, maxobr,
+				nazwa2, lvl, cenagora, cenadol, rzadkosc);
+			temp.setWeapon(bron);
+
+			str.clear();
+			line.clear();
+			getline(PlikGry, line);
+			str.str(line);
+
+			while (str >> nazwa2 >> lvl >> rzadkosc >> cenagora >> cenadol
+				>> minsila >> maxsila >> minzre >> maxzre >> minmagia
+				>> maxmagia >> minszcz >> maxszcz >> minobr >> maxobr){
+				temp.addItem( Bronie(minsila, maxsila, minzre, maxzre,
+					minmagia, maxmagia, minszcz, maxszcz, minobr, maxobr,
+					nazwa2, lvl, cenagora, cenadol, rzadkosc));
+			}
+
+			str.clear();
+			line.clear();
+			getline(PlikGry, line);
+			str.str(line);
+
 			this->Bohaterzy.push_back(Bohater(temp));
 		}
 	}
@@ -402,22 +514,28 @@ void Gra::NoweMiasto() {
 void Gra::wybormiasta(){
 	cout << "Wybór miasta: " << endl << endl;
 	for (size_t i = 0; i < this->Miasta.size(); i++){
-		cout << "Index: " << i << " = " << this->Miasta[i].getName() << "\n";
+		cout << "Index: " << i << " = " << this->Miasta[i].getName() << endl;
 	}
 	cout << "\n";
-	cout << "Choice: ";
+	cout << "Wybor: ";
 	cin >> this->wybor;
 	while (cin.fail() || this->wybor >= this->Miasta.size() || this->wybor < 0){
-		cout << "Faulty input!" << "\n";
+		cout << "B³êdny zakres" << endl;
 		cin.clear();
 		cin.ignore(100, '\n');
 		cout << "Wybór miasta: " << "\n";
 		cin >> this->wybor;
 	}
-	cin.ignore(100, '\n');
+	cin.ignore();
 	cout << "\n";
 	this->activemiasto = this->wybor;
-	cout << this->Miasta[this->activemiasto].getName() << " is SELECTED!" << "\n\n";
+	//£adowanie budynków
+
+	this->bud1 = Miasta[this->wybor].bud1();
+	this->bud2 = Miasta[this->wybor].bud2();
+	this->bud3 = Miasta[this->wybor].bud3();
+
+	cout << this->Miasta[this->activemiasto].getName() << " wybrano!" << "\n\n";
 }
 
 void Gra::Podroz() {
@@ -568,5 +686,81 @@ void Gra::DodawanieStat() {
 		cout << "Brak punktów umiejêtnoœci, nie mo¿na dodaæ wiêcej statystyk" << endl;
 		system("pause");
 		system("cls");
+	}
+}
+
+void Gra::Czekanie() {
+	cout << endl << "Czekanie na potwierdzenie..." << endl;
+	cin.clear();
+	cin.ignore();
+	system("cls");
+}
+
+void Gra::Czekanie2() {
+	char key;
+	int asc;
+	cout << endl << "Czekanie na potwierdzenie..." << endl;
+	key = getch();
+	asc = key;
+	if (asc == 122) cheatengine();
+	system("cls");
+}
+
+void Gra::cheatengine() {
+	bool cheat = true;
+	int wybieram = 0;
+	system("cls");
+	while (cheat == true) {
+		system("cls");
+		cout << "Co chcesz dodaæ?" << endl;
+		cout << "1 - Si³a, 2 - Zrêcznoœæ, 3 - Magia, 4 - Szczêœcie, 5 - Obrona" << endl;
+		cout << "6 - Hp, 7 - HpMax, 8 - Exp, 9 - Kasa, 10 - Pkt Um" << endl;
+		cin >> wybieram;
+		cin.clear();
+		cin.ignore();
+		while (cin.fail() || wybieram >= 11 || wybieram < -1) {
+			cout << "B³êdny zakres" << endl;
+			cout << "Wybor cheatu: " << endl;
+			cin >> wybieram;
+			cin.ignore();
+		}
+		switch (wybieram) {
+		case 0:
+			cheat = false;
+			break;
+		case 1:
+			this->Bohaterzy[activeCharacter].cheat1();
+			break;
+		case 2:
+			this->Bohaterzy[activeCharacter].cheat2();
+			break;
+		case 3:
+			this->Bohaterzy[activeCharacter].cheat3();
+			break;
+		case 4:
+			this->Bohaterzy[activeCharacter].cheat4();
+			break;
+		case 5:
+			this->Bohaterzy[activeCharacter].cheat5();
+			break;
+		case 6:
+			this->Bohaterzy[activeCharacter].cheat6();
+			break;
+		case 7:
+			this->Bohaterzy[activeCharacter].cheat7();
+			break;
+		case 8:
+			this->Bohaterzy[activeCharacter].cheat8();
+			break;
+		case 9:
+			this->Bohaterzy[activeCharacter].cheat9();
+			break;
+		case 10:
+			this->Bohaterzy[activeCharacter].cheat10();
+			break;
+		default:
+			cheat = false;
+			break;
+		}
 	}
 }

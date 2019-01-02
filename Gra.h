@@ -10,7 +10,6 @@ private:
 	string plikmiasto;
 	string nazwakonta;
 	string plikpotwor;
-	//string plikludzi;
 	int activeCharacter;
 	int activemiasto;
 	int activeMonster;
@@ -47,9 +46,12 @@ public:
 	void loadPotwor();
 	void DodawanieStat();
 	void cheatengine();
+	void PreBoss();
+	void Boss();
+	void SklepWejscie();
 	void PlikBledu(string nazwa, int kod);
 
-	//Jakieœ dodatki
+	//Dodatki Inline
 	inline bool CzyGra() const { return this->playing; }
 };
 

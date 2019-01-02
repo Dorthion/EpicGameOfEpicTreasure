@@ -150,7 +150,7 @@ void Event::Walka(Bohater &character, Potwory& enemies){
 	int gainGold = 0;
 	int playerTotal = 0;
 	int enemyTotal = 0;
-	int combatTotal = 0;
+	//int combatTotal = 0;
 	int combatRollPlayer = 0;
 	int combatRollEnemy = 0;
 	int tymczasowypancerz = 0;
@@ -194,18 +194,14 @@ void Event::Walka(Bohater &character, Potwory& enemies){
 					"Kasa: " << enemies.pkasa() << " - " <<
 					"Damage: " << enemies.pmindmg() << " - " << enemies.pmaxdmg() << endl;
 				//Attack roll
-				combatTotal = enemies.pobrona();
-				enemyTotal =( enemies.pobrona() + enemies.pmaxdmg() + enemies.plvl()) / (int)combatTotal;
-				playerTotal = (character.graczdmg() + character.graczmagia()) / (int)combatTotal;
+				enemyTotal = (int)( enemies.pobrona() + enemies.pmaxdmg() + enemies.plvl());
+				playerTotal = (int)(character.graczdmg() + character.graczzrecznosc() * 2 + character.graczmagia() * 2);
 				combatRollPlayer = rand() % playerTotal + 1;
 				combatRollEnemy = rand() % enemyTotal + 1;
-				
-				cout << "Combat total: " << combatTotal << "\n";
-				cout << "Enemy percent: " << enemyTotal << "\n";
-				cout << "Player percent: " << playerTotal << "\n\n";
-				cout << "Player roll: " << combatRollPlayer << "\n";
-				cout << "Enemy roll: " << combatRollEnemy << "\n\n";
 
+				cout << "\nSzansa gracza: " << playerTotal <<"\nLos Gracza : " << combatRollPlayer << endl << endl;
+				cout << "Szansa przeciwnika: " << enemyTotal << "\nLos Przeciwnika: " << combatRollEnemy;
+				
 				if (combatRollPlayer > combatRollEnemy) { //Hit
 					cout << "Trafiono! " << endl;
 					damage = character.graczdmg();
@@ -242,17 +238,13 @@ void Event::Walka(Bohater &character, Potwory& enemies){
 			cout << ">>>>>Tura przeciwnika<<<<<" << endl;//Enemy attack
 			Czekanie();
 			//Attack roll
-			combatTotal = enemies.pmaxdmg();
 			enemyTotal = (int)dmgpotwora;
-			playerTotal = (int)((character.graczobrona() + character.graczszczescie()) / combatTotal);
+			playerTotal = (int)(character.graczobrona() + character.graczszczescie()*3);
 			combatRollPlayer = rand() % playerTotal + 1;
 			combatRollEnemy = rand() % enemyTotal + 1;
 
-			cout << "Combat total: " << combatTotal << "\n";
-			cout << "Enemy percent: " << enemyTotal << "\n";
-			cout << "Player percent: " << playerTotal << "\n\n";
-			cout << "Player roll: " << combatRollPlayer << "\n";
-			cout << "Enemy roll: " << combatRollEnemy << "\n\n";
+			cout << "\nSzansa gracza: " << playerTotal << "\nLos Gracza : " << combatRollPlayer << endl << endl;
+			cout << "Szansa przeciwnika: " << enemyTotal << "\nLos Przeciwnika: " << combatRollEnemy << endl << endl;
 
 			if (combatRollPlayer < combatRollEnemy) { //Hit
 				cout << "Trafienie! " << "\n\n";

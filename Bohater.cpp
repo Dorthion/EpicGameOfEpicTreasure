@@ -201,27 +201,27 @@ void Bohater::DodawanieStatystyk(int stat, int pkt){
 }
 
 string Bohater::loadekwipunek(bool shop){
-	string inv;
+	string graczeq;
 	for (size_t i = 0; i < this->ekwipunek.size(); i++){
 		if (shop){
-			inv += to_string(i) + ": " + this->ekwipunek[i].toString() + "\n" + " - Cena sprzeda¿y: "
+			graczeq += to_string(i) + ": " + this->ekwipunek[i].toString() + "\n" + " - Cena sprzeda¿y: "
 				+ std::to_string(this->ekwipunek[i].getSellValue()) + "\n";
 		} else {
-			inv += to_string(i) + ": " + this->ekwipunek[i].toString() + "\n";
+			graczeq += to_string(i) + ": " + this->ekwipunek[i].toString() + "\n";
 		}
 	}
-	return inv;
+	return graczeq;
 }
 
 string Bohater::saveekwipunek(){
-	string inv;
+	string graczeq;
 	for (size_t i = 0; i < this->ekwipunek.size(); i++){
-			inv += this->ekwipunek[i].toStringSave();
+			graczeq += this->ekwipunek[i].toStringSave();
 	}
 
-	inv += "\n";
+	graczeq += "\n";
 
-	return inv;
+	return graczeq;
 }
 
 void Bohater::zalozprzedmiot(unsigned index){
@@ -265,56 +265,186 @@ void Bohater::Czekanie() {
 }
 
 void Bohater::sklep(int nrbudynku){
-	int choice = 0;
-	bool shopping = true;
-	Ekwipunek merchantInv;
-	string inv;
+	bool graczsklep = true;
+	int wybor = 0;
+	int kosci = 0;
+	int wynik = 0;
+	int stawka = 0;
+	int losowosc = 0;
+	int ilosc = rand() % 10 + 3;
+	Ekwipunek sprzedawca;
+	string graczeq;
 
-	int nrOfItems = rand() % 10 + 3;
-
-	for (size_t i = 0; i < nrOfItems; i++){
-		merchantInv.addItem(Bronie(nrbudynku, graczpoziom() + rand() % 5, rand() % 4));
+	for (size_t i = 0; i < ilosc; i++){
+		sprzedawca.addItem(Bronie(nrbudynku, graczpoziom() + rand() % 5, rand() % 4));
 	}
-	if (nrbudynku > 1 && nrbudynku<7) {
-		while (shopping) {
-			system("cls");
+
+	//Tawerna
+	if (nrbudynku == 0) {
+		while (graczsklep) {
 			cout << ">>>>>" << budynki[nrbudynku] << " w " << nazwamiasta << " <<<<<<<" << endl << endl;
-			cout << "0: WyjdŸ ze sklepu" << endl << "1: Kup" << endl << endl << "Wybór: ";
-			cin >> choice;
+			cout << "0: WyjdŸ ze sklepu" << endl << "1: Zagraj w koœci" << "2: Spróbuj coœ ukraœæ" << 
+				"3: Napij siê z poszukwiaczami przygód" << endl << endl << "Wybór: ";
+			cin >> wybor;
 			cin.ignore();
-			while (cin.fail() || choice > 3 || choice < 0) {
+			while (cin.fail() || wybor > 3 || wybor < 0) {
 				system("cls");
 				cout << "B³êdny zakres." << endl;
 				cin.clear();
 				cin.ignore();
 				cout << ">>>>>" << budynki[nrbudynku] << " w " << nazwamiasta << " <<<<<<<" << endl << endl;
 				cout << "0: WyjdŸ ze sklepu" << endl << "1: Kup" << endl << endl << "Wybór: ";
-				cin >> choice;
+				cin >> wybor;
 			}
-
-			//cin.ignore();
-			switch (choice) {
+			switch (wybor) {
 			case 0:
-				shopping = false;
+				graczsklep = false;
+				break;
+
+			case 1:
+				if (graczkasa() == 0) {
+					cout << "\n Nie mo¿esz graæ, je¿eli nie masz pieniêdzy!" << endl;
+					break;
+				}
+				else {
+					cout << "Podaj jak¹ kwot¹ grasz?" << endl << "Kwota: ";
+					cin >> stawka;
+					cin.ignore();
+					while (cin.fail() || stawka > graczkasa() || stawka < 0) {
+						system("cls");
+						cout << "B³êdny zakres." << endl;
+						cin.clear();
+						cin.ignore();
+						cout << "Podaj jak¹ kwot¹ grasz?" << endl << "Kwota: ";
+						cin >> stawka;
+					}
+					cout << "Przeciwnik rzuca koœciami" << endl;
+					Czekanie();
+					wynik = rand() % 12 + 1;
+					cout << "Wylosowa³: " << wynik << endl;
+					Czekanie();
+					cout << "Rzucasz koœciami" << endl;
+					Czekanie();
+					kosci = rand() % 12 + 1;
+					cout << "Wylosowa³eœ/aœ: " << kosci << endl;
+					Czekanie();
+					if (wynik == kosci) {
+						cout << "Mieliœcie tyle samo oczek, nikt nie wygrywa!" << endl;
+					}
+					else {
+						if (wynik > kosci) {
+							cout << "Masz mniejszy wynik, przegrywasz." << endl;
+							cout << "Tracisz ustawion¹ stawkê: " << stawka << endl;
+							graczodekasa(stawka);
+						} else {
+							cout << "Masz wiêkszy wynik, wygrywasz!" << endl;
+							cout << "Wygrywasz ustawion¹ stawkê" << stawka << endl;
+							graczdodkasa(stawka);
+						}
+					}
+				}
+				break;
+
+			case 2:
+				Czekanie();
+				cout << "Twoje szczêœcie wynosi: " << graczszczescie() << endl;
+				Czekanie();
+				cout << "Przechodzisz przez t³um" << endl;
+				Czekanie();
+				stawka = rand() % (graczpoziom() + 3 * graczszczescie() + graczzrecznosc() + 5) + 1;
+				wynik = rand() % 100 + 1;
+				kosci = rand() % 100 + (graczszczescie() + 1);
+				if (wynik < kosci) {
+					cout << "Ukrad³eœ: " << stawka << endl;
+					graczdodkasa(stawka);
+				} else {
+					cout << "Nie uda³o Ci siê nic znaleŸæ, \na przy tym ktoœ zauwa¿y³ twoje zamiary (-5hp)" << endl;
+					zlespanie();
+				}
+				break;
+			case 3:
+				if (graczkasa() < 5) {
+					cout << "Nie staæ Ciê na alkohol" << endl;
+				} else {
+					cout << "Pijesz wraz z poszukiwaczami przygód, mi³o z nimi przebywa czas" << endl;
+					graczodekasa(5);
+					wyspanie();
+					GraczObrazenia(20);
+				}
+				break;
+
+			default:
+				cout << "Wychodzisz z tawerny" << endl;
+				break;
+			}
+		}
+	}
+
+	//Gospoda
+	if (nrbudynku == 1) {
+		system("cls");
+		cout << "Chcesz siê wyspaæ w Gospodzie?\nKosztuje to 50 gold" << endl;
+		cin >> wybor;
+		cin.ignore();
+		while (cin.fail() || wybor > 2 || wybor < 0) {
+			system("cls");
+			cout << "B³êdny zakres." << endl;
+			cin.clear();
+			cin.ignore();
+			cout << "Chcesz siê wyspaæ w Gospodzie?" << endl;
+			cin >> wybor;
+		}
+		if (graczkasa() < 50) {
+			system("cls");
+			cout << "Nie staæ Ciê na to!" << endl;
+		} else {
+			cout << "Wyspa³eœ siê rzeœko i bez przeszkód" << endl;
+			cout << "Zap³aci³eœ za pobyt 50 z³ota" << endl;
+			wyspanie();
+			graczodekasa(50);
+		}
+	}
+
+	//Budynki sklepowe
+	if (nrbudynku > 1 && nrbudynku<7) {
+		while (graczsklep) {
+			system("cls");
+			cout << ">>>>>" << budynki[nrbudynku] << " w " << nazwamiasta << " <<<<<<<" << endl << endl;
+			cout << "0: WyjdŸ ze sklepu" << endl << "1: Kup" << endl << endl << "Wybór: ";
+			cin >> wybor;
+			cin.ignore();
+			while (cin.fail() || wybor > 2 || wybor < 0) {
+				system("cls");
+				cout << "B³êdny zakres." << endl;
+				cin.clear();
+				cin.ignore();
+				cout << ">>>>>" << budynki[nrbudynku] << " w " << nazwamiasta << " <<<<<<<" << endl << endl;
+				cout << "0: WyjdŸ ze sklepu" << endl << "1: Kup" << endl << endl << "Wybór: ";
+				cin >> wybor;
+			}
+			system("cls");
+			switch (wybor) {
+			case 0:
+				graczsklep = false;
 				break;
 
 			case 1:
 				cout << ">>>>> Kupujesz" << " w " << budynki[nrbudynku] << " <<<<<<<" << endl << endl;
 				cout << " - Kasa: " << graczkasa() << "\n\n";
-				inv.clear();
+				graczeq.clear();
 
-				for (size_t i = 0; i < merchantInv.size(); i++) {
-					inv += to_string(i) + ": " + merchantInv[i].toString() + "\n - Cena: " + to_string(merchantInv[i].getBuyValue()) + "\n";
+				for (size_t i = 0; i < sprzedawca.size(); i++) {
+					graczeq += to_string(i) + ": " + sprzedawca[i].toString() + "\n - Cena: " + to_string(sprzedawca[i].getBuyValue()) + "\n";
 				}
 
-				cout << inv << "\n";
+				cout << graczeq << "\n";
 
 				cout << "Kasa: " << graczkasa() << "\n";
 				cout << "Wybierz przedmiot (-1, aby anulowaæ): ";
 
-				cin >> choice;
+				cin >> wybor;
 
-				while (cin.fail() || choice > merchantInv.size() || choice < -1) {
+				while (cin.fail() || wybor > sprzedawca.size() || wybor < -1) {
 					system("cls");
 
 					cout << "B³êdny zakres!" << "\n";
@@ -323,20 +453,20 @@ void Bohater::sklep(int nrbudynku){
 
 					cout << "Kasa: " << graczkasa() << "\n";
 					cout << "Wybierz przedmiot (-1, aby wyjœæ): ";
-					cin >> choice;
+					cin >> wybor;
 				}
 				cin.ignore();
 
-				if (choice == -1) {
+				if (wybor == -1) {
 					cout << ">>>Cofaniecie<<<" << endl;
 				}
-				else if (graczkasa() >= merchantInv[choice].getBuyValue()) {
-					graczodekasa(merchantInv[choice].getBuyValue());
-					addItem(merchantInv[choice]);
+				else if (graczkasa() >= sprzedawca[wybor].getBuyValue()) {
+					graczodekasa(sprzedawca[wybor].getBuyValue());
+					addItem(sprzedawca[wybor]);
 
-					cout << "Kupi³eœ przedmiot: " << merchantInv[choice].getName() << " -" << merchantInv[choice].getBuyValue() << "\n";
+					cout << "Kupi³eœ przedmiot: " << sprzedawca[wybor].getName() << " -" << sprzedawca[wybor].getBuyValue() << "\n";
 
-					merchantInv.removeItem(choice);
+					sprzedawca.removeItem(wybor);
 				}
 				else {
 					cout << "Nie staæ Ciê na to!" << endl;
@@ -346,52 +476,148 @@ void Bohater::sklep(int nrbudynku){
 			default:
 				break;
 			}
-			Czekanie();
 		}
 	}
 
+	//Rynek
 	if (nrbudynku == 7) {
-		cout << loadekwipunek(true) << endl;
-
-		cout << "= SELL MENU =" << endl << endl;
-		cout << " - Kasa: " << graczkasa() << endl << endl;
-
-		if (getInventorySize() > 0) {
-			cout << "Kasa: " << graczkasa() << endl;
-			cout << "Choice of item (-1 to cancel): ";
-
-			cin >> choice;
-
-			while (cin.fail() || choice > getInventorySize() || choice < -1)
-			{
+		while (graczsklep) {
+			system("cls");
+			cout << ">>>>>" << budynki[nrbudynku] << " w " << nazwamiasta << " <<<<<<<" << endl << endl;
+			cout << "0: WyjdŸ ze sklepu" << endl << "1: Sprzedaj" << endl << endl << "Wybór: ";
+			cin >> wybor;
+			cin.ignore();
+			while (cin.fail() || wybor > 2 || wybor < 0) {
 				system("cls");
-
-				cout << "B³êdny zakres!" << endl;
+				cout << "B³êdny zakres." << endl;
 				cin.clear();
 				cin.ignore();
-
-				cout << "Kasa: " << graczkasa() << "\n";
-				cout << "Wybierz przedmiot (-1, aby anulowaæ): ";
-				cin >> choice;
+				cout << ">>>>>" << budynki[nrbudynku] << " w " << nazwamiasta << " <<<<<<<" << endl << endl;
+				cout << "0: WyjdŸ ze sklepu" << endl << "1: Sprzedaj" << endl << endl << "Wybór: ";
+				cin >> wybor;
 			}
 
-			cin.ignore(100, '\n');
-			cout << "\n";
+			switch (wybor) {
+			case 0:
+				graczsklep = false;
+				break;
 
-			if (choice == -1) {
-				cout << ">>>Cofaniecie<<<" << endl;
-			}
-			else {
-				graczdodkasa(getItem(choice).getSellValue());
+			case 1:
+				cout << loadekwipunek(true) << endl;
+				cout << ">>>>> Sprzedajesz" << " w " << budynki[nrbudynku] << " <<<<<<<" << endl << endl;
+				cout << " - Kasa: " << graczkasa() << endl << endl;
 
-				cout << "Sprzedano przedmiot" << endl;
-				cout << "Zarobiono: " << getItem(choice).getSellValue() << "!" << endl << endl;
-				usunprzedmiot(choice);
+				if (getInventorySize() > 0) {
+					cout << "Kasa: " << graczkasa() << endl;
+					cout << "wybor of item (-1 to cancel): ";
+					cin >> wybor;
+
+					while (cin.fail() || wybor > getInventorySize() || wybor < -1) {
+						system("cls");
+
+						cout << "B³êdny zakres!" << endl;
+						cin.clear();
+						cin.ignore();
+
+						cout << "Kasa: " << graczkasa() << "\n";
+						cout << "Wybierz przedmiot (-1, aby anulowaæ): ";
+						cin >> wybor;
+					}
+
+					cin.ignore();
+					cout << "\n";
+
+					if (wybor == -1) {
+						cout << ">>>Cofaniecie<<<" << endl;
+					}
+					else {
+						graczdodkasa(getItem(wybor).getSellValue());
+
+						cout << "Sprzedano przedmiot" << endl;
+						cout << "Zarobiono: " << getItem(wybor).getSellValue() << "!" << endl << endl;
+						usunprzedmiot(wybor);
+					}
+				}
+				else {
+					cout << "Pusty ekwipunek" << endl;
+					Czekanie();
+				}
+				break;
+			default:
+				graczsklep = false;
+				break;
 			}
-		}
-		else {
-			cout << "Pusty ekwipunek" << endl;
 		}
 	}
-	cout << "Wychodzisz ze sklepu" << endl << endl;
+
+	//Pa³ac
+	if (nrbudynku == 8) {
+		wynik = 1;
+		system("cls");
+		stawka = rand() % 100 + (100 - graczszczescie());
+		cout << "Czy chcesz kupiæ losowy punkt umiejêtnoœci za " << stawka << "?" << endl;
+		cin >> wybor;
+		cin.ignore();
+		while (cin.fail() || wybor > 2 || wybor < 0) {
+			system("cls");
+			cout << "B³êdny zakres." << endl;
+			cin.clear();
+			cin.ignore();
+			cout << "Czy chcesz kupiæ losowy punkt umiejêtnoœci?" << endl;
+			cin >> wybor;
+		}
+		cout << "Ile chcesz ich kupiæ?" << endl;
+		cin >> wynik;
+		cin.ignore();
+		while (cin.fail() || wynik < 0) {
+			system("cls");
+			cout << "B³êdny zakres." << endl;
+			cin.clear();
+			cin.ignore();
+			cout << "Ile chcesz ich kupiæ?" << endl;
+			cin >> wynik;
+		}
+		cout << "Ró¿ne czy 1 losow¹? (0 - Ró¿ne, 1 - 1 Losowa)" << endl;
+		cin >> losowosc;
+		cin.ignore();
+		while (cin.fail() || losowosc < 0 || losowosc > 2) {
+			system("cls");
+			cout << "B³êdny zakres." << endl;
+			cin.clear();
+			cin.ignore();
+			cout << "Ró¿ne czy 1 losow¹?" << endl;
+			cin >> losowosc;
+		}
+		switch (wybor) {
+		case 0:
+			cout << "Wychodzisz z pa³aca" << endl;
+			break;
+		case 1:
+			if (stawka*wynik > graczkasa()) {
+				cout << "Nie staæ Ciê na to!" << endl;
+			} else {
+				cout << "Zap³aci³eœ: " << stawka << " za " << wynik << " Punktów Umiejêtnoœci!" << endl << endl;
+				if (losowosc == 1) {
+					this->pktum += wynik;
+					kosci = rand() % 4 + 1;
+					DodawanieStatystyk(kosci, wynik);
+				} else {
+					this->pktum += wynik;
+					while (wynik > 0) {
+						kosci = rand() % 4 + 1;
+						DodawanieStatystyk(kosci, 1);
+						wynik--;
+					}
+				}
+			}
+			break;
+		default:
+			cout << "Wychodzisz z pa³aca" << endl;
+			break;
+		}
+	}
+
+	cout << "\n\nWychodzisz ze sklepu" << endl << endl;
+	Czekanie();
+
 }

@@ -81,9 +81,9 @@ string Miasto::getAsString() const {
 void Miasto::Wyswietl() const {
 	Kolory kolor;
 	system("cls");
-	string nazwbud1 = budynki[nrbudynku1];
-	string nazwbud2 = budynki[nrbudynku2];
-	string nazwbud3 = budynki[nrbudynku3];
+	string nazwbud1 = budynki[nrbudynku1 - 1];
+	string nazwbud2 = budynki[nrbudynku2 - 1];
+	string nazwbud3 = budynki[nrbudynku3 - 1];
 	kolor.gold(); cout << " ========================================" << endl;
 	kolor.blue(); cout << "//"; kolor.red(); cout << "\t\tMiasto : "; kolor.blue(); cout << "\t\t\\\\" << endl;
 	kolor.blue(); cout << "||\t\t\t\t\t||" << endl;

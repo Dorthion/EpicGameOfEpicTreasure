@@ -35,60 +35,96 @@ Bronie::Bronie() :Przedmiot(){
 
 Bronie::Bronie(int nrbuydynku,  int poziom, int rzadkosc) : Przedmiot(poziom, rzadkosc) {
 	switch (nrbuydynku) {
-	case 3:
+	case 3: //Miecze
 		this->maxsila = rand() % poziom * (rzadkosc + 1);
 		this->maxsila += (rzadkosc + 1) * 5;
-		this->setName(nazwy1[rand() % 5]);
+		this->setName(nazwy1[rand() % 6]);
 		if (rzadkosc == 3)
 			this->maxsila += poziom * 5;
 		else if (rzadkosc == 4)
 			this->maxsila += poziom * 10;
 
 		this->minsila = this->maxsila / 2;
+		this->minzre = 1;
+		this->maxzre = 2;
+		this->minmagia = 1;
+		this->maxmagia = 2;
+		this->minszcz = 0;
+		this->maxszcz = 0;
+		this->minobr = 1;
+		this->maxobr = (poziom + 1) + poziom;
 		break;
-	case 4:
-		this->maxsila = rand() % poziom * (rzadkosc + 1);
-		this->maxsila += (rzadkosc + 1) * 5;
-		this->setName(nazwy1[rand() % 5]);
+	case 4: //£uki
+		this->maxzre = rand() % poziom * (rzadkosc + 1);
+		this->maxzre += (rzadkosc + 1) * 5;
+		this->setName(nazwy2[rand() % 6]);
 		if (rzadkosc == 3)
-			this->maxsila += poziom * 5;
+			this->maxzre += poziom * 5;
 		else if (rzadkosc == 4)
-			this->maxsila += poziom * 10;
-
-		this->minsila = this->maxsila / 2;
+			this->maxzre += poziom * 10;
+		this->minzre = this->maxzre / 2;
+		this->minsila = 1;
+		this->maxsila = 2;
+		this->minmagia = 0;
+		this->maxmagia = 0 + poziom;
+		this->minszcz = 0;
+		this->maxszcz = 0 + poziom;
+		this->minobr = 0;
+		this->maxobr = (poziom + 1) + poziom;
 		break;
-	case 5:
-		this->maxsila = rand() % poziom * (rzadkosc + 1);
-		this->maxsila += (rzadkosc + 1) * 5;
-		this->setName(nazwy1[rand() % 5]);
+	case 5: //Sztylety
+		this->maxszcz = rand() % poziom * (rzadkosc + 1);
+		this->maxszcz += (rzadkosc + 1) * 5;
+		this->setName(nazwy3[rand() % 6]);
 		if (rzadkosc == 3)
 			this->maxsila += poziom * 5;
 		else if (rzadkosc == 4)
 			this->maxsila += poziom * 10;
 
-		this->minsila = this->maxsila / 2;
+		this->minsila = (int)(poziom*rzadkosc);
+		this->maxsila = (int)((poziom + 1)*rzadkosc) + poziom;
+		this->minzre = 1;
+		this->maxzre = poziom;
+		this->minmagia = 1;
+		this->maxmagia = 1;
+		this->minobr = 1;
+		this->maxobr = 1;
 		break;
-	case 6:
-		this->maxsila = rand() % poziom * (rzadkosc + 1);
-		this->maxsila += (rzadkosc + 1) * 5;
-		this->setName(nazwy1[rand() % 5]);
+	case 6: //Ró¿d¿ki
+		this->maxmagia = rand() % poziom * (rzadkosc + 1);
+		this->maxmagia += (rzadkosc + 1) * 5;
+		this->setName(nazwy4[rand() % 6]);
 		if (rzadkosc == 3)
-			this->maxsila += poziom * 5;
+			this->maxmagia += poziom * 5;
 		else if (rzadkosc == 4)
-			this->maxsila += poziom * 10;
+			this->maxmagia += poziom * 10;
 
-		this->minsila = this->maxsila / 2;
+		this->minsila = 1;
+		this->maxsila = poziom + 1;
+		this->minzre = 1;
+		this->maxzre = 1;
+		this->minszcz = 1;
+		this->maxszcz = poziom + 1;
+		this->minobr = 1;
+		this->maxobr = poziom + 1;
 		break;
-	case 7:
-		this->maxsila = rand() % poziom * (rzadkosc + 1);
-		this->maxsila += (rzadkosc + 1) * 5;
+	case 7: //Bu³awy i Topory
+		this->maxobr = rand() % poziom * (rzadkosc + 1);
+		this->maxobr += (rzadkosc + 1) * 5;
 		this->setName(nazwy1[rand() % 5]);
 		if (rzadkosc == 3)
-			this->maxsila += poziom * 5;
+			this->maxobr += poziom * 5;
 		else if (rzadkosc == 4)
-			this->maxsila += poziom * 10;
+			this->maxobr += poziom * 10;
 
-		this->minsila = this->maxsila / 2;
+		this->maxsila = (int)(this->maxobr / 2) + poziom;
+		this->minsila = (int)(this->maxobr / 2);
+		this->minzre = 1;
+		this->maxzre = 1;
+		this->minmagia = (int)(poziom*rzadkosc);
+		this->maxmagia = (int)(poziom*rzadkosc) + 1;
+		this->minszcz = 1;
+		this->maxszcz = 1;
 		break;
 	}
 }

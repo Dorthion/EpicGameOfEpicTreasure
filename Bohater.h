@@ -61,7 +61,7 @@ public:
 	string loadekwipunek(bool shop = false);
 	string saveekwipunek();
 	string budynki[9] = { "Tawerna","Gospoda", "Kowal", "KuŸnia",
-	"Koszary", "Magiczna Wie¿a", "Gildia Zlodziei", "Rynek", "Palac" };
+	"Koszary", "Magiczna Wie¿a", "Gildia Z³odziei", "Rynek", "Pa³ac" };
 
 	//Inline
 	inline const bool graczgra() { return this->hp > 0; }
@@ -76,16 +76,17 @@ public:
 	inline void graczdodkasa(const int kasa) { this->kasa += kasa; }
 	inline void graczodekasa(const int kasa) { this->kasa -= kasa; }
 	inline void graczzerokasa() { this->kasa = 0; }
-	inline void cheat1() { this->sila += 10; }
-	inline void cheat2() { this->zrecznosc += 10; }
-	inline void cheat3() { this->magia += 10; }
-	inline void cheat4() { this->szczescie += 10; }
-	inline void cheat5() { this->obrona += 10; }
-	inline void cheat6() { this->hp += 50; }
-	inline void cheat7() { this->hpmax += 50; }
-	inline void cheat8() { this->exp += 100; }
-	inline void cheat9() { this->kasa += 100; }
-	inline void cheat10() { this->pktum += 10; }
+	inline void cheat1() { this->sila += 50; }
+	inline void cheat2() { this->zrecznosc += 50; }
+	inline void cheat3() { this->magia += 50; }
+	inline void cheat4() { this->szczescie += 50; }
+	inline void cheat5() { this->obrona += 50; }
+	inline void cheat6() { this->hp += 200; }
+	inline void cheat7() { this->hpmax += 200; }
+	inline void cheat8() { this->exp += 500; }
+	inline void cheat9() { this->kasa += 200; }
+	inline void cheat10() { this->pktum += 20; }
+	inline void cheat11() { this->poziom += 10; }
 	inline void graczdodmagia(const int magia) { this->magia += magia; }
 	inline void graczodemagia(const int magia) { this->magia -= magia; }
 	inline void graczzeromagia() { this->magia = 0; }
@@ -95,7 +96,9 @@ public:
 	inline void wyspanie() { this->hp = this->hpmax; }
 	inline const int& graczpktum() { return this->pktum; }
 	inline const int graczmiasto() { return this->miasto; }
-	inline int graczdmg() { return rand() % (this->sila + 4) + (this->sila - 4); } // + this->weapon.getDamageMax()) + (this->damageMin + this->weapon.getDamageMin()); }
+	inline int graczdmg() { return rand() % (this->sila + 4 + this->bron.bronsilamax() + 
+		this->bron.bronzremax() + this->bron.bronmagiamax()) + (this->sila - 4 +
+		this->bron.bronsilamin() +this->bron.bronzremin() + this->bron.bronmagiamin()); } 
 	inline const int& graczkasa() { return this->kasa; }
 	inline const std::string& getName() const { return this->nazwa; }
 	inline const int getInventorySize()const { return this->ekwipunek.size(); }

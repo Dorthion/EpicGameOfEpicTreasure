@@ -19,7 +19,6 @@ Gra::Gra(){
 Gra::~Gra(){
 }
 
-//G³ówne funkcje gry
 void Gra::InitGry() {
 	int wyborotwarcia = 0;
 	int logowanie = 0;
@@ -40,7 +39,6 @@ void Gra::InitGry() {
 	cin.clear();
 	cin.ignore();
 	SetConsoleMode(hStdin, mode);
-	//tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 	pliklogowanie.open("Logowanie.txt");
 	while (!pliklogowanie.eof()) {
 		pliklogowanie >> nazwagracza2 >> haslogracza2;
@@ -73,7 +71,6 @@ void Gra::InitGry() {
 	this->loadPotwor();
 }
 
-//Tworzenie Konta
 void Gra::stworzKonto() {
 	fstream plik;
 	fstream plikhasla;
@@ -109,7 +106,6 @@ void Gra::Menu(){
 	Kolory kolor;
 	HANDLE hOut;
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	//Do cheatu
 	
 	if (this->Bohaterzy[activeCharacter].graczgra()) {
 		if (this->Bohaterzy[activeCharacter].graczpktum() >= 1){
@@ -125,8 +121,8 @@ void Gra::Menu(){
 		}
 			
 		kolor.gold();	
-		cout << "\t>>>>>MENU<<<<<<" << endl;
-		cout << "Podaj swój wybor: \n" << endl;
+		cout << "\t>>>>>MENU<<<<<<" << endl << endl;
+
 		cout << "1 - Statystyki postaci" << endl;
 		cout << "2 - Dodawanie statystyk" << endl;
 		cout << "3 - Wyœwietlenie miasta" << endl;
@@ -157,25 +153,23 @@ void Gra::Menu(){
 		case 2:
 			DodawanieStat();
 			break;
+
+		case 3:
+			Miasta[activemiasto].Wyswietl();
+			break;
 		
 		case 4:
-			cout << "Poszed³eœ ubijaæ gobliny";
-			DodPotwor();
-			savePotwor();
-			loadPotwor();
+			SklepWejscie();
 			break;
 		case 5:
-			cout << "Poszed³eœ grabowaæ najbli¿sze miasto";
-			savePotwor();
+			wybormiasta();
 			break;
 		case 6:
 			Bohaterzy[activeCharacter].odpoczynek();
 			break;
 		case 7:
-			//cout << "To Remek robi grê RPG??" << endl << endl;
-			//Bohaterzy[activeCharacter].zranienie();
-			//poke();
-			NoweMiasto();
+			if (bud1 == 2 || bud2 == 2 || bud3 == 2) Bohaterzy[activeCharacter].sklep(1);
+			else cout << "Nie jesteœ w mieœcie, gdzie jest Gospoda!" << endl << endl;
 			break;
 
 		case 8:
@@ -210,34 +204,13 @@ void Gra::Menu(){
 			break;
 
 		case 11:
-			cout << "miasto: " << endl;
-			wybormiasta();
+			cout << "Nie stworzona krucjata" << endl;
 			break;
+			
 		case 12:
-			cout << "zapisz miasto: " << endl;
-			saveMiasto();
-			break;
-
-		case 13:
-			cout << "Wybierz budynek: " << endl;
-			cin >> wybor;
-			switch (wybor) {
-			case 1:
-				wybor = this->bud1 - 1;
-				break;
-			case 2:
-				wybor = this->bud2 - 1;
-				break;
-			case 3:
-				wybor = this->bud3 - 1;
-				break;
-			}
-			Bohaterzy[activeCharacter].sklep(wybor);
-			break;
-
-		case 14:
-			cout << "BUDYNKI: " << endl;
-			cout << bud1 << "\t" << bud2 << "\t" << bud3 << "\t" << endl;
+			system("cls");
+			if (Bohaterzy[activeCharacter].graczpoziom() > 30) PreBoss(); 
+			else cout << "Nie wystarczaj¹cy iloœæ poziomów! \nWymagany jest minimalny 30 poziom, aby z nim walczyæ!" << endl << endl;
 			break;
 
 		case 1000:
@@ -247,14 +220,14 @@ void Gra::Menu(){
 
 		case -1:
 			system("cls");
-			cout << "=====Zapisuje====="<<endl;
+			cout << ">>>>> Zapisuje <<<<<"<<endl;
 			saveBohater();
 			loadBohater();
 			break;
 
 		case -2:
 			system("cls");
-			cout << "======Wczytano bohatera======";
+			cout << ">>>>> Wczytano bohatera <<<<<" << endl;
 			loadBohater();
 			break;
 
@@ -267,7 +240,7 @@ void Gra::Menu(){
 		}
 	}
 	else {
-		cout << "Twój bohater zgin¹³ XD" << endl;
+		cout << "Twój bohater zgin¹³" << endl;
 		this->stworzBohatera();
 		this->saveBohater();
 		this->loadBohater();
@@ -522,7 +495,7 @@ void Gra::wybormiasta(){
 	while (cin.fail() || this->wybor >= this->Miasta.size() || this->wybor < 0){
 		cout << "B³êdny zakres" << endl;
 		cin.clear();
-		cin.ignore(100, '\n');
+		cin.ignore();
 		cout << "Wybór miasta: " << "\n";
 		cin >> this->wybor;
 	}
@@ -714,11 +687,11 @@ void Gra::cheatengine() {
 		system("cls");
 		cout << "Co chcesz dodaæ?" << endl;
 		cout << "1 - Si³a, 2 - Zrêcznoœæ, 3 - Magia, 4 - Szczêœcie, 5 - Obrona" << endl;
-		cout << "6 - Hp, 7 - HpMax, 8 - Exp, 9 - Kasa, 10 - Pkt Um" << endl;
+		cout << "6 - Hp, 7 - HpMax, 8 - Exp, 9 - Kasa, 10 - Pkt Um, 11 - DodPoz" << endl;
 		cin >> wybieram;
 		cin.clear();
 		cin.ignore();
-		while (cin.fail() || wybieram >= 11 || wybieram < -1) {
+		while (cin.fail() || wybieram >= 12 || wybieram < -1) {
 			cout << "B³êdny zakres" << endl;
 			cout << "Wybor cheatu: " << endl;
 			cin >> wybieram;
@@ -758,9 +731,66 @@ void Gra::cheatengine() {
 		case 10:
 			this->Bohaterzy[activeCharacter].cheat10();
 			break;
+		case 11:
+			this->Bohaterzy[activeCharacter].cheat11();
+			break;
 		default:
 			cheat = false;
 			break;
 		}
 	}
+}
+
+void Gra::PreBoss() {
+	cout << "Boss Ostateczny: " << endl << endl;
+	poke();
+	cout << "Czy chcesz walczyæ przeciwko bossowi ostatecznemu?" << endl;
+	cin >> this->wybor;
+	cin.ignore();
+	while (cin.fail() || wybor > 2 || wybor < 0) {
+		system("cls");
+		cout << "B³êdny zakres." << endl;
+		poke();
+		cin.clear();
+		cin.ignore();
+		cout << "Czy chcesz walczyæ przeciwko bossowi ostatecznemu?" << endl;
+		cin >> this->wybor;
+	}
+
+	if (this->wybor == 1) {
+		this->plikpotwor = "pikapikaboss.txt";
+		loadPotwor();
+		Boss();
+		this->plikpotwor = "Potwor.txt";
+		loadPotwor();
+		system("cls");
+		cout << "Brawo! Pokona³eœ ostatecznego Bossa!" << endl;
+	}
+	else {
+		cout << "Stchórzy³eœ!" << endl;
+	}
+}
+
+void Gra::Boss() {
+	Event walkaboss;
+	walkaboss.Walka(this->Bohaterzy[activeCharacter], this->PPotwory[activeMonster]);
+}
+
+void Gra::SklepWejscie() {
+	cout << "Wybierz budynek: " << endl;
+	cin >> wybor;
+	switch (wybor) {
+	case 1:
+		wybor = this->bud1 - 1;
+		break;
+	case 2:
+		wybor = this->bud2 - 1;
+		break;
+	case 3:
+		wybor = this->bud3 - 1;
+		break;
+	default:
+		break;
+	}
+	Bohaterzy[activeCharacter].sklep(wybor);
 }

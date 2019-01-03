@@ -6,7 +6,8 @@
 
 class Event{
 public:
-	static int nrOfEvents;
+	static int DuzyLos;
+	static int MalyLos;
 	Event();
 	virtual ~Event();
 	void Czekanie();
@@ -14,5 +15,4 @@ public:
 	void LosMalyEventSpanie(Bohater &bohater);
 	void Wydarzenie(Bohater &bohater);
 	void Walka(Bohater &bohater, Potwory& przeciwnik);
-	//void puzzleEncouter(Bohater &character);
 };

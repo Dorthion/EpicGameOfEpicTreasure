@@ -36,6 +36,7 @@ public:
 	void stworzBohatera();
 	void stworzKonto();
 	void poke();
+	void odpoczynek();
 	void Czekanie();
 	void Czekanie2();
 	void Podroz();

@@ -101,20 +101,12 @@ void Bohater::lvlup(){
 	cout << "Zwiêkszono poziom bohatera " << this->poziom << "!" << endl;
 }
 
-void Bohater::update(){
-}
-
 string Bohater::getAsString() const{
 	return nazwa + " " + to_string(poziom) + " "+ to_string(exp) + " "
 	+ to_string(expnextlvl) + " " + to_string(hp) + " " + to_string(hpmax) + " "
 	+ to_string(sila) + " " + to_string(zrecznosc) + " "+ to_string(magia) + " "
 	+ to_string(szczescie) + " " + to_string(obrona) + " "+ to_string(pktum)
 	+ " " + to_string(miasto) + " " + to_string(kasa) + " " + this->bron.toStringSave();
-}
-
-void Bohater::odpoczynek() {
-	cout << "W³aœnie odpoczywasz w "<<endl;
-	this->hp = this->hpmax;
 }
 
 void Bohater::zranienie() {

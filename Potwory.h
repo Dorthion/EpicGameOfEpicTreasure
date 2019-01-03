@@ -20,7 +20,7 @@ public:
 
 	//Funkcje
 	std::string GetAsString()const;
-	inline bool isAlive() { return this->hp > 0; }
+	inline bool pzyje() { return this->hp > 0; }
 	void Obrazenia(int sila);
 	std::string Wyswietl()const;
 	Potwory(string nazwa, int numerpotwora, int poziom, int hp,

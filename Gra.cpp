@@ -177,7 +177,7 @@ void Gra::Menu(){
 			wybormiasta();
 			break;
 		case 6:
-			Bohaterzy[activeCharacter].odpoczynek();
+			.odpoczynek();
 			break;
 		case 7:
 			if (bud1 == 2 || bud2 == 2 || bud3 == 2) Bohaterzy[activeCharacter].sklep(1);
@@ -259,6 +259,11 @@ void Gra::Menu(){
 		this->saveBohater();
 		this->loadBohater();
 	}
+}
+
+void Gra::odpoczynek() {
+	Event spanie;
+	spanie.LosMalyEventSpanie(this->Bohaterzy[activeCharacter]);
 }
 
 void Gra::stworzBohatera() {
@@ -789,7 +794,7 @@ void Gra::PreBoss() {
 	}
 
 	if (this->wybor == 1) {
-		this->plikpotwor = "pikapikaboss.txt";
+		this->plikpotwor = "boss.txt";
 		loadPotwor();
 		Boss();
 		this->plikpotwor = "Potwor.txt";

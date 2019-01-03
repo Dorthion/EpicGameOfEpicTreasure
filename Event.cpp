@@ -1,6 +1,6 @@
 #include "Event.h"
-int Event::nrOfEvents = 5;
-
+int Event::DuzyLos = 13;
+int Event::MalyLos = 3;
 Event::Event(){
 }
 
@@ -8,28 +8,24 @@ Event::~Event(){
 }
 
 void Event::LosEvent(Bohater &bohater, Potwory &przeciwnik){
-	int i = rand() % Event::nrOfEvents;
-	//Potwory - enemy;
+	int i = rand() % Event::DuzyLos;
 	switch (i){
 	case 0:
-		//Enemy encounter
 		this->Walka(bohater, przeciwnik);
 		break;
 	case 1:
-		//Puzzle
-		//this->puzzleEncouter(character);
 		system("cls");
-		cout << "Wydarzenie losowe, puzzle ktore omijam" << endl;
+		cout << "Znalaz³eœ po drodzê goblina, lecz uciek³ na Twój widok" << endl << endl;
 		break;
 
 	case 2:
 		system("cls");
-		cout << "Bohater przeszed³ siê bez przygód" << endl;
+		cout << "Bohater przeszed³ siê bez przygód" << endl << endl;
 		break;
 
 	case 3:
 		system("cls");
-		cout << "Znalaz³eœ le¿¹c¹ na œcie¿ce monetê!" << endl;
+		cout << "Znalaz³eœ le¿¹c¹ na œcie¿ce monetê!" << endl << endl;
 		bohater.graczdodkasa(1);
 		break;
 
@@ -42,50 +38,51 @@ void Event::LosEvent(Bohater &bohater, Potwory &przeciwnik){
 
 	case 5:
 		system("cls");
-		cout << "Podczas podró¿y znalaz³eœ magiczne, gadaj¹ce drzewo blokuj¹ce Ci drogê. \n\nAby kontynuowaæ wêdrówkê, musisz odpowiedzieæ na jego pytanie. \n\nJe¿eli odpowiesz Ÿle, bêdziesz musia³ zap³aciæ." << endl;
+		cout << "Podczas podró¿y znalaz³eœ magiczne, gadaj¹ce drzewo blokuj¹ce Ci drogê. \n\nAby kontynuowaæ wêdrówkê, musisz odpowiedzieæ na jego pytanie. \n\nJe¿eli odpowiesz Ÿle, bêdziesz musia³ zap³aciæ." << endl << endl;
 		Czekanie();
 		this->Wydarzenie(bohater);
 		break;
 
 	case 6:
 		system("cls");
-		cout << "Znalaz³eœ star¹, magiczn¹ studnie!" << endl;
+		cout << "Znalaz³eœ star¹, magiczn¹ studnie!" << endl << endl;
 		bohater.graczdodmagia(1);
 		break;
 
 	case 7:
 		system("cls");
-		cout << "Znalaz³eœ star¹, magiczn¹ studnie!" << endl;
-		bohater.graczdodmagia(1);
+		cout << "Znalaz³eœ w skrzynce czarnego kota, trafia na Ciebie nieszczêœcie!" << endl;
+		bohater.graczodemagia(bohater.graczmagia());
+		if (bohater.graczkasa() <= 0) bohater.graczzeromagia();
 		break;
 
 	case 8:
 		system("cls");
-		cout << "Znalaz³eœ star¹, magiczn¹ studnie!" << endl;
-		bohater.graczdodmagia(1);
+		cout << "Znalaz³eœ sakwê ze z³otymi monetami!" << endl;
+		bohater.graczdodkasa(10);
 		break;
 
 	case 9:
 		system("cls");
-		cout << "Znalaz³eœ star¹, magiczn¹ studnie!" << endl;
-		bohater.graczdodmagia(1);
+		cout << "Napadli na Ciebie zbóje, zadali Ci obra¿enia, ale uciek³eœ" << endl;
+		bohater.graczodekasa(bohater.graczkasa());
+		if (bohater.graczkasa() <= 0) bohater.graczzerokasa();
 		break;
 
 	case 10:
 		system("cls");
-		cout << "Znalaz³eœ star¹, magiczn¹ studnie!" << endl;
-		bohater.graczdodmagia(1);
+		cout << "Przechodz¹c przez las, widzisz nadlatuj¹ce komety\n\nNie widzisz s³oñca, wiêc nie trafiaj¹ w Ciebie" << endl;
 		break;
 
 	case 11:
 		system("cls");
-		cout << "Znalaz³eœ star¹, magiczn¹ studnie!" << endl;
-		bohater.graczdodmagia(1);
+		cout << "Przechodz¹c przez las, widzisz czarnoksiê¿nika rzucaj¹cy czary na króliki\n\nUczysz siê od niego jego techniki rzucania magii" << endl;
+		bohater.graczdodmagia(3);
+		break;
 
 	case 12:
 		system("cls");
-		cout << "Znalaz³eœ star¹, magiczn¹ studnie!" << endl;
-		bohater.graczdodmagia(1);
+		cout << "Znalaz³eœ legion orków atakuj¹cych najbli¿sz¹ wioskê, jest ich zbyt du¿o, wiêc uciekasz" << endl << endl;
 		break;
 	default:
 		break;
@@ -93,7 +90,7 @@ void Event::LosEvent(Bohater &bohater, Potwory &przeciwnik){
 }
 
 void Event::LosMalyEventSpanie(Bohater &bohater) {
-	int i = rand() % Event::nrOfEvents;
+	int i = rand() % Event::MalyLos;
 	switch (i) {
 	case 0:
 		cout << "Wyspa³eœ siê rzeœko" << endl;
@@ -105,7 +102,7 @@ void Event::LosMalyEventSpanie(Bohater &bohater) {
 		break;
 	case 2:
 		system("cls");
-		cout << "Podczas snu ograbiono Ciê, ale zd¹¿y³eœ unikn¹æ pe³nej kradzie¿y: -5 monet" << endl;
+		cout << "Podczas snu ograbiono Ciê, ale zd¹¿y³eœ unikn¹æ pe³nej kradzie¿y" << endl;
 		bohater.graczodekasa(5);
 		bohater.graczodekasa(bohater.graczpoziom());
 		if (bohater.graczkasa() <= 0) bohater.graczzerokasa();
@@ -114,7 +111,6 @@ void Event::LosMalyEventSpanie(Bohater &bohater) {
 		system("cls");
 		cout << "Tej nocy przelecia³a nad Tob¹ nieszczêœliwa kometa: -5pkt. magii" << endl;
 		bohater.graczodemagia(5);
-		bohater.graczodemagia(bohater.graczmagia());
 		if (bohater.graczkasa() <= 0) bohater.graczzeromagia();
 		break;
 
@@ -123,45 +119,44 @@ void Event::LosMalyEventSpanie(Bohater &bohater) {
 	}
 }
 
-void Event::Walka(Bohater &character, Potwory& enemies){
+void Event::Walka(Bohater &bohater, Potwory& przeciwnik){
 	cout << endl << "Spotykasz potwora po twojej drodze!" << endl;
-	cout << "Nazwa: " << enemies.getName() << " - " <<
-		"Poziom: " << enemies.plvl() << " - " <<
-		"HP: " << enemies.php() << "/" << enemies.pmaxhp() << " - " <<
-		"Obrona: " << enemies.pobrona() << " - " <<
-		"Kasa: " << enemies.pkasa() << " - " <<
-		"Damage: " << enemies.pmindmg() << " - " << enemies.pmaxdmg() << endl;
+	cout << "Nazwa: " << przeciwnik.getName() << " - " <<
+		"Poziom: " << przeciwnik.plvl() << " - " <<
+		"HP: " << przeciwnik.php() << "/" << przeciwnik.pmaxhp() << " - " <<
+		"Obrona: " << przeciwnik.pobrona() << " - " <<
+		"Kasa: " << przeciwnik.pkasa() << " - " <<
+		"Damage: " << przeciwnik.pmindmg() << " - " << przeciwnik.pmaxdmg() << endl;
 	//Zmienne 1
-	bool playerTurn = false;
+	bool RuchGracza = false;
 	int wybor = 0;
-	int coinToss = rand() % 2 + 1;
+	int moneta = rand() % 2 + 1;
 	//Losuj ture
-	if (coinToss == 1)
-		playerTurn = true;
+	if (moneta == 1)
+		RuchGracza = true;
 	else
-		playerTurn = false;
+		RuchGracza = false;
 	//Zmienne 2
-	bool escape = false;
-	bool playerDefeated = false;
-	bool enemiesDefeated = false;
+	bool ucieczka = false;
+	bool PorazkaGracza = false;
+	bool PorazkaPrzeciwnika = false;
 	//Zmienne 3
 	int damage = 0;
-	int gainExp = 0;
-	int gainGold = 0;
-	int playerTotal = 0;
-	int enemyTotal = 0;
-	//int combatTotal = 0;
-	int combatRollPlayer = 0;
-	int combatRollEnemy = 0;
-	int tymczasowypancerz = 0;
-	//G£ÓWNA PÊTLA WHILE CO MIA£A DZIA£AÆ
-	while (!escape && !playerDefeated && !enemiesDefeated){
-		if (playerTurn && !playerDefeated){
+	int ZdobExp = 0;
+	int ZdobKasa = 0;
+	int SzansaGracza = 0;
+	int SzansaPrzeciwnika = 0;
+	int leczenie = 0;
+	int LosGracza = 0;
+	int LosPrzeciwnika = 0;
+
+	while (!ucieczka && !PorazkaGracza && !PorazkaPrzeciwnika){
+		if (RuchGracza && !PorazkaGracza){
 			system("cls");
 			cout << ">>>>>Tura gracza<<<<<" << endl;
 			Czekanie();
 			cout << ">>>>>MENU WOJNY<<<<<" << endl << endl;
-			cout << "HP: " << character.graczhp() << " / " << character.graczhpmax() << endl << endl;
+			cout << "HP: " << bohater.graczhp() << " / " << bohater.graczhpmax() << endl << endl;
 			cout << "0: Ucieczka" << endl;
 			cout << "1: Atak" << endl;
 			cout << "2: Obrona" << endl << endl;
@@ -181,49 +176,59 @@ void Event::Walka(Bohater &character, Potwory& enemies){
 
 			switch (wybor){
 			case 0: //Ucieczka
-				escape = true;
-				character.graczodekasa(enemies.pmaxdmg());
-				if (character.graczkasa() <= 0) character.graczzerokasa();
+				ucieczka = true;
+				bohater.graczodekasa(przeciwnik.pmaxdmg());
+				if (bohater.graczkasa() <= 0) bohater.graczzerokasa();
 				break;
 
 			case 1://Atak
-				cout << "Nazwa: " << enemies.getName() << " - " <<
-					"Poziom: " << enemies.plvl() << " - " <<
-					"HP: " << enemies.php() << "/" << enemies.pmaxhp() << " - " <<
-					"Obrona: " << enemies.pobrona() << " - " <<
-					"Kasa: " << enemies.pkasa() << " - " <<
-					"Damage: " << enemies.pmindmg() << " - " << enemies.pmaxdmg() << endl;
+				cout << "Nazwa: " << przeciwnik.getName() << " - " <<
+					"Poziom: " << przeciwnik.plvl() << " - " <<
+					"HP: " << przeciwnik.php() << "/" << przeciwnik.pmaxhp() << " - " <<
+					"Obrona: " << przeciwnik.pobrona() << " - " <<
+					"Kasa: " << przeciwnik.pkasa() << " - " <<
+					"Damage: " << przeciwnik.pmindmg() << " - " << przeciwnik.pmaxdmg() << endl;
 				//Attack roll
-				enemyTotal = (int)( enemies.pobrona() + enemies.pmaxdmg() + enemies.plvl());
-				playerTotal = (int)(character.graczdmg() + character.graczzrecznosc() * 2 + character.graczmagia() * 2);
-				combatRollPlayer = rand() % playerTotal + 1;
-				combatRollEnemy = rand() % enemyTotal + 1;
+				SzansaPrzeciwnika = (int)( przeciwnik.pobrona() + przeciwnik.pmaxdmg() + przeciwnik.plvl());
+				SzansaGracza = (int)(bohater.graczdmg() + bohater.graczzrecznosc() * 2 + bohater.graczmagia() * 2);
+				LosGracza = rand() % SzansaGracza + 1;
+				LosPrzeciwnika = rand() % SzansaPrzeciwnika + 1;
 
-				cout << "\nSzansa gracza: " << playerTotal <<"\nLos Gracza : " << combatRollPlayer << endl << endl;
-				cout << "Szansa przeciwnika: " << enemyTotal << "\nLos Przeciwnika: " << combatRollEnemy;
+				cout << "\nSzansa gracza: " << SzansaGracza <<"\nLos Gracza : " << LosGracza << endl << endl;
+				cout << "Szansa przeciwnika: " << SzansaPrzeciwnika << "\nLos Przeciwnika: " << LosPrzeciwnika;
 				
-				if (combatRollPlayer > combatRollEnemy) { //Hit
+				if (LosGracza > LosPrzeciwnika) { //Hit
 					cout << "Trafiono! " << endl;
-					damage = character.graczdmg();
+					damage = bohater.graczdmg();
 					cout << damage;
-					enemies.Obrazenia(damage);
+					przeciwnik.Obrazenia(damage);
 					cout << "Zadano: " << damage << "!" << endl;
-					if (!enemies.isAlive()){
+					if (!przeciwnik.pzyje()){
 						cout << "Przeciwnik pokonany!" << endl;
-						gainExp = enemies.pexp();
-						character.graczdodexp(gainExp);
-						gainGold = rand() % enemies.plvl() * 10 + 1;
-						character.graczdodkasa(gainGold);
-						cout << "Zdobyto exp: " << gainExp << "\n";
-						cout << "Zdobyto kasy: " << gainGold << "\n\n";
-						enemiesDefeated = true;
+						ZdobExp = przeciwnik.pexp();
+						bohater.graczdodexp(ZdobExp);
+						ZdobKasa = rand() % przeciwnik.plvl() * 10 + 1;
+						bohater.graczdodkasa(ZdobKasa);
+						cout << "Zdobyto exp: " << ZdobExp << "\n";
+						cout << "Zdobyto kasy: " << ZdobKasa << "\n\n";
+						PorazkaPrzeciwnika = true;
 					}
-				}
-				else { cout << "Trafienie nie udane!" << endl << endl; } //Unik
+				} else { cout << "\n\nTrafienie nie udane!" << endl << endl; } //Unik
 				break;
 
 			case 2: //Obrona
-				
+				if (leczenie == 3) {
+					system("cls");
+					cout << "Zosta³eœ uleczony!" << endl;
+					bohater.wyspanie();
+					leczenie = 0;
+					Czekanie();
+				} else {
+					system("cls");
+					cout << "Iloœæ tur do uleczenia: " << 3 - leczenie << endl << endl;
+					leczenie++;
+					Czekanie();
+				}
 				break;
 
 			default:
@@ -231,44 +236,44 @@ void Event::Walka(Bohater &character, Potwory& enemies){
 			}
 
 			//Koniec tury - Tura przeciwnika
-			playerTurn = false;
+			RuchGracza = false;
 		} 
-		if (!playerTurn && !playerDefeated && !escape && !enemiesDefeated){
-			int dmgpotwora = rand() % enemies.pmaxdmg() + enemies.pmindmg();
-			cout << ">>>>>Tura przeciwnika<<<<<" << endl;//Enemy attack
+		if (!RuchGracza && !PorazkaGracza && !ucieczka && !PorazkaPrzeciwnika){
+			int dmgpotwora = rand() % przeciwnik.pmaxdmg() + przeciwnik.pmindmg();
+			cout << ">>>>>Tura przeciwnika<<<<<" << endl;
 			Czekanie();
-			//Attack roll
-			enemyTotal = (int)dmgpotwora;
-			playerTotal = (int)(character.graczobrona() + character.graczszczescie()*3);
-			combatRollPlayer = rand() % playerTotal + 1;
-			combatRollEnemy = rand() % enemyTotal + 1;
+			
+			SzansaPrzeciwnika = (int)dmgpotwora;
+			SzansaGracza = (int)(bohater.graczobrona() + bohater.graczszczescie()*3);
+			LosGracza = rand() % SzansaGracza + 1;
+			LosPrzeciwnika = rand() % SzansaPrzeciwnika + 1;
 
-			cout << "\nSzansa gracza: " << playerTotal << "\nLos Gracza : " << combatRollPlayer << endl << endl;
-			cout << "Szansa przeciwnika: " << enemyTotal << "\nLos Przeciwnika: " << combatRollEnemy << endl << endl;
+			cout << "\nSzansa gracza: " << SzansaGracza << "\nLos Gracza : " << LosGracza << endl << endl;
+			cout << "Szansa przeciwnika: " << SzansaPrzeciwnika << "\nLos Przeciwnika: " << LosPrzeciwnika << endl << endl;
 
-			if (combatRollPlayer < combatRollEnemy) { //Hit
+			if (LosGracza < LosPrzeciwnika) { //Trafienie
 				cout << "Trafienie! " << "\n\n";
 
 				damage = dmgpotwora;
-				character.GraczObrazenia(damage);
+				bohater.GraczObrazenia(damage);
 
 				cout << "Damage: " << damage << "!" << endl;
-				cout << "HP: " << character.graczhp() << " / " << character.graczhpmax() << endl << endl;
-				if (!character.graczgra()){
+				cout << "HP: " << bohater.graczhp() << " / " << bohater.graczhpmax() << endl << endl;
+				if (!bohater.graczgra()){
 					cout << "Twoja postaæ umar³a!" << endl;
-					playerDefeated = true;
+					PorazkaGracza = true;
 				}
-			} else { cout << "Unik!"<<endl; }//Unik
+			} else { cout << "\n\nUnik!"<<endl; }//Unik
 			//Koniec tury - Tura gracza
-			playerTurn = true;
+			RuchGracza = true;
 			Czekanie();
 		}
 		//Warunki koñca gry
-		if (!character.graczgra()){
-			playerDefeated = true;
+		if (!bohater.graczgra()){
+			PorazkaGracza = true;
 		}
-		if (enemies.isAlive()){
-			enemiesDefeated = false;
+		if (przeciwnik.pzyje()){
+			PorazkaPrzeciwnika = false;
 		}
 	}
 	Czekanie();

@@ -106,7 +106,7 @@ void PanelAdministratorski::DodawaniePlikow() {
 	Miasta.open("Miasta.txt", ios::out);
 	Potwory.open("Potwor.txt", ios::out);
 	Kruci.open("Kruci.txt", ios::out);
-	Boss.open("pikapikaboss.txt", ios::out);
+	Boss.open("boss.txt", ios::out);
 	Zagadka1.open("./Zagadki/1.txt", ios::out);
 	Zagadka2.open("./Zagadki/2.txt", ios::out);
 	Zagadka3.open("./Zagadki/3.txt", ios::out);

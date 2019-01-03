@@ -53,7 +53,7 @@ void Gra::InitGry() {
 		}
 	}
 	if (logowanie == 1) {
-		if (this->nazwakonta == "root") {
+		if (nazwagracza == "root") {
 			root.Menu();
 			exit(0);
 		} else {
@@ -90,6 +90,12 @@ void Gra::stworzKonto() {
 	cout << "Nowy login: " << endl;
 	cin >> nazwaKonta;
 	cin.ignore();
+	if (nazwaKonta == "root") {
+		system("cls");
+		cout << "Nie mo¿esz stworzyæ konta root!" << endl;
+		system("pause");
+		exit(0);
+	}
 	plik.open(nazwaKonta + ".txt");
 	if (plik.is_open()) {
 		cout << "Konto juz istnieje o takiej nazwie! (Ponowne logowanie)" << endl;

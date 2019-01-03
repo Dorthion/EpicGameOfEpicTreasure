@@ -74,10 +74,12 @@ void PanelAdministratorski::Menu() {
 
 		case 0:
 			this->Mmenu = false;
+			exit(0);
 			break;
 
 		default:
 			this->Mmenu = false;
+			exit(0);
 			break;
 		}
 	}
@@ -102,7 +104,7 @@ void PanelAdministratorski::DodawaniePlikow() {
 	fstream Zagadka10;
 
 	CreateDirectory("./Zagadki", 0);
-	Logowanie.open("logowanie.txt", ios::out);
+	Logowanie.open("Logowanie.txt", ios::out);
 	Miasta.open("Miasta.txt", ios::out);
 	Potwory.open("Potwor.txt", ios::out);
 	Kruci.open("Kruci.txt", ios::out);
@@ -118,7 +120,7 @@ void PanelAdministratorski::DodawaniePlikow() {
 	Zagadka9.open("./Zagadki/9.txt", ios::out);
 	Zagadka10.open("./Zagadki/10.txt", ios::out);
 	Logowanie << "root admin";
-	Miasta << "Spawn 1 1 2 3";
+	Miasta << "Spawn 1 1 2 3" << endl <<"Grunwald 2 7 8 9";
 	Potwory << "Goblin 1 1 5 5 2 3 4 2 1";
 	Boss << "Pikachu 1 200 10000 10000 50 200 200 5000 50";
 	Kruci << "Krucjata 1 50 2000 2000 40 100 100 2000 20";

@@ -6,9 +6,9 @@ Gra::Gra(){
 	nazwakonta = "";
 	plik = "";
 	plikmiasto = "Miasta.txt";
-	activeCharacter = 0;
-	activemiasto = 1;
-	activeMonster = 0;
+	AktywnyBohater = 0;
+	AktywneMiasto = 1;
+	AktywnyPotwor = 0;
 	plikpotwor = "Potwor.txt";
 	bud1 = 0;
 	bud2 = 0;
@@ -75,9 +75,9 @@ void Gra::InitGry() {
 	}
 	plik.close();
 	this->loadMiasto();
-	this->bud1 = Miasta[this->activemiasto].bud1();
-	this->bud2 = Miasta[this->activemiasto].bud2();
-	this->bud3 = Miasta[this->activemiasto].bud3();
+	this->bud1 = Miasta[this->AktywneMiasto].bud1();
+	this->bud2 = Miasta[this->AktywneMiasto].bud2();
+	this->bud3 = Miasta[this->AktywneMiasto].bud3();
 	this->loadPotwor();
 	system("cls");
 }
@@ -119,13 +119,13 @@ void Gra::Menu(){
 	HANDLE hOut;
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	
-	if (this->Bohaterzy[activeCharacter].graczgra()) {
-		if (this->Bohaterzy[activeCharacter].graczpktum() >= 1){
+	if (this->Bohaterzy[AktywnyBohater].graczgra()) {
+		if (this->Bohaterzy[AktywnyBohater].graczpktum() >= 1){
 			cout << "Posiadasz nie wykorzystane punkty!"<<endl<<endl;
 		}
-		if (this->Bohaterzy[activeCharacter].graczexp() >=
-			this->Bohaterzy[activeCharacter].graczexpnextlvl()){
-			this->Bohaterzy[activeCharacter].lvlup();
+		if (this->Bohaterzy[AktywnyBohater].graczexp() >=
+			this->Bohaterzy[AktywnyBohater].graczexpnextlvl()){
+			this->Bohaterzy[AktywnyBohater].lvlup();
 		}
 		if (this->ukryj == 1) {
 			Czekanie2();
@@ -160,14 +160,14 @@ void Gra::Menu(){
 
 		switch (this->wybor) {
 		case 1:
-			Bohaterzy[activeCharacter].Wyswietl();
+			Bohaterzy[AktywnyBohater].Wyswietl();
 			break;
 		case 2:
 			DodawanieStat();
 			break;
 
 		case 3:
-			Miasta[activemiasto].Wyswietl();
+			Miasta[AktywneMiasto].Wyswietl();
 			break;
 		
 		case 4:
@@ -177,10 +177,11 @@ void Gra::Menu(){
 			wybormiasta();
 			break;
 		case 6:
-			.odpoczynek();
+			odpoczynek();
 			break;
+
 		case 7:
-			if (bud1 == 2 || bud2 == 2 || bud3 == 2) Bohaterzy[activeCharacter].sklep(1);
+			if (bud1 == 2 || bud2 == 2 || bud3 == 2) Bohaterzy[AktywnyBohater].sklep(1);
 			else cout << "Nie jesteœ w mieœcie, gdzie jest Gospoda!" << endl << endl;
 			break;
 
@@ -191,18 +192,18 @@ void Gra::Menu(){
 		
 		case 9:
 			system("cls");
-			cout << this->Bohaterzy[this->activeCharacter].loadekwipunek();
+			cout << this->Bohaterzy[this->AktywnyBohater].loadekwipunek();
 			Czekanie();
 			break;
 
 		case 10:
 			system("cls");
-			cout << this->Bohaterzy[this->activeCharacter].loadekwipunek();
+			cout << this->Bohaterzy[this->AktywnyBohater].loadekwipunek();
 
 			cout << "Item index: ";
 			cin >> this->wybor;
 
-			while (cin.fail() || this->wybor < 0 || this->wybor >= this->Bohaterzy[this->activeCharacter].getInventorySize() ){
+			while (cin.fail() || this->wybor < 0 || this->wybor >= this->Bohaterzy[this->AktywnyBohater].getInventorySize() ){
 				cout << "B³êdny wybór!" << "\n";
 				cin.clear();
 				cin.ignore();
@@ -211,19 +212,19 @@ void Gra::Menu(){
 			}
 			cin.ignore();
 
-			this->Bohaterzy[this->activeCharacter].zalozprzedmiot(this->wybor);
+			this->Bohaterzy[this->AktywnyBohater].zalozprzedmiot(this->wybor);
 			system("cls");
 			break;
 
 		case 11:
 			system("cls");
-			if (Bohaterzy[activeCharacter].graczpoziom() > 20) PreKruci();
+			if (Bohaterzy[AktywnyBohater].graczpoziom() > 20) PreKruci();
 			else cout << "Nie wystarczaj¹cy iloœæ poziomów! \nWymagany jest minimalny 20 poziom, aby z nim walczyæ!" << endl << endl;
 			break;
 			
 		case 12:
 			system("cls");
-			if (Bohaterzy[activeCharacter].graczpoziom() > 50) PreBoss(); 
+			if (Bohaterzy[AktywnyBohater].graczpoziom() > 50) PreBoss(); 
 			else cout << "Nie wystarczaj¹cy iloœæ poziomów! \nWymagany jest minimalny 50 poziom, aby z nim walczyæ!" << endl << endl;
 			break;
 
@@ -263,7 +264,7 @@ void Gra::Menu(){
 
 void Gra::odpoczynek() {
 	Event spanie;
-	spanie.LosMalyEventSpanie(this->Bohaterzy[activeCharacter]);
+	spanie.LosMalyEventSpanie(this->Bohaterzy[AktywnyBohater]);
 }
 
 void Gra::stworzBohatera() {
@@ -280,8 +281,8 @@ void Gra::stworzBohatera() {
 	}
 
 	Bohaterzy.push_back(Bohater());
-	activeCharacter = Bohaterzy.size() - 1;
-	Bohaterzy[activeCharacter].inicjalizacja(nazwa);
+	AktywnyBohater = Bohaterzy.size() - 1;
+	Bohaterzy[AktywnyBohater].inicjalizacja(nazwa);
 }
 
 void Gra::saveBohater(){
@@ -536,18 +537,18 @@ void Gra::wybormiasta(){
 		cin >> this->wybor;
 	}
 	cin.ignore();
-	this->activemiasto = this->wybor;
+	this->AktywneMiasto = this->wybor;
 	//£adowanie budynków
 	this->bud1 = Miasta[this->wybor].bud1();
 	this->bud2 = Miasta[this->wybor].bud2();
 	this->bud3 = Miasta[this->wybor].bud3();
 
-	cout << this->Miasta[this->activemiasto].getName() << " wybrano!" << "\n\n";
+	cout << this->Miasta[this->AktywneMiasto].getName() << " wybrano!" << "\n\n";
 }
 
 void Gra::Podroz() {
 	Event ev;
-	ev.LosEvent(this->Bohaterzy[activeCharacter], this->PPotwory[activeMonster]);
+	ev.LosEvent(this->Bohaterzy[AktywnyBohater], this->PPotwory[AktywnyPotwor]);
 }
 
 void Gra::PlikBledu(string nazwa, int kod) {
@@ -563,7 +564,7 @@ void Gra::PlikBledu(string nazwa, int kod) {
 }
 
 void Gra::DodawanieStat() {
-	if (this->Bohaterzy[activeCharacter].graczpktum() > 0){
+	if (this->Bohaterzy[AktywnyBohater].graczpktum() > 0){
 		system("cls");
 		cout << "Statystyki, które mo¿esz ulepszyæ za darmo: " << endl;
 		cout << "0: Si³a " << endl;
@@ -584,23 +585,23 @@ void Gra::DodawanieStat() {
 
 		switch (this->wybor){
 		case 0:
-			this->Bohaterzy[activeCharacter].DodawanieStatystyk(0, 1);
+			this->Bohaterzy[AktywnyBohater].DodawanieStatystyk(0, 1);
 			break;
 
 		case 1:
-			this->Bohaterzy[activeCharacter].DodawanieStatystyk(1, 1);
+			this->Bohaterzy[AktywnyBohater].DodawanieStatystyk(1, 1);
 			break;
 
 		case 2:
-			this->Bohaterzy[activeCharacter].DodawanieStatystyk(2, 1);
+			this->Bohaterzy[AktywnyBohater].DodawanieStatystyk(2, 1);
 			break;
 
 		case 3:
-			this->Bohaterzy[activeCharacter].DodawanieStatystyk(3, 1);
+			this->Bohaterzy[AktywnyBohater].DodawanieStatystyk(3, 1);
 			break;
 
 		case 4:
-			this->Bohaterzy[activeCharacter].DodawanieStatystyk(4, 1);
+			this->Bohaterzy[AktywnyBohater].DodawanieStatystyk(4, 1);
 			break;
 
 		default:
@@ -655,37 +656,37 @@ void Gra::cheatengine() {
 			cheat = false;
 			break;
 		case 1:
-			this->Bohaterzy[activeCharacter].cheat1();
+			this->Bohaterzy[AktywnyBohater].cheat1();
 			break;
 		case 2:
-			this->Bohaterzy[activeCharacter].cheat2();
+			this->Bohaterzy[AktywnyBohater].cheat2();
 			break;
 		case 3:
-			this->Bohaterzy[activeCharacter].cheat3();
+			this->Bohaterzy[AktywnyBohater].cheat3();
 			break;
 		case 4:
-			this->Bohaterzy[activeCharacter].cheat4();
+			this->Bohaterzy[AktywnyBohater].cheat4();
 			break;
 		case 5:
-			this->Bohaterzy[activeCharacter].cheat5();
+			this->Bohaterzy[AktywnyBohater].cheat5();
 			break;
 		case 6:
-			this->Bohaterzy[activeCharacter].cheat6();
+			this->Bohaterzy[AktywnyBohater].cheat6();
 			break;
 		case 7:
-			this->Bohaterzy[activeCharacter].cheat7();
+			this->Bohaterzy[AktywnyBohater].cheat7();
 			break;
 		case 8:
-			this->Bohaterzy[activeCharacter].cheat8();
+			this->Bohaterzy[AktywnyBohater].cheat8();
 			break;
 		case 9:
-			this->Bohaterzy[activeCharacter].cheat9();
+			this->Bohaterzy[AktywnyBohater].cheat9();
 			break;
 		case 10:
-			this->Bohaterzy[activeCharacter].cheat10();
+			this->Bohaterzy[AktywnyBohater].cheat10();
 			break;
 		case 11:
-			this->Bohaterzy[activeCharacter].cheat11();
+			this->Bohaterzy[AktywnyBohater].cheat11();
 			break;
 		default:
 			cheat = false;
@@ -809,7 +810,7 @@ void Gra::PreBoss() {
 
 void Gra::Boss() {
 	Event walkaboss;
-	walkaboss.Walka(this->Bohaterzy[activeCharacter], this->PPotwory[activeMonster]);
+	walkaboss.Walka(this->Bohaterzy[AktywnyBohater], this->PPotwory[AktywnyPotwor]);
 }
 
 void Gra::SklepWejscie() {
@@ -828,5 +829,5 @@ void Gra::SklepWejscie() {
 	default:
 		break;
 	}
-	Bohaterzy[activeCharacter].sklep(wybor);
+	Bohaterzy[AktywnyBohater].sklep(wybor);
 }

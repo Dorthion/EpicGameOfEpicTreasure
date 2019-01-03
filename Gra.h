@@ -11,16 +11,16 @@ private:
 	string plikmiasto;
 	string nazwakonta;
 	string plikpotwor;
-	int activeCharacter;
-	int activemiasto;
-	int activeMonster;
+	int AktywnyBohater;
+	int AktywneMiasto;
+	int AktywnyPotwor;
 	int bud1;
 	int bud2;
 	int bud3;
 	int ukryj;
-	std::vector<Bohater> Bohaterzy;
-	std::vector<Miasto> Miasta;
-	std::vector<Potwory> PPotwory;
+	vector<Bohater> Bohaterzy;
+	vector<Miasto> Miasta;
+	vector<Potwory> PPotwory;
 
 public:
 	//Podstawa

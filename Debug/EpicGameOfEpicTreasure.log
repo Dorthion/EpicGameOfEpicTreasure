@@ -1,8 +1,3 @@
-﻿  Gra.cpp
+﻿  Event.cpp
 d:\programowanie\smieci\epicgameofepictreasure\epicgameofepictreasure\ekwipunek.h(23): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
-d:\programowanie\smieci\epicgameofepictreasure\epicgameofepictreasure\gra.cpp(526): warning C4018: ">=": niezgodność typu ze znakiem/bez znaku
-  PanelAdministratorski.cpp
-d:\programowanie\smieci\epicgameofepictreasure\epicgameofepictreasure\ekwipunek.h(23): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
-d:\programowanie\smieci\epicgameofepictreasure\epicgameofepictreasure\paneladministratorski.cpp(16): warning C4805: "==": niebezpieczne połączenie typu "int" oraz typu "bool" w operacji
-  Generowanie kodu...
   EpicGameOfEpicTreasure.vcxproj -> D:\Programowanie\Smieci\EpicGameOfEpicTreasure\Debug\EpicGameOfEpicTreasure.exe

@@ -8,7 +8,7 @@ Event::~Event(){
 }
 
 void Event::LosEvent(Bohater &bohater, Potwory &przeciwnik){
-	int i = rand() % Event::DuzyLos;
+	int i = rand() % DuzyLos;
 	switch (i){
 	case 0:
 		this->Walka(bohater, przeciwnik);
@@ -90,7 +90,7 @@ void Event::LosEvent(Bohater &bohater, Potwory &przeciwnik){
 }
 
 void Event::LosMalyEventSpanie(Bohater &bohater) {
-	int i = rand() % Event::MalyLos;
+	int i = rand() % MalyLos;
 	switch (i) {
 	case 0:
 		cout << "Wyspa³eœ siê rzeœko" << endl;
@@ -127,20 +127,14 @@ void Event::Walka(Bohater &bohater, Potwory& przeciwnik){
 		"Obrona: " << przeciwnik.pobrona() << " - " <<
 		"Kasa: " << przeciwnik.pkasa() << " - " <<
 		"Damage: " << przeciwnik.pmindmg() << " - " << przeciwnik.pmaxdmg() << endl;
-	//Zmienne 1
+
+	//Zmienne
 	bool RuchGracza = false;
-	int wybor = 0;
-	int moneta = rand() % 2 + 1;
-	//Losuj ture
-	if (moneta == 1)
-		RuchGracza = true;
-	else
-		RuchGracza = false;
-	//Zmienne 2
 	bool ucieczka = false;
 	bool PorazkaGracza = false;
 	bool PorazkaPrzeciwnika = false;
-	//Zmienne 3
+	int wybor = 0;
+	int moneta = rand() % 2 + 1;
 	int damage = 0;
 	int ZdobExp = 0;
 	int ZdobKasa = 0;
@@ -149,6 +143,12 @@ void Event::Walka(Bohater &bohater, Potwory& przeciwnik){
 	int leczenie = 0;
 	int LosGracza = 0;
 	int LosPrzeciwnika = 0;
+
+	//Losuj ture
+	if (moneta == 1)
+		RuchGracza = true;
+	else
+		RuchGracza = false;
 
 	while (!ucieczka && !PorazkaGracza && !PorazkaPrzeciwnika){
 		if (RuchGracza && !PorazkaGracza){

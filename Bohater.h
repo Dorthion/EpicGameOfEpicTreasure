@@ -3,7 +3,7 @@
 #include "Kolory.h"
 #include "Miasto.h"
 #include "Ekwipunek.h"
-#include "Event.h"
+//#include "Event.h"
 class Bohater{
 private:
 	//G³ówne elementy postaci
@@ -46,7 +46,6 @@ public:
 	void Wyswietl()const;
 	void lvlup();
 	void odczytnazwy();
-	void zranienie();
 	void zlespanie();
 	void Czekanie();
 	void sklep(int nrbudynku);

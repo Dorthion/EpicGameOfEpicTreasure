@@ -6,10 +6,16 @@
 
 class Event{
 public:
+
+	//Zmienne
 	static int DuzyLos;
 	static int MalyLos;
+
+	//Podstawa
 	Event();
 	virtual ~Event();
+
+	//Funkcje
 	void Czekanie();
 	void LosEvent(Bohater &bohater, Potwory &przeciwnik);
 	void LosMalyEventSpanie(Bohater &bohater);

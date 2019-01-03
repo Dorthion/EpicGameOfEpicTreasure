@@ -64,7 +64,6 @@ void Bohater::inicjalizacja(const string nazwa){
 
 	//Update
 	odczytnazwy();
-	this->update();
 }
 
 void Bohater::Wyswietl() const{
@@ -97,7 +96,6 @@ void Bohater::lvlup(){
 	this->expnextlvl = 100 + (100 * (this->poziom + 1));
 	this->poziom++;
 	this->pktum += 3;
-	this->update();
 	cout << "Zwiêkszono poziom bohatera " << this->poziom << "!" << endl;
 }
 
@@ -107,11 +105,6 @@ string Bohater::getAsString() const{
 	+ to_string(sila) + " " + to_string(zrecznosc) + " "+ to_string(magia) + " "
 	+ to_string(szczescie) + " " + to_string(obrona) + " "+ to_string(pktum)
 	+ " " + to_string(miasto) + " " + to_string(kasa) + " " + this->bron.toStringSave();
-}
-
-void Bohater::zranienie() {
-	cout << "Zostales zraniony" << endl;
-	this->exp += 50;
 }
 
 void Bohater::odczytnazwy() {

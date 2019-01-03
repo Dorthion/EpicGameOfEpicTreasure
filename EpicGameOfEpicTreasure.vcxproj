@@ -141,7 +141,6 @@
     <ClInclude Include="PanelAdministratorski.h" />
     <ClInclude Include="Potwory.h" />
     <ClInclude Include="Przedmiot.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="wsk.h" />
     <ClInclude Include="Zagadka.h" />
   </ItemGroup>

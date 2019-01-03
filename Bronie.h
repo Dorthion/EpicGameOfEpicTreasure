@@ -5,7 +5,7 @@
 
 class Bronie : public Przedmiot {
 private:
-	int minsila;			//Si³a
+	int minsila;		//Si³a
 	int maxsila;
 	int minzre;			//Zrêcznoœæ
 	int maxzre;

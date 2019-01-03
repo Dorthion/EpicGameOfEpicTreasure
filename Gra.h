@@ -2,6 +2,7 @@
 //Pod³¹czenia
 #include "Biblioteki.h"
 #include "LinkiDoGry.h"
+#include "PanelAdministratorski.h"
 class Gra{
 private:
 	int wybor;
@@ -32,20 +33,18 @@ public:
 	void loadBohater();
 	void loadMiasto();
 	void saveBohater();
-	void saveMiasto();
 	void stworzBohatera();
 	void stworzKonto();
 	void poke();
-	void NoweMiasto();
 	void Czekanie();
 	void Czekanie2();
 	void Podroz();
 	void wybormiasta();
-	void DodPotwor();
-	void savePotwor();
 	void loadPotwor();
 	void DodawanieStat();
 	void cheatengine();
+	void PreKruci();
+	void Kruci();
 	void PreBoss();
 	void Boss();
 	void SklepWejscie();

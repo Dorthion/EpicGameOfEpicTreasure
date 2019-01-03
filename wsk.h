@@ -61,7 +61,7 @@ wsk<T>::~wsk(){
 template<typename T>
 T& wsk<T>::operator[] (const unsigned index){
 	if (index < 0 || index >= this->ilosc)
-		throw "OUT OF BOUNDS INDEXING OPERATOR.";
+		cout<<"Nie ma granic dla klamr!";
 
 	return *this->arr[index];
 }
@@ -131,7 +131,7 @@ void wsk<T>::push(const T element){
 template<typename T>
 void wsk<T>::remove(const unsigned index, bool ordered){
 	if (index < 0 || index >= this->ilosc)
-		throw "OUT OF BOUNDS REMOVE.";
+		cout<<"Nie ma co usun¹æ!";
 
 	if (ordered){
 		delete this->arr[index];

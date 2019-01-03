@@ -91,7 +91,6 @@ void Miasto::Wyswietl() const {
 	kolor.blue(); cout << "||\tBudynek1: "; kolor.green(); cout << nazwbud1; kolor.blue(); cout << endl;
 	kolor.blue(); cout << "||\tBudynek2: "; kolor.green(); cout << nazwbud2; kolor.blue(); cout << endl;
 	kolor.blue(); cout << "||\tBudynek3: "; kolor.green(); cout << nazwbud3; kolor.blue(); cout << endl;
-	//kolor.blue(); cout << "||\tPunkty umiejetnosci: "; kolor.green(); cout << this->pktum; kolor.blue(); cout << "\t\t\t||" << endl;
 	kolor.blue(); cout << "\\\\\t" << "\t\t\t\t//" << endl;
 	kolor.gold(); cout << " ========================================" << endl;
 }

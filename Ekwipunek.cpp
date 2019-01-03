@@ -28,7 +28,7 @@ Ekwipunek::Ekwipunek(const Ekwipunek &obj){
 
 Przedmiot& Ekwipunek::operator[](const int index){
 	if (index < 0 || index >= this->nrOfItems)
-		throw("BAD INDEX!");
+		throw("B³êdny numer!");
 
 	return *this->itemArr[index];
 }

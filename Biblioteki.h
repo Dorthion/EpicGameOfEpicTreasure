@@ -12,5 +12,6 @@
 #include <windows.h>
 #include <cstdlib>
 #include <conio.h>
+#include <io.h>
 #pragma warning(disable:4996)
 using namespace std;

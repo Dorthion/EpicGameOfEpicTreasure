@@ -5,11 +5,8 @@ PanelAdministratorski::PanelAdministratorski(){
 	Mmenu = true;
 	activemiasto = 1;
 	activeMonster = 0;
-	plikmiasto = "Miasta.txt";
-	plikpotwor = "Potwor.txt";
-}
-
-PanelAdministratorski::~PanelAdministratorski(){
+	plikmiasto = "./PlikiGry/Miasta.txt";
+	plikpotwor = "./PlikiGry/Potwor.txt";
 }
 
 void PanelAdministratorski::Menu() {
@@ -17,7 +14,7 @@ void PanelAdministratorski::Menu() {
 		system("cls");
 		cout << "\t>>>>> Panel Administracyjny <<<<<<" << endl << endl;
 
-		cout << "1 - Dodaj pliki gry" << endl;
+		cout << "1 - Dodaj/Napraw pliki gry" << endl;
 		cout << "2 - Dodaj miasto" << endl;
 		cout << "3 - Zapisz miasto" << endl;
 		cout << "4 - Wczytaj miasto" << endl;
@@ -103,22 +100,23 @@ void PanelAdministratorski::DodawaniePlikow() {
 	fstream Zagadka9;
 	fstream Zagadka10;
 
-	CreateDirectory("./Zagadki", 0);
-	Logowanie.open("Logowanie.txt", ios::out);
-	Miasta.open("Miasta.txt", ios::out);
-	Potwory.open("Potwor.txt", ios::out);
-	Kruci.open("Kruci.txt", ios::out);
-	Boss.open("boss.txt", ios::out);
-	Zagadka1.open("./Zagadki/1.txt", ios::out);
-	Zagadka2.open("./Zagadki/2.txt", ios::out);
-	Zagadka3.open("./Zagadki/3.txt", ios::out);
-	Zagadka4.open("./Zagadki/4.txt", ios::out);
-	Zagadka5.open("./Zagadki/5.txt", ios::out);
-	Zagadka6.open("./Zagadki/6.txt", ios::out);
-	Zagadka7.open("./Zagadki/7.txt", ios::out);
-	Zagadka8.open("./Zagadki/8.txt", ios::out);
-	Zagadka9.open("./Zagadki/9.txt", ios::out);
-	Zagadka10.open("./Zagadki/10.txt", ios::out);
+	CreateDirectory("./PlikiGry", 0);
+	CreateDirectory("./PlikiGry/Zagadki", 0);
+	Logowanie.open("./PlikiGry/Logowanie.txt", ios::out);
+	Miasta.open("./PlikiGry/Miasta.txt", ios::out);
+	Potwory.open("./PlikiGry/Potwor.txt", ios::out);
+	Kruci.open("./PlikiGry/Kruci.txt", ios::out);
+	Boss.open("./PlikiGry/boss.txt", ios::out);
+	Zagadka1.open("./PlikiGry/Zagadki/1.txt", ios::out);
+	Zagadka2.open("./PlikiGry/Zagadki/2.txt", ios::out);
+	Zagadka3.open("./PlikiGry/Zagadki/3.txt", ios::out);
+	Zagadka4.open("./PlikiGry/Zagadki/4.txt", ios::out);
+	Zagadka5.open("./PlikiGry/Zagadki/5.txt", ios::out);
+	Zagadka6.open("./PlikiGry/Zagadki/6.txt", ios::out);
+	Zagadka7.open("./PlikiGry/Zagadki/7.txt", ios::out);
+	Zagadka8.open("./PlikiGry/Zagadki/8.txt", ios::out);
+	Zagadka9.open("./PlikiGry/Zagadki/9.txt", ios::out);
+	Zagadka10.open("./PlikiGry/Zagadki/10.txt", ios::out);
 	Logowanie << "root admin";
 	Miasta << "Spawn 1 1 2 3" << endl <<"Grunwald 2 7 8 9";
 	Potwory << "Goblin 1 1 5 5 2 3 4 2 1";
@@ -236,9 +234,9 @@ void PanelAdministratorski::NoweMiasto() {
 	cout << "Nazwa miasta: ";
 	getline(cin, nazwa);
 	for (size_t i = 0; i < this->Miasta.size(); i++) {
-		while (nazwa == this->Miasta[i].getName()) {
+		while (nazwa == this->Miasta[i].mnazwa()) {
 			cout << "Miasto o takiej nazwie istnieje!" << "\n";
-			cout << "Nazwa name: ";
+			cout << "Nazwa miasta: ";
 			getline(cin, nazwa);
 		}
 		if (max <= this->Miasta[i].gracznrmiasta()) {
@@ -254,7 +252,7 @@ void PanelAdministratorski::saveMiasto() {
 	ofstream PlikMiasto(plikmiasto);
 	if (PlikMiasto.is_open()) {
 		for (size_t i = 0; i < this->Miasta.size(); i++) {
-			PlikMiasto << this->Miasta[i].getAsString() << endl;
+			PlikMiasto << this->Miasta[i].getString() << endl;
 		}
 	}
 	PlikMiasto.close();
@@ -264,7 +262,7 @@ void PanelAdministratorski::savePotwor() {
 	ofstream PlikPotwor(plikpotwor);
 	if (PlikPotwor.is_open()) {
 		for (size_t i = 0; i < this->PPotwory.size(); i++) {
-			PlikPotwor << this->PPotwory[i].GetAsString() << endl;
+			PlikPotwor << this->PPotwory[i].getString() << endl;
 		}
 	}
 	PlikPotwor.close();
@@ -276,17 +274,22 @@ void PanelAdministratorski::DodPotwor() {
 	cout << "Nazwa potwora: ";
 	getline(cin, nazwa);
 	for (size_t i = 0; i < this->PPotwory.size(); i++) {
-		while (nazwa == this->PPotwory[i].getName()) {
-			cout << "Potwor o takiej nazwie istnieje!" << "\n";
-			cout << "Podaj nazwe potwora: ";
+		while (nazwa == this->PPotwory[i].pnazwa()) {
+			cout << "Potwor o takiej nazwie istnieje!" << endl;
+			cout << "Nazwe potwora: ";
 			getline(cin, nazwa);
 		}
 		if (max <= this->PPotwory[i].nrpotwora()) {
 			max = this->PPotwory[i].nrpotwora();
 		}
 	}
-	cout << "Podaj poziom potwora" << endl;
+	cout << "Podaj poziom potwora: " << endl;
 	cin >> poziomp;
+	while (cin.fail() || poziomp >= 0) {
+		cout << "Z³y poziom potwora!" << endl;
+		cout << "Podaj poziom potwora: ";
+		getline(cin, nazwa);
+	}
 	cin.clear();
 	cin.ignore();
 	PPotwory.push_back(Potwory());

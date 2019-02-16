@@ -3,17 +3,17 @@
 #include "Bohater.h"
 #include "Potwory.h"
 #include "Zagadka.h"
+#include "Kolory.h"
 
 class Event{
 public:
-
 	//Zmienne
 	static int DuzyLos;
 	static int MalyLos;
 
 	//Podstawa
-	Event();
-	virtual ~Event();
+	Event() {};
+	virtual ~Event() {};
 
 	//Funkcje
 	void Czekanie();

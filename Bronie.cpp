@@ -38,10 +38,10 @@ Bronie::Bronie(int nrbuydynku,  int poziom, int rzadkosc) : Przedmiot(poziom, rz
 	case 3: //Miecze
 		this->maxsila = rand() % poziom * (rzadkosc + 1);
 		this->maxsila += (rzadkosc + 1) * 5;
-		this->setName(nazwy1[rand() % 6]);
+		this->ustawNazwe(nazwy1[rand() % 6]);
 		if (rzadkosc == 3)
 			this->maxsila += poziom * 5;
-		else if (rzadkosc == 4)
+		if (rzadkosc == 4)
 			this->maxsila += poziom * 10;
 
 		this->minsila = this->maxsila / 2;
@@ -54,14 +54,16 @@ Bronie::Bronie(int nrbuydynku,  int poziom, int rzadkosc) : Przedmiot(poziom, rz
 		this->minobr = 1;
 		this->maxobr = (poziom + 1) + poziom;
 		break;
+
 	case 4: //£uki
 		this->maxzre = rand() % poziom * (rzadkosc + 1);
 		this->maxzre += (rzadkosc + 1) * 5;
-		this->setName(nazwy2[rand() % 6]);
+		this->ustawNazwe(nazwy2[rand() % 6]);
 		if (rzadkosc == 3)
 			this->maxzre += poziom * 5;
-		else if (rzadkosc == 4)
+		if (rzadkosc == 4)
 			this->maxzre += poziom * 10;
+
 		this->minzre = this->maxzre / 2;
 		this->minsila = 1;
 		this->maxsila = 2;
@@ -72,13 +74,14 @@ Bronie::Bronie(int nrbuydynku,  int poziom, int rzadkosc) : Przedmiot(poziom, rz
 		this->minobr = 0;
 		this->maxobr = (poziom + 1) + poziom;
 		break;
+
 	case 5: //Sztylety
 		this->maxszcz = rand() % poziom * (rzadkosc + 1);
 		this->maxszcz += (rzadkosc + 1) * 5;
-		this->setName(nazwy3[rand() % 6]);
+		this->ustawNazwe(nazwy3[rand() % 6]);
 		if (rzadkosc == 3)
 			this->maxsila += poziom * 5;
-		else if (rzadkosc == 4)
+		if (rzadkosc == 4)
 			this->maxsila += poziom * 10;
 
 		this->minsila = (int)(poziom*rzadkosc);
@@ -90,15 +93,17 @@ Bronie::Bronie(int nrbuydynku,  int poziom, int rzadkosc) : Przedmiot(poziom, rz
 		this->minobr = 1;
 		this->maxobr = 1;
 		break;
+
 	case 6: //Ró¿d¿ki
 		this->maxmagia = rand() % poziom * (rzadkosc + 1);
 		this->maxmagia += (rzadkosc + 1) * 5;
-		this->setName(nazwy4[rand() % 6]);
+		this->ustawNazwe(nazwy4[rand() % 6]);
 		if (rzadkosc == 3)
 			this->maxmagia += poziom * 5;
-		else if (rzadkosc == 4)
+		if (rzadkosc == 4)
 			this->maxmagia += poziom * 10;
 
+		this->minmagia = (int) (rand() % this->maxmagia + (int)((this->maxmagia + 1) / 2));
 		this->minsila = 1;
 		this->maxsila = poziom + 1;
 		this->minzre = 1;
@@ -108,13 +113,14 @@ Bronie::Bronie(int nrbuydynku,  int poziom, int rzadkosc) : Przedmiot(poziom, rz
 		this->minobr = 1;
 		this->maxobr = poziom + 1;
 		break;
+
 	case 7: //Bu³awy i Topory
 		this->maxobr = rand() % poziom * (rzadkosc + 1);
 		this->maxobr += (rzadkosc + 1) * 5;
-		this->setName(nazwy1[rand() % 5]);
+		this->ustawNazwe(nazwy1[rand() % 6]);
 		if (rzadkosc == 3)
 			this->maxobr += poziom * 5;
-		else if (rzadkosc == 4)
+		if (rzadkosc == 4)
 			this->maxobr += poziom * 10;
 
 		this->maxsila = (int)(this->maxobr / 2) + poziom;
@@ -131,8 +137,8 @@ Bronie::Bronie(int nrbuydynku,  int poziom, int rzadkosc) : Przedmiot(poziom, rz
 
 Bronie::Bronie(int mindmg, int maxdmg, int minzre, int maxzre, int minmagia, int maxmagia,
 	int minszcz, int maxszcz, int minobr, int maxobr,
-	string nazwa, int poziom, int buyValue, int sellValue, int rzadkosc)
-	: Przedmiot(nazwa, poziom, buyValue, sellValue, rzadkosc){
+	string nazwa, int poziom, int cenak, int cenas, int rzadkosc)
+	: Przedmiot(nazwa, poziom, cenak, cenas, rzadkosc){
 	this->minsila = mindmg;
 	this->maxsila = maxdmg;
 	this->minzre = minzre;
@@ -148,13 +154,13 @@ Bronie::Bronie(int mindmg, int maxdmg, int minzre, int maxzre, int minmagia, int
 Bronie::~Bronie(){
 }
 
-Bronie* Bronie::clone()const{
+Bronie* Bronie::Kopiowanie()const{
 	return new Bronie(*this);
 }
 
 string Bronie::toString()const{
-	string str = this->getName() + " | Poziom: " + to_string(this->getLevel())
-	+ " | Rzadkoœæ: " + to_string(this->getRarity())
+	string str = this->przedmiotNazwa() + " | Poziom: " + to_string(this->przedmiotPoziom())
+	+ " | Rzadkoœæ: " + to_string(this->przedmiotRzadkosc())
 	+ " \n| Si³a: " + to_string(this->minsila)
 	+ " - " + to_string(this->maxsila)
 	+ " \n| Zrêcznoœæ: " + to_string(this->minzre)
@@ -168,12 +174,12 @@ string Bronie::toString()const{
 	return str;
 }
 
-string Bronie::toStringSave()const{
-	string str =this->getName()
-		+ " " + to_string(this->getLevel())
-		+ " " + to_string(this->getRarity())
-		+ " " + to_string(this->getBuyValue())
-		+ " " + to_string(this->getSellValue())
+string Bronie::saveString()const{
+	string sStr =this->przedmiotNazwa()
+		+ " " + to_string(this->przedmiotPoziom())
+		+ " " + to_string(this->przedmiotRzadkosc())
+		+ " " + to_string(this->przedmiotCenak())
+		+ " " + to_string(this->przedmiotCenas())
 		+ " " + to_string(this->minsila)
 		+ " " + to_string(this->maxsila) 
 		+ " " + to_string(this->minzre)
@@ -185,5 +191,5 @@ string Bronie::toStringSave()const{
 		+ " " + to_string(this->minobr)
 		+ " " + to_string(this->maxobr)
 		+ " ";
-	return str;
+	return sStr;
 }

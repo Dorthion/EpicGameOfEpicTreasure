@@ -1,89 +1,87 @@
 #include "Ekwipunek.h"
 
 Ekwipunek::Ekwipunek(){
-	this->cap = 5;
-	this->nrOfItems = 0;
-	this->itemArr = new Przedmiot*[cap];
-	this->initialize();
+	this->Ilosc = 3;
+	this->NrPrzedmiotu = 0;
+	this->Przedmiotwsk = new Przedmiot*[Ilosc];
+	this->Inicjalizacja();
 }
 
 Ekwipunek::~Ekwipunek(){
-	for (size_t i = 0; i < this->nrOfItems; i++){
-		delete this->itemArr[i];
+	for (int i = 0; i < (int)this->NrPrzedmiotu; i++){//size_t
+		delete this->Przedmiotwsk[i];
 	}
-	delete[] this->itemArr;
+	delete[] this->Przedmiotwsk;
 }
 
 Ekwipunek::Ekwipunek(const Ekwipunek &obj){
-	this->cap = obj.cap;
-	this->nrOfItems = obj.nrOfItems;
-	this->itemArr = new Przedmiot*[this->cap];
+	this->Ilosc = obj.Ilosc;
+	this->NrPrzedmiotu = obj.NrPrzedmiotu;
+	this->Przedmiotwsk = new Przedmiot*[this->Ilosc];
 
-	for (size_t i = 0; i < this->nrOfItems; i++){
-		this->itemArr[i] = obj.itemArr[i]->clone();
+	for (int i = 0; i < (int)this->NrPrzedmiotu; i++){//size_t
+		this->Przedmiotwsk[i] = obj.Przedmiotwsk[i]->Kopiowanie();
 	}
 
-	initialize(this->nrOfItems);
+	Inicjalizacja(this->NrPrzedmiotu);
 }
 
 Przedmiot& Ekwipunek::operator[](const int index){
-	if (index < 0 || index >= this->nrOfItems)
+	if (index < 0 || index >= this->NrPrzedmiotu)
 		throw("B³êdny numer!");
 
-	return *this->itemArr[index];
+	return *this->Przedmiotwsk[index];
 }
 
 void Ekwipunek::operator=(const Ekwipunek &obj){
-	for (size_t i = 0; i < this->nrOfItems; i++){
-		delete this->itemArr[i];
+	for (int i = 0; i < (int)this->NrPrzedmiotu; i++){//size_t
+		delete this->Przedmiotwsk[i];
 	}
-	delete[] this->itemArr;
+	delete[] this->Przedmiotwsk;
 
-	this->cap = obj.cap;
-	this->nrOfItems = obj.nrOfItems;
-	this->itemArr = new Przedmiot*[this->cap];
+	this->Ilosc = obj.Ilosc;
+	this->NrPrzedmiotu = obj.NrPrzedmiotu;
+	this->Przedmiotwsk = new Przedmiot*[this->Ilosc];
 
-	for (size_t i = 0; i < this->nrOfItems; i++){
-		this->itemArr[i] = obj.itemArr[i]->clone();
+	for (int i = 0; i < (int)this->NrPrzedmiotu; i++){//size_t
+		this->Przedmiotwsk[i] = obj.Przedmiotwsk[i]->Kopiowanie();
 	}
 
-	initialize(this->nrOfItems);
+	Inicjalizacja(this->NrPrzedmiotu);
 }
 
 void Ekwipunek::expand(){
-	this->cap *= 2;
+	this->Ilosc *= 2;
 
-	Przedmiot **tempArr = new Przedmiot*[this->cap];
+	Przedmiot **tempArr = new Przedmiot*[this->Ilosc];
 
-	for (size_t i = 0; i < this->nrOfItems; i++){
-		tempArr[i] = this->itemArr[i];
+	for (int i = 0; i < (int)this->NrPrzedmiotu; i++){//size_t
+		tempArr[i] = this->Przedmiotwsk[i];
 	}
 
-	delete[] this->itemArr;
+	delete[] this->Przedmiotwsk;
 
-	this->itemArr = tempArr;
+	this->Przedmiotwsk = tempArr;
 
-	this->initialize(this->nrOfItems);
+	this->Inicjalizacja(this->NrPrzedmiotu);
 }
 
-void Ekwipunek::initialize(const int from){
-	for (size_t i = from; i < cap; i++){
-		this->itemArr[i] = nullptr;
+void Ekwipunek::Inicjalizacja(const int from){
+	for (int i = from; i < Ilosc; i++){//size_t
+		this->Przedmiotwsk[i] = nullptr;
 	}
 }
 
-void Ekwipunek::addItem(const Przedmiot &item){
-	if (this->nrOfItems >= this->cap){
-		expand();
-	}
-	this->itemArr[this->nrOfItems++] = item.clone();
+void Ekwipunek::Dodprzedmiot(const Przedmiot &przedmiot){
+	if (this->NrPrzedmiotu >= this->Ilosc){ expand(); }
+	this->Przedmiotwsk[this->NrPrzedmiotu++] = przedmiot.Kopiowanie();
 }
 
 void Ekwipunek::removeItem(int index){
-	if (index < 0 || index >= this->nrOfItems)
-		throw("OUT OF BOUNDS REMOVE ITEM INVENTORY");
+	if (index < 0 || index >= this->NrPrzedmiotu)
+		cout<<"Lista przedmiotów wysz³a poza zakres - naprawiæ?";
 
-	delete this->itemArr[index];
-	this->itemArr[index] = this->itemArr[this->nrOfItems - 1];
-	this->itemArr[--this->nrOfItems] = nullptr;
+	delete this->Przedmiotwsk[index];
+	this->Przedmiotwsk[index] = this->Przedmiotwsk[this->NrPrzedmiotu - 1];
+	this->Przedmiotwsk[--this->NrPrzedmiotu] = nullptr;
 }

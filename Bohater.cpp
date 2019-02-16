@@ -15,11 +15,7 @@ Bohater::Bohater(){//Wyzerowanie statystyk
 	this->pktum = 0;
 	this->miasto = 1;
 	this->kasa = 0;
-
 	this->nazwamiasta = "";
-}
-
-Bohater::~Bohater(){
 }
 
 Bohater::Bohater(string nazwa, int poziom, int exp, int expnextlvl, int hp, int hpmax, int sila, //Pocz¹tkowe statystyki
@@ -94,23 +90,28 @@ void Bohater::Wyswietl() const{
 void Bohater::lvlup(){
 	this->exp = 0;
 	this->expnextlvl = 100 + (100 * (this->poziom + 1));
+	this->sila += 1;
+	this->zrecznosc += 1;
+	this->magia += 1;
+	this->szczescie += 1;
+	this->obrona += 1;
 	this->poziom++;
 	this->pktum += 3;
 	cout << "Zwiêkszono poziom bohatera " << this->poziom << "!" << endl;
 }
 
-string Bohater::getAsString() const{
+string Bohater::getString() const{
 	return nazwa + " " + to_string(poziom) + " "+ to_string(exp) + " "
 	+ to_string(expnextlvl) + " " + to_string(hp) + " " + to_string(hpmax) + " "
 	+ to_string(sila) + " " + to_string(zrecznosc) + " "+ to_string(magia) + " "
 	+ to_string(szczescie) + " " + to_string(obrona) + " "+ to_string(pktum)
-	+ " " + to_string(miasto) + " " + to_string(kasa) + " " + this->bron.toStringSave();
+	+ " " + to_string(miasto) + " " + to_string(kasa) + " " + this->bron.saveString();
 }
 
 void Bohater::odczytnazwy() {
-	ifstream PlikMiasto("Miasta.txt");
-	string nazwa = "";
 	int numermiasta = 0;
+	ifstream PlikMiasto("./PlikiGry/Miasta.txt");
+	string nazwa = "";
 	string line = "";
 	stringstream str;
 	if (PlikMiasto.is_open()) {
@@ -132,8 +133,9 @@ void Bohater::zlespanie() {
 		this->hp -= 5;
 	else {
 		system("cls");
-		cout << "Twój bohater zgin¹³" << endl;
+		cout << "\n\nTwój bohater zgin¹³" << endl;
 		Czekanie();
+		exit(0);
 	}
 }
 
@@ -141,6 +143,9 @@ void Bohater::GraczObrazenia(const int Obrazenia){
 	this->hp -= Obrazenia;
 	if (this->hp <= 0){
 		this->hp = 0;
+		cout << "\n\nTwój bohater zgin¹³" << endl;
+		Czekanie();
+		exit(0);
 	}
 }
 
@@ -185,12 +190,12 @@ void Bohater::DodawanieStatystyk(int stat, int pkt){
 	}
 }
 
-string Bohater::loadekwipunek(bool shop){
+string Bohater::loadekwipunek(bool ladowanie){
 	string graczeq;
-	for (size_t i = 0; i < this->ekwipunek.size(); i++){
-		if (shop){
+	for (int i = 0; i < (int)this->ekwipunek.size(); i++){//size_t
+		if (ladowanie){
 			graczeq += to_string(i) + ": " + this->ekwipunek[i].toString() + "\n" + " - Cena sprzeda¿y: "
-				+ std::to_string(this->ekwipunek[i].getSellValue()) + "\n";
+				+ std::to_string(this->ekwipunek[i].przedmiotCenas()) + "\n";
 		} else {
 			graczeq += to_string(i) + ": " + this->ekwipunek[i].toString() + "\n";
 		}
@@ -200,8 +205,8 @@ string Bohater::loadekwipunek(bool shop){
 
 string Bohater::saveekwipunek(){
 	string graczeq;
-	for (size_t i = 0; i < this->ekwipunek.size(); i++){
-			graczeq += this->ekwipunek[i].toStringSave();
+	for (int i = 0; i < (int)this->ekwipunek.size(); i++){//size_t
+			graczeq += this->ekwipunek[i].saveString();
 	}
 
 	graczeq += "\n";
@@ -209,37 +214,33 @@ string Bohater::saveekwipunek(){
 	return graczeq;
 }
 
-void Bohater::zalozprzedmiot(unsigned index){
-	if (index < 0 || index >= this->ekwipunek.size()){
-		cout << "No valid item selected!" << "\n\n";
+void Bohater::zalozprzedmiot(unsigned numer){
+	if (numer < 0 || numer >= (unsigned)this->ekwipunek.size()){
+		cout << "Wybrano nie poprawny przedmiot z zakresu" << endl << endl;
 	} else {
 		Bronie *w = nullptr;
-		w = dynamic_cast<Bronie*>(&this->ekwipunek[index]);
+		w = dynamic_cast<Bronie*>(&this->ekwipunek[numer]);
 
 		if (w != nullptr){
-			if (this->bron.getRarity() >= 0)
-				this->ekwipunek.addItem(this->bron);
+			if (this->bron.przedmiotRzadkosc() >= 0)
+				this->ekwipunek.Dodprzedmiot(this->bron);
 			this->bron = *w;
-			this->ekwipunek.removeItem(index);
-		} else {
-			cout << "ERROR EQUIP ITEM, ITEM IS NOT ARMOR OR WEAPON!";
-		}
+			this->ekwipunek.removeItem(numer);
+		} else { cout << "B³¹d z broni¹" << endl; }
 	}
 }
 
-void Bohater::usunprzedmiot(const int index){
-	if (index < 0 || index >= this->ekwipunek.size())
-		cout << "ERROR, NOT POSSIBLE TO REMOVE ITEM, removeItem Character" << "\n\n";
-	else{ this->ekwipunek.removeItem(index); }
+void Bohater::usunprzedmiot(const int numer){
+	if (numer < 0 || numer >= this->ekwipunek.size())
+		cout << "Nie mo¿na usun¹æ przedmiotu! B³êdny zakres." << endl;
+	else{ this->ekwipunek.removeItem(numer); }
 }
 
-const Przedmiot& Bohater::getItem(const int index){
-	if (index < 0 || index >= this->ekwipunek.size()){
-		cout << "ERROR, NOT POSSIBLE TO REMOVE ITEM, getItem Character" << "\n\n";
-		throw("ERROR OUT OF BOUNDS, GETITEM CHARACTER");
+const Przedmiot& Bohater::wybranyprzedmiot(const int numer){
+	if (numer < 0 || numer >= this->ekwipunek.size()){
+		cout << "Nie mo¿na za³o¿yæ przedmiotu!" << endl;
 	}
-
-	return this->ekwipunek[index];
+	return this->ekwipunek[numer];
 }
 
 void Bohater::Czekanie() {
@@ -260,8 +261,8 @@ void Bohater::sklep(int nrbudynku){
 	Ekwipunek sprzedawca;
 	string graczeq;
 
-	for (size_t i = 0; i < ilosc; i++){
-		sprzedawca.addItem(Bronie(nrbudynku, graczpoziom() + rand() % 5, rand() % 4));
+	for (int i = 0; i < (int)ilosc; i++){//size-t
+		sprzedawca.Dodprzedmiot(Bronie(nrbudynku, graczpoziom() + rand() % 5, rand() % 4));
 	}
 
 	//Tawerna
@@ -418,8 +419,8 @@ void Bohater::sklep(int nrbudynku){
 				cout << " - Kasa: " << graczkasa() << "\n\n";
 				graczeq.clear();
 
-				for (size_t i = 0; i < sprzedawca.size(); i++) {
-					graczeq += to_string(i) + ": " + sprzedawca[i].toString() + "\n - Cena: " + to_string(sprzedawca[i].getBuyValue()) + "\n";
+				for (int i = 0; i < (int)sprzedawca.size(); i++) {//size_t
+					graczeq += to_string(i) + ": " + sprzedawca[i].toString() + "\n - Cena: " + to_string(sprzedawca[i].przedmiotCenak()) + "\n";
 				}
 
 				cout << graczeq << "\n";
@@ -443,13 +444,13 @@ void Bohater::sklep(int nrbudynku){
 				cin.ignore();
 
 				if (wybor == -1) {
-					cout << ">>>Cofaniecie<<<" << endl;
+					cout << ">>>Cofniêcie<<<" << endl;
 				}
-				else if (graczkasa() >= sprzedawca[wybor].getBuyValue()) {
-					graczodekasa(sprzedawca[wybor].getBuyValue());
-					addItem(sprzedawca[wybor]);
+				else if (graczkasa() >= sprzedawca[wybor].przedmiotCenak()) {
+					graczodekasa(sprzedawca[wybor].przedmiotCenak());
+					Dodprzedmiot(sprzedawca[wybor]);
 
-					cout << "Kupi³eœ przedmiot: " << sprzedawca[wybor].getName() << " -" << sprzedawca[wybor].getBuyValue() << "\n";
+					cout << "Kupi³eœ przedmiot: " << sprzedawca[wybor].przedmiotNazwa() << " -" << sprzedawca[wybor].przedmiotCenak() << "\n";
 
 					sprzedawca.removeItem(wybor);
 				}
@@ -492,12 +493,12 @@ void Bohater::sklep(int nrbudynku){
 				cout << ">>>>> Sprzedajesz" << " w " << budynki[nrbudynku] << " <<<<<<<" << endl << endl;
 				cout << " - Kasa: " << graczkasa() << endl << endl;
 
-				if (getInventorySize() > 0) {
+				if (graczekwipunek() > 0) {
 					cout << "Kasa: " << graczkasa() << endl;
-					cout << "wybor of item (-1 to cancel): ";
+					cout << "Wybierz przedmiot (-1, aby anulowaæ): ";
 					cin >> wybor;
 
-					while (cin.fail() || wybor > getInventorySize() || wybor < -1) {
+					while (cin.fail() || wybor > graczekwipunek() || wybor < -1) {
 						system("cls");
 
 						cout << "B³êdny zakres!" << endl;
@@ -513,13 +514,13 @@ void Bohater::sklep(int nrbudynku){
 					cout << "\n";
 
 					if (wybor == -1) {
-						cout << ">>>Cofaniecie<<<" << endl;
+						cout << ">>>Cofniêcie<<<" << endl;
 					}
 					else {
-						graczdodkasa(getItem(wybor).getSellValue());
+						graczdodkasa(wybranyprzedmiot(wybor).przedmiotCenas());
 
 						cout << "Sprzedano przedmiot" << endl;
-						cout << "Zarobiono: " << getItem(wybor).getSellValue() << "!" << endl << endl;
+						cout << "Zarobiono: " << wybranyprzedmiot(wybor).przedmiotCenas() << "!" << endl << endl;
 						usunprzedmiot(wybor);
 					}
 				}

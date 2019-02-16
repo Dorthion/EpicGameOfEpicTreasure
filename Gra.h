@@ -1,8 +1,7 @@
 #pragma once
-//Pod³¹czenia
 #include "Biblioteki.h"
 #include "LinkiDoGry.h"
-#include "PanelAdministratorski.h"
+
 class Gra{
 private:
 	int wybor;
@@ -25,7 +24,7 @@ private:
 public:
 	//Podstawa
 	Gra();
-	virtual ~Gra();
+	virtual ~Gra() {};
 
 	//G³ówne funkcje
 	void Menu();
@@ -44,6 +43,7 @@ public:
 	void loadPotwor();
 	void DodawanieStat();
 	void cheatengine();
+	void ZmianaBroni();
 	void PreKruci();
 	void Kruci();
 	void PreBoss();

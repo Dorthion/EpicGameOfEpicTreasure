@@ -1,7 +1,7 @@
 #include "Przedmiot.h"
 
 Przedmiot::Przedmiot(){
-	this->nazwa = "BrakPrzedmiotu";
+	this->nazwa = "Wyzerowanie";
 	this->poziom = 0;
 	this->rzadkosc = -1;
 	this->cenak = 0;
@@ -9,11 +9,11 @@ Przedmiot::Przedmiot(){
 }
 
 Przedmiot::Przedmiot(int poziom, int rzadkosc){
-	this->nazwa = "Wyzerowanie";
+	this->nazwa = "NazwaDoWymiany";
 	this->poziom = rand() % (poziom + 4) + 1;
 	this->rzadkosc = rzadkosc;
 	this->cenak = (this->poziom + this->rzadkosc) + this->poziom*this->rzadkosc * 10;
-	this->cenas = (this->cenak / 2) + 1;
+	this->cenas = (int)(this->cenak / 2) + 1;
 }
 
 Przedmiot::Przedmiot(string nazwa, int poziom, int rzadkosc, int cenak, int cenas){
@@ -22,7 +22,4 @@ Przedmiot::Przedmiot(string nazwa, int poziom, int rzadkosc, int cenak, int cena
 	this->rzadkosc = rzadkosc;
 	this->cenak = cenak;
 	this->cenas = cenas;
-}
-
-Przedmiot::~Przedmiot(){
 }

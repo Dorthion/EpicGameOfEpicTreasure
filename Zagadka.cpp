@@ -1,40 +1,35 @@
 #include "Zagadka.h"
 
-Zagadka::Zagadka(string fileName){
+Zagadka::Zagadka(string ArgPlik){
 	this->Odp = 0;
 	int Prawda = 0;
 	int LiczbaOdp = 0;
-	ifstream plik(fileName);
+	ifstream Plik(ArgPlik);
 	string OdpowiedziZPliku = "";
-	string ciekawosc = "";
 	
-	if (plik.is_open()){
-		std::getline(plik, this->pytanie);
-		plik >> LiczbaOdp;
-		plik.ignore();
+	if (Plik.is_open()){
+		getline(Plik, this->Pytanie);
+		Plik >> LiczbaOdp;
+		Plik.ignore();
 
-		for (size_t i = 0; i < LiczbaOdp; i++){
-			std::getline(plik, OdpowiedziZPliku);
+		for (int i = 0; i < LiczbaOdp; i++){
+			getline(Plik, OdpowiedziZPliku);
 			this->MozliweOdpowiedzi.push_back(OdpowiedziZPliku);
 		}
 
-		plik >> Prawda;
+		Plik >> Prawda;
 		this->Odp = Prawda;
-		plik.ignore();
-		std::getline(plik, this->ciekawostka);
-		plik.ignore();
+		Plik.ignore();
+		getline(Plik, this->Ciekawostka);
+		Plik.ignore();
 	}
 	else cout<<("Brak zagadki!")<<endl;
-	plik.close();
+	Plik.close();
 }
 
-Zagadka::~Zagadka(){
-}
-
-string Zagadka::getAsString(){
+string Zagadka::getString(){
 	string odp = "";
-	for (size_t i = 0; i < this->MozliweOdpowiedzi.size(); i++){
+	for (size_t i = 0; i < this->MozliweOdpowiedzi.size(); i++)
 		odp += to_string(i) + ": " + this->MozliweOdpowiedzi[i] + "\n";
-	}
-	return this->pytanie + "\n" + "\n" + odp + "\n";
+	return this->Pytanie + "\n\n" + odp + "\n";
 }

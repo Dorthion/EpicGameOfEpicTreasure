@@ -1,18 +1,10 @@
 #include "Event.h"
-int Event::DuzyLos = 13;
+int Event::DuzyLos = 18;
 int Event::MalyLos = 3;
-Event::Event(){
-}
-
-Event::~Event(){
-}
 
 void Event::LosEvent(Bohater &bohater, Potwory &przeciwnik){
-	int i = rand() % DuzyLos;
+	int i = rand() % DuzyLos + 1;
 	switch (i){
-	case 0:
-		this->Walka(bohater, przeciwnik);
-		break;
 	case 1:
 		system("cls");
 		cout << "Znalaz³eœ po drodzê goblina, lecz uciek³ na Twój widok" << endl << endl;
@@ -24,66 +16,91 @@ void Event::LosEvent(Bohater &bohater, Potwory &przeciwnik){
 		break;
 
 	case 3:
+		this->Walka(bohater, przeciwnik);
+		break;
+
+	case 4:
 		system("cls");
 		cout << "Znalaz³eœ le¿¹c¹ na œcie¿ce monetê!" << endl << endl;
 		bohater.graczdodkasa(1);
 		break;
 
-	case 4:
+	case 5:
 		system("cls");
 		cout << "Podró¿uj¹c, spotka³eœ mêdrca. \n\nAby kontynuowaæ wêdrówkê, musisz odpowiedzieæ na jego pytanie. \n\nJe¿eli odpowiesz Ÿle, bêdziesz musia³ zap³aciæ." << endl << endl;
 		Czekanie();
 		this->Wydarzenie(bohater);
 		break;
 
-	case 5:
+	case 6:
+		this->Walka(bohater, przeciwnik);
+		break;
+
+	case 7:
 		system("cls");
 		cout << "Podczas podró¿y znalaz³eœ magiczne, gadaj¹ce drzewo blokuj¹ce Ci drogê. \n\nAby kontynuowaæ wêdrówkê, musisz odpowiedzieæ na jego pytanie. \n\nJe¿eli odpowiesz Ÿle, bêdziesz musia³ zap³aciæ." << endl << endl;
 		Czekanie();
 		this->Wydarzenie(bohater);
 		break;
 
-	case 6:
+	case 8:
 		system("cls");
 		cout << "Znalaz³eœ star¹, magiczn¹ studnie!" << endl << endl;
 		bohater.graczdodmagia(1);
 		break;
 
-	case 7:
+	case 9:
+		this->Walka(bohater, przeciwnik);
+		break;
+
+	case 10:
 		system("cls");
 		cout << "Znalaz³eœ w skrzynce czarnego kota, trafia na Ciebie nieszczêœcie!" << endl;
 		bohater.graczodemagia(bohater.graczmagia());
 		if (bohater.graczkasa() <= 0) bohater.graczzeromagia();
 		break;
 
-	case 8:
+	case 11:
 		system("cls");
 		cout << "Znalaz³eœ sakwê ze z³otymi monetami!" << endl;
 		bohater.graczdodkasa(10);
 		break;
 
-	case 9:
+	case 12:
+		this->Walka(bohater, przeciwnik);
+		break;
+
+	case 13:
 		system("cls");
 		cout << "Napadli na Ciebie zbóje, zadali Ci obra¿enia, ale uciek³eœ" << endl;
 		bohater.graczodekasa(bohater.graczkasa());
 		if (bohater.graczkasa() <= 0) bohater.graczzerokasa();
 		break;
 
-	case 10:
+	case 14:
 		system("cls");
 		cout << "Przechodz¹c przez las, widzisz nadlatuj¹ce komety\n\nNie widzisz s³oñca, wiêc nie trafiaj¹ w Ciebie" << endl;
 		break;
 
-	case 11:
+	case 15:
+		this->Walka(bohater, przeciwnik);
+		break;
+
+	case 16:
 		system("cls");
 		cout << "Przechodz¹c przez las, widzisz czarnoksiê¿nika rzucaj¹cy czary na króliki\n\nUczysz siê od niego jego techniki rzucania magii" << endl;
 		bohater.graczdodmagia(3);
 		break;
 
-	case 12:
+	case 17:
 		system("cls");
 		cout << "Znalaz³eœ legion orków atakuj¹cych najbli¿sz¹ wioskê, jest ich zbyt du¿o, wiêc uciekasz" << endl << endl;
 		break;
+
+	case 18:
+		this->Walka(bohater, przeciwnik);
+		break;
+
 	default:
 		break;
 	}
@@ -121,7 +138,7 @@ void Event::LosMalyEventSpanie(Bohater &bohater) {
 
 void Event::Walka(Bohater &bohater, Potwory& przeciwnik){
 	cout << endl << "Spotykasz potwora po twojej drodze!" << endl;
-	cout << "Nazwa: " << przeciwnik.getName() << " - " <<
+	cout << "Nazwa: " << przeciwnik.pnazwa() << " - " <<
 		"Poziom: " << przeciwnik.plvl() << " - " <<
 		"HP: " << przeciwnik.php() << "/" << przeciwnik.pmaxhp() << " - " <<
 		"Obrona: " << przeciwnik.pobrona() << " - " <<
@@ -182,7 +199,7 @@ void Event::Walka(Bohater &bohater, Potwory& przeciwnik){
 				break;
 
 			case 1://Atak
-				cout << "Nazwa: " << przeciwnik.getName() << " - " <<
+				cout << "Przeciwnik: " << przeciwnik.pnazwa() << " - " <<
 					"Poziom: " << przeciwnik.plvl() << " - " <<
 					"HP: " << przeciwnik.php() << "/" << przeciwnik.pmaxhp() << " - " <<
 					"Obrona: " << przeciwnik.pobrona() << " - " <<
@@ -195,19 +212,18 @@ void Event::Walka(Bohater &bohater, Potwory& przeciwnik){
 				LosPrzeciwnika = rand() % SzansaPrzeciwnika + 1;
 
 				cout << "\nSzansa gracza: " << SzansaGracza <<"\nLos Gracza : " << LosGracza << endl << endl;
-				cout << "Szansa przeciwnika: " << SzansaPrzeciwnika << "\nLos Przeciwnika: " << LosPrzeciwnika;
+				cout << "Szansa przeciwnika: " << SzansaPrzeciwnika << "\nLos Przeciwnika: " << LosPrzeciwnika << endl << endl;
 				
 				if (LosGracza > LosPrzeciwnika) { //Hit
-					cout << "Trafiono! " << endl;
+					cout << "Trafiono! " << endl << endl;
 					damage = bohater.graczdmg();
-					cout << damage;
 					przeciwnik.Obrazenia(damage);
-					cout << "Zadano: " << damage << "!" << endl;
+					cout << "Zadano: " << damage << "!" << endl << endl;
 					if (!przeciwnik.pzyje()){
-						cout << "Przeciwnik pokonany!" << endl;
-						ZdobExp = przeciwnik.pexp();
+						cout << "Przeciwnik pokonany!" << endl << endl;
+						ZdobExp = przeciwnik.pexp() + 30;
 						bohater.graczdodexp(ZdobExp);
-						ZdobKasa = rand() % przeciwnik.plvl() * 10 + 1;
+						ZdobKasa = (rand() % przeciwnik.plvl() * 10 + 1) + 20;
 						bohater.graczdodkasa(ZdobKasa);
 						cout << "Zdobyto exp: " << ZdobExp << "\n";
 						cout << "Zdobyto kasy: " << ZdobKasa << "\n\n";
@@ -252,7 +268,7 @@ void Event::Walka(Bohater &bohater, Potwory& przeciwnik){
 			cout << "Szansa przeciwnika: " << SzansaPrzeciwnika << "\nLos Przeciwnika: " << LosPrzeciwnika << endl << endl;
 
 			if (LosGracza < LosPrzeciwnika) { //Trafienie
-				cout << "Trafienie! " << "\n\n";
+				cout << "Trafienie! " << endl << endl;
 
 				damage = dmgpotwora;
 				bohater.GraczObrazenia(damage);
@@ -290,8 +306,8 @@ void Event::Wydarzenie(Bohater &bohater){
 	bool wygrana = false;
 	int wybor = 0;
 	int szanse = (int)(rand() % 3 + 1);
-	int wygranyexp = (bohater.graczpoziom() * (rand() % 5 + 1));
-	int wygranakasa = (bohater.graczpoziom() * (rand() % 5 + 1));
+	int wygranyexp = (bohater.graczpoziom() * (rand() % 5 + 1)) + 50;
+	int wygranakasa = (bohater.graczpoziom() * (rand() % 5 + 1)) + 20;
 	int randomizer = rand() % 10 + 1;
 	string what = to_string(randomizer) + ".txt";
 	string temp= "Zagadki/" + what;
@@ -301,7 +317,7 @@ void Event::Wydarzenie(Bohater &bohater){
 		cout << "Twoje szanse: " << szanse << ", b¹dŸ uwa¿ny!" << endl << endl;
 		Czekanie();
 		szanse--;
-		cout << zagadka.getAsString() << endl;
+		cout << zagadka.getString() << endl;
 		cout << "\nTwoja odpowiedŸ to: ";
 		cin >> wybor;
 		cin.clear();

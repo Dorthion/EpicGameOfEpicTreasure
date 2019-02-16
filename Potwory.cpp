@@ -51,7 +51,7 @@ std::string Potwory::Wyswietl()const{
 		"Szansa na item: " + std::to_string(this->szansa) + "\n";
 }
 
-string Potwory::GetAsString()const {
+string Potwory::getString()const {
 	return nazwa + " " + to_string(this->numerpotwora) + " " + to_string(this->poziom) + " " + 
 		to_string(this->hp) + " " + to_string(this->maxhp) + " " + to_string(this->mindmg) + " " +
 		to_string(this->maxdmg) + " " + to_string(this->obrona) + " " + to_string(this->kasa) + " " + to_string(this->szansa);

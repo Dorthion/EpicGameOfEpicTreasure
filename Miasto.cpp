@@ -19,9 +19,6 @@ Miasto::Miasto(int numermiasta, string nazwa, int nrbudynku1, int nrbudynku2, in
 	this->nrbudynku3 = nrbudynku3;
 }
 
-Miasto::~Miasto(){
-}
-
 void Miasto::inicjalizacja(string nazwa, int max) {
 	system("cls");
 	int wybor, i=1;
@@ -36,8 +33,7 @@ void Miasto::inicjalizacja(string nazwa, int max) {
 		this->nrbudynku1 = rand() % 9;
 		this->nrbudynku2 = rand() % 9;
 		this->nrbudynku3 = rand() % 9;
-	}
-	else {
+	} else {
 		while (i < 4) {
 			system("cls");
 			cout << "Wybór budynku" << i << ": \n" << endl;
@@ -73,7 +69,7 @@ void Miasto::inicjalizacja(string nazwa, int max) {
 	}
 }
 
-string Miasto::getAsString() const {
+string Miasto::getString() const {
 	return nazwa + " " + to_string(numermiasta) + " " + to_string(nrbudynku1) + " " +
 	to_string(nrbudynku2) + " " + to_string(nrbudynku3);
 }

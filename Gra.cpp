@@ -1,22 +1,19 @@
 #include "Gra.h"
 
 Gra::Gra(){
-	wybor = 0;
-	playing = true;
+	wybor = 0; //Ogólny wybór gracza z menu
+	playing = true; //Czy zacz¹³ graæ (przejœcie przez logowanie)
 	nazwakonta = "";
 	plik = "";
-	plikmiasto = "Miasta.txt";
+	plikmiasto = "./PlikiGry/Miasta.txt";
 	AktywnyBohater = 0;
-	AktywneMiasto = 1;
+	AktywneMiasto = 1; //Domyœlnie jest 1
 	AktywnyPotwor = 0;
-	plikpotwor = "Potwor.txt";
+	plikpotwor = "./PlikiGry/Potwor.txt";
 	bud1 = 0;
 	bud2 = 0;
 	bud3 = 0;
 	ukryj = 0;
-}
-
-Gra::~Gra(){
 }
 
 void Gra::InitGry() {
@@ -30,8 +27,13 @@ void Gra::InitGry() {
 	ifstream plik;
 	ifstream pliklogowanie;
 	PanelAdministratorski root;
+	pliklogowanie.open("./PlikiGry/Logowanie.txt");
+	if (!pliklogowanie.is_open()) {
+		root.Menu();
+	}
 	cout << "Login: " << endl;
 	cin >> nazwagracza;
+	system("cls");
 	cout << "Haslo: " << endl;
 	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
 	DWORD mode = 0;
@@ -41,10 +43,6 @@ void Gra::InitGry() {
 	cin.clear();
 	cin.ignore();
 	SetConsoleMode(hStdin, mode);
-	pliklogowanie.open("Logowanie.txt");
-	if (!pliklogowanie.is_open()) {
-		root.Menu();
-	}
 	while (!pliklogowanie.eof()) {
 		pliklogowanie >> nazwagracza2 >> haslogracza2;
 		if ((nazwagracza == nazwagracza2) && (haslogracza == haslogracza2)){
@@ -58,8 +56,8 @@ void Gra::InitGry() {
 			exit(0);
 		} else {
 			this->nazwakonta = nazwagracza;
-			this->plik = nazwagracza + ".txt";
-			plik.open(nazwagracza + ".txt");
+			this->plik = "./PlikiGry/" + nazwagracza + ".txt";//Mo¿e byæ tu problem
+			plik.open("./PlikiGry/" + nazwagracza + ".txt");
 			this->loadBohater();
 		}
 	}
@@ -96,13 +94,13 @@ void Gra::stworzKonto() {
 		system("pause");
 		exit(0);
 	}
-	plik.open(nazwaKonta + ".txt");
+	plik.open("./PlikiGry/" + nazwaKonta + ".txt");//Tutaj te¿ problem
 	if (plik.is_open()) {
 		cout << "Konto juz istnieje o takiej nazwie! (Ponowne logowanie)" << endl;
 	} else {
 		plik.close();
-		plik.open(nazwaKonta + ".txt", ios::out);
-		plikhasla.open("logowanie.txt", ios::app);
+		plik.open("./PlikiGry/" + nazwaKonta + ".txt", ios::out);//Tutaj te¿
+		plikhasla.open("./PlikiGry/logowanie.txt", ios::app);
 		//Atrybut do chowania plików
 		//string temp = nazwaKonta + ".txt";
 		//string x = "attrib +H " + temp; // + chowa, -odkrywa
@@ -113,7 +111,7 @@ void Gra::stworzKonto() {
 		cin.ignore();
 		plikhasla << endl << nazwaKonta << " " << hasloKonta;
 		this->nazwakonta = nazwaKonta;
-		this->plik = nazwaKonta + ".txt";
+		this->plik = "./PlikiGry/" + nazwaKonta + ".txt";
 		stworzBohatera();
 		this->saveBohater();
 	}
@@ -198,28 +196,13 @@ void Gra::Menu(){
 		
 		case 9:
 			system("cls");
+			if (this->Bohaterzy[this->AktywnyBohater].graczekwipunek() == 0) { cout << "Twój ekwipunek jest pusty!" << endl; break; }
 			cout << this->Bohaterzy[this->AktywnyBohater].loadekwipunek();
 			Czekanie();
 			break;
 
 		case 10:
-			system("cls");
-			cout << this->Bohaterzy[this->AktywnyBohater].loadekwipunek();
-
-			cout << "Item index: ";
-			cin >> this->wybor;
-
-			while (cin.fail() || this->wybor < 0 || this->wybor >= this->Bohaterzy[this->AktywnyBohater].getInventorySize() ){
-				cout << "B³êdny wybór!" << "\n";
-				cin.clear();
-				cin.ignore();
-				cout << "Item index: ";
-				cin >> this->wybor;
-			}
-			cin.ignore();
-
-			this->Bohaterzy[this->AktywnyBohater].zalozprzedmiot(this->wybor);
-			system("cls");
+			ZmianaBroni();
 			break;
 
 		case 11:
@@ -279,7 +262,7 @@ void Gra::stworzBohatera() {
 	getline(cin, nazwa);
 
 	for (size_t i = 0; i < this->Bohaterzy.size(); i++) {
-		while (nazwa == this->Bohaterzy[i].getName()) {
+		while (nazwa == this->Bohaterzy[i].gracznazwa()) {
 			cout << "Bohater juz istnieje!" << endl;
 			cout << "Nazwa bohatera: ";
 			getline(cin, nazwa);
@@ -295,8 +278,8 @@ void Gra::saveBohater(){
 	ofstream PlikGry(plik);
 	if (PlikGry.is_open()){
 		for (size_t i = 0; i < this->Bohaterzy.size(); i++){
-			PlikGry << this->Bohaterzy[i].getAsString() << "\n";
-			PlikGry << this->Bohaterzy[i].saveekwipunek() << "\n";
+			PlikGry << this->Bohaterzy[i].getString() << endl;
+			PlikGry << this->Bohaterzy[i].saveekwipunek() << endl;
 		}
 	}
 	Bohaterzy.clear();
@@ -308,7 +291,7 @@ void Gra::saveBohater(){
 void Gra::loadBohater() {
 	ifstream PlikGry(plik);
 	Bohaterzy.clear();
-	this->Bohaterzy.clear();		//Nie potrzebne??
+	this->Bohaterzy.clear();
 
 	//Bohater
 	int poziom = 0;
@@ -374,7 +357,7 @@ void Gra::loadBohater() {
 			Bronie bron(minsila, maxsila, minzre, maxzre,
 				minmagia, maxmagia, minszcz, maxszcz, minobr, maxobr,
 				nazwa2, lvl, cenagora, cenadol, rzadkosc);
-			temp.setWeapon(bron);
+			temp.graczbron(bron);
 
 			str.clear();
 			line.clear();
@@ -384,7 +367,7 @@ void Gra::loadBohater() {
 			while (str >> nazwa2 >> lvl >> rzadkosc >> cenagora >> cenadol
 				>> minsila >> maxsila >> minzre >> maxzre >> minmagia
 				>> maxmagia >> minszcz >> maxszcz >> minobr >> maxobr) {
-				temp.addItem(Bronie(minsila, maxsila, minzre, maxzre,
+				temp.Dodprzedmiot(Bronie(minsila, maxsila, minzre, maxzre,
 					minmagia, maxmagia, minszcz, maxszcz, minobr, maxobr,
 					nazwa2, lvl, cenagora, cenadol, rzadkosc));
 			}
@@ -528,18 +511,19 @@ cout << "@@@@@@@@@@@@@@@@#=============#######################==================
 }
 
 void Gra::wybormiasta(){
+	int temp = this->Miasta.size();
 	cout << "Wybór miasta: " << endl << endl;
 	for (size_t i = 0; i < this->Miasta.size(); i++){
-		cout << "Index: " << i << " = " << this->Miasta[i].getName() << endl;
+		cout << "Numer: " << i << " = " << this->Miasta[i].mnazwa() << endl;
 	}
-	cout << "\n";
+	cout << endl;
 	cout << "Wybor: ";
 	cin >> this->wybor;
-	while (cin.fail() || this->wybor >= this->Miasta.size() || this->wybor < 0){
-		cout << "B³êdny zakres" << endl;
+	while (cin.fail() || this->wybor >= temp || this->wybor < 0){
+		cout << "B³êdny zakres!" << endl;
 		cin.clear();
 		cin.ignore();
-		cout << "Wybór miasta: " << "\n";
+		cout << "Wybór miasta: " << endl;
 		cin >> this->wybor;
 	}
 	cin.ignore();
@@ -549,7 +533,7 @@ void Gra::wybormiasta(){
 	this->bud2 = Miasta[this->wybor].bud2();
 	this->bud3 = Miasta[this->wybor].bud3();
 
-	cout << this->Miasta[this->AktywneMiasto].getName() << " wybrano!" << "\n\n";
+	cout << this->Miasta[this->AktywneMiasto].mnazwa() << " wybrano!" << "\n\n";
 }
 
 void Gra::Podroz() {
@@ -707,36 +691,36 @@ void Gra::Kruci() {
 	cout << "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW**WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW" << endl;
 	cout << "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW#+........+#WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW" << endl;
 	cout << "WWWWWWWWWWWWWWWWWWWWWWWWWWWW#+-..................-+#WWWWWWWWWWWWWWWWWWWWWWWWWWW" << endl;
-	cout << "WWWWWWWWWWWWWWWWWW@#*+:..................................-:+*=#@WWWWWWWWWWWWWWW" << endl;
-	cout << "WWWWWW:......................:*#@WWWWWWWWWWWWWWWW#*:......................WWWWW" << endl;
-	cout << "WWWWWW+..................=WWWWWWWWWWWWWWWWWWWWWWWWWWWWW+..................WWWWW" << endl;
-	cout << "WWWWWW+.................-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW@.................-WWWWW" << endl;
+	cout << "WWWWWWWWWWWWWWWWWWWWWW:..................................-:WWWWWWWWWWWWWWWWWWWW" << endl;
+	cout << "WWWWWW:......................:*#WWWWWWWWWWWWWWWWW#*:......................WWWWW" << endl;
+	cout << "WWWWWW+..................=WWWWWWWWWWWWWWWWWWWWWWWWWWWWW=..................WWWWW" << endl;
+	cout << "WWWWWW+.................-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW-.................-WWWWW" << endl;
 	cout << "WWWWWW*......=@=*+++*-..=WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW+..-**++*=@@.....:WWWWW" << endl;
 	cout << "WWWWWW#......=WWWWWW@..-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW@...@WWWWWW@.....+WWWWW" << endl;
 	cout << "WWWWWW@......=WW+......=WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW+......-WW#.....=WWWWW" << endl;
-	cout << "WWWWWWW-.....*WW+.....-WWW@**WWWWWWWWWWWWWWWWWWWWWWW**WWW#......:WW#.....@WWWWW" << endl;
-	cout << "WWWWWWW+.....+WW=.....=WWW*.....*WWWWWWWWWWWWWWWW*....#WWW:.....+WW=....-WWWWWW" << endl;
-	cout << "WWWWWWW#.....:WW#.....WWWW-.......*WWWWWWWWWWW*.......:WWW#.....*WW+....+WWWWWW" << endl;
-	cout << "WWWWWWWW-.....WWW....*WWW=..........*WWWWWWW*..........@WWW:....#WW:....#WWWWWW" << endl;
-	cout << "WWWWWWWW*.....#WW:...WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW#....WW@....-WWWWWWW" << endl;
-	cout << "WWWWWWWW@.....+WW=..*WWWWWWWWWWWWWWWWWW=.=WWWWWWWWWWWWWWWWWW:..+WW=....*WWWWWWW" << endl;
-	cout << "WWWWWWWWW+.....WWW..#@@@@@@@@@WWWWWWWW-...-WWWWWWWW@@@@@@@@@*..#WW:....WWWWWWWW" << endl;
-	cout << "WWWWWWWWW@.....=WW+..........*WWWWWW=...+...@WWWWWW:..........-WW@....*WWWWWWWW" << endl;
-	cout << "WWWWWWWWWW+....-WW@..........@WWWWWW*.:WWW--#WWWWWW*..........=WW+....WWWWWWWWW" << endl;
-	cout << "WWWWWWWWWWW.....=WW+.........WWWWWWWWWWWWWWWWWWWWWW=.........-WW@....=WWWWWWWWW" << endl;
-	cout << "WWWWWWWWWWW#....-WWW.........WWWWWWWWWWWWWWWWWWWWWW*.........#WW+...:WWWWWWWWWW" << endl;
-	cout << "WWWWWWWWWWWW+....+WW#........=WWW=-WWWWW-WWWWW.=WWW:........+WW#....@WWWWWWWWWW" << endl;
-	cout << "WWWWWWWWWWWWW:....=WW*.......-WWW..+WWW-.-WWW-.-WWW........-WWW....#WWWWWWWWWWW" << endl;
+	cout << "WWWWWWW-.....*WW+.....-WWWW**WWWWWWWWWWWWWWWWWWWWWWW**WWWW-.....:WW#.....@WWWWW" << endl;
+	cout << "WWWWWWW+.....+WW=.....=WWW*.....*WWWWWWWWWWWWWWWW*....#WWW=.....+WW=....-WWWWWW" << endl;
+	cout << "WWWWWWW#.....:WW#.....WWWW-.......*WWWWWWWWWWW*.......:WWWW.....*WW+....+WWWWWW" << endl;
+	cout << "WWWWWWWW-.....WWW....*WWW=..........*WWWWWWW*..........@WWW*....#WW:....#WWWWWW" << endl;
+	cout << "WWWWWWWW*.....#WW:...*WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW*....WW@....-WWWWWWW" << endl;
+	cout << "WWWWWWWW@.....+WW=..*WWWWWWWWWWWWWWWWWW=.=WWWWWWWWWWWWWWWWWW*..+WW=....*WWWWWWW" << endl;
+	cout << "WWWWWWWWW+.....WWW..*WWWWWWWWWWWWWWWWW-...-WWWWWWWWWWWWWWWWW*..#WW:....WWWWWWWW" << endl;
+	cout << "WWWWWWWWW@.....=WW+..........:WWWWWW=...+...@WWWWWW:..........-WW@....*WWWWWWWW" << endl;
+	cout << "WWWWWWWWWW+....-WW@..........:WWWWWW*.:WWW--#WWWWWW:..........=WW+....WWWWWWWWW" << endl;
+	cout << "WWWWWWWWWWW.....=WW+.........WWWWWWWWWWWWWWWWWWWWWWW.........-WW@....=WWWWWWWWW" << endl;
+	cout << "WWWWWWWWWWW#....-WWW.........WWWWWWWWWWWWWWWWWWWWWWW.........#WW+...:WWWWWWWWWW" << endl;
+	cout << "WWWWWWWWWWWW+....+WW#........:WWW=-WWWWW-WWWWW-=WWW:........+WW#....@WWWWWWWWWW" << endl;
+	cout << "WWWWWWWWWWWWW:....=WW*........WWW-.-WWW-.-WWW-.-WWW........-WWW....#WWWWWWWWWWW" << endl;
 	cout << "WWWWWWWWWWWWWW-....@WW+.......+W:...=W:...=W+...+W-........@WW:...*WWWWWWWWWWWW" << endl;
-	cout << "WWWWWWWWWWWWWW@.....@WW:.............+.....+.....-........@WW+...*WWWWWWWWWWWWW" << endl;
+	cout << "WWWWWWWWWWWWWW@.....@WW:.............+.....+..............@WW+...*WWWWWWWWWWWWW" << endl;
 	cout << "WWWWWWWWWWWWWWW@.....@WW+...............................-@WW+...*WWWWWWWWWWWWWW" << endl;
-	cout << "WWWWWWWWWWWWWWWWW-....@WW=....*W.....-.....-....-W:....:WWW:...*WWWWWWWWWWWWWWW" << endl;
-	cout << "WWWWWWWWWWWWWWWWWW:....=WW*..*WW+...=W....:W=...#WW:..*WW@....#WWWWWWWWWWWWWWWW" << endl;
-	cout << "WWWWWWWWWWWWWWWWWWW*....:W:..@WW@..=WW=...@WW:.:WWW@..+W*...-WWWWWWWWWWWWWWWWWW" << endl;
-	cout << "WWWWWWWWWWWWWWWWWWWW@-......-WWWW+=WWWW:.=WWWW-@WWWW-......=WWWWWWWWWWWWWWWWWWW" << endl;
-	cout << "WWWWWWWWWWWWWWWWWWWWWW=.....-WWWWWWWWWW@:WWWWWWWWWWW-....:WWWWWWWWWWWWWWWWWWWWW" << endl;
+	cout << "WWWWWWWWWWWWWWWWW-....@WW=.....W.....-.....-.....W.....:WWW:...*WWWWWWWWWWWWWWW" << endl;
+	cout << "WWWWWWWWWWWWWWWWWW:....WWW*..:WW+...=W....:W=...+WW:..*WWW....#WWWWWWWWWWWWWWWW" << endl;
+	cout << "WWWWWWWWWWWWWWWWWWW*....:W:..WWWW..=WW=...=WW:.:WWWW..:W:...-WWWWWWWWWWWWWWWWWW" << endl;
+	cout << "WWWWWWWWWWWWWWWWWWWW@-......-WWWW==WWWW:::WWWW==WWWW-......=WWWWWWWWWWWWWWWWWWW" << endl;
+	cout << "WWWWWWWWWWWWWWWWWWWWWW=.....-WWWWWWWWWWW:WWWWWWWWWWW-....:WWWWWWWWWWWWWWWWWWWWW" << endl;
 	cout << "WWWWWWWWWWWWWWWWWWWWWWWW*....-=WWWWWWWWWWWWWWWWWWW=....:@WWWWWWWWWWWWWWWWWWWWWW" << endl;
-	cout << "WWWWWWWWWWWWWWWWWWWWWWWWWW=......*@WWWWWWWWWWW#+.....+WWWWWWWWWWWWWWWWWWWWWWWWW" << endl;
+	cout << "WWWWWWWWWWWWWWWWWWWWWWWWWW=.......#WWWWWWWWWWW#......+WWWWWWWWWWWWWWWWWWWWWWWWW" << endl;
 	cout << "WWWWWWWWWWWWWWWWWWWWWWWWWWWW@:.........---........-#WWWWWWWWWWWWWWWWWWWWWWWWWWW" << endl;
 	cout << "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW@+..............:#WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW" << endl;
 	cout << "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW@*-....-*@WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW" << endl;
@@ -771,10 +755,10 @@ void Gra::PreKruci() {
 	}
 
 	if (this->wybor == 1) {
-		this->plikpotwor = "kruci.txt";
+		this->plikpotwor = "./PlikiGry/kruci.txt";
 		loadPotwor();
 		Boss();
-		this->plikpotwor = "Potwor.txt";
+		this->plikpotwor = "./PlikiGry/Potwor.txt";
 		loadPotwor();
 		system("cls");
 	}
@@ -801,10 +785,10 @@ void Gra::PreBoss() {
 	}
 
 	if (this->wybor == 1) {
-		this->plikpotwor = "boss.txt";
+		this->plikpotwor = "./PlikiGry/boss.txt";
 		loadPotwor();
 		Boss();
-		this->plikpotwor = "Potwor.txt";
+		this->plikpotwor = "./PlikiGry/Potwor.txt";
 		loadPotwor();
 		system("cls");
 		cout << "Brawo! Pokona³eœ ostatecznego Bossa!" << endl;
@@ -836,4 +820,28 @@ void Gra::SklepWejscie() {
 		break;
 	}
 	Bohaterzy[AktywnyBohater].sklep(wybor);
+}
+
+void Gra::ZmianaBroni() {
+	system("cls");
+	if (this->Bohaterzy[this->AktywnyBohater].graczekwipunek() == 0) {
+		cout << "Twój ekwipunek jest pusty!" << endl;
+		return;
+	}
+
+	cout << this->Bohaterzy[this->AktywnyBohater].loadekwipunek();
+	cout << "Numer przedmiotu: ";
+	cin >> this->wybor;
+
+	while (cin.fail() || this->wybor < 0 || this->wybor >= this->Bohaterzy[this->AktywnyBohater].graczekwipunek()) {
+		cout << "B³êdny wybór!" << endl;
+		cin.clear();
+		cin.ignore();
+		cout << "Numer przedmiotu: ";
+		cin >> this->wybor;
+	}
+	cin.ignore();
+
+	this->Bohaterzy[this->AktywnyBohater].zalozprzedmiot(this->wybor);
+	system("cls");
 }

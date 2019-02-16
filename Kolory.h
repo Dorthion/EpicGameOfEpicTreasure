@@ -1,11 +1,12 @@
 #pragma once
 #include "Biblioteki.h"
-class Kolory
-{
+class Kolory{
 public:
-	Kolory();
-	virtual ~Kolory();
+	//Podstawa
+	Kolory() {};
+	~Kolory() {};
 
+	//Funkcje
 	void red();
 	void green();
 	void blue();

@@ -1,151 +1,154 @@
 #pragma once
 
+//Klasa
 template<typename T>
 class wsk{
 private:
-	unsigned cap;
-	unsigned initialCap;
+	unsigned Wielkosc;
+	unsigned iniWielkosc;
 	unsigned ilosc;
-	T* *arr;
+	T* *TempWsk;
 
-	void expand();
+	//Prywatne Funkcje
+	void Powiekszenie();
 	void initialize(unsigned from);
 public:
+	//Podstawa
 	wsk(unsigned size = 5);
 	wsk(const wsk& obj);
 	~wsk();
 
+	//Dodatkowe Operatory
 	T& operator[] (const unsigned index);
 	void operator= (const wsk& obj);
 
-	unsigned maxCap();
-	unsigned size();
-	void push(const T element);
-	void remove(const unsigned index, bool ordered = false);
+	//Funkcje
+	unsigned maxWielkosc();
+	unsigned iloscF();
+	void Dodaj(const T element);
+	void Usun(const unsigned index, bool ordered = false);
 };
 
+//Konstruktor
 template<typename T>
 wsk<T>::wsk(unsigned size){
-	this->initialCap = size;
-	this->cap = size;
+	this->iniWielkosc = size;
+	this->Wielkosc = size;
 	this->ilosc = 0;
 
-	this->arr = new T*[this->cap];
+	this->TempWsk = new T*[this->Wielkosc];
 
 	this->initialize(0);
 }
 
+//Konstruktor kopiuj¹cy
 template<typename T>
 wsk<T>::wsk(const wsk& obj){
-	this->initialCap = obj.initialCap;
-	this->cap = obj.cap;
+	this->iniWielkosc = obj.iniWielkosc;
+	this->Wielkosc = obj.Wielkosc;
 	this->ilosc = obj.ilosc;
 
-	this->arr = new T*[this->cap];
+	this->TempWsk = new T*[this->Wielkosc];
 
 	for (size_t i = 0; i < this->ilosc; i++){
-		this->arr[i] = new T(*obj.arr[i]);
+		this->TempWsk[i] = new T(*obj.TempWsk[i]);
 	}
 
 	this->initialize(0);
 }
 
+//Destruktor
 template<typename T>
 wsk<T>::~wsk(){
 	for (size_t i = 0; i < this->ilosc; i++){
-		delete this->arr[i];
+		delete this->TempWsk[i];
 	}
-	delete[] arr;
+	delete[] TempWsk;
 }
 
+//Przeci¹¿enie Operatora []
 template<typename T>
 T& wsk<T>::operator[] (const unsigned index){
 	if (index < 0 || index >= this->ilosc)
 		cout<<"Nie ma granic dla klamr!";
 
-	return *this->arr[index];
+	return *this->TempWsk[index];
 }
 
+//Przeci¹¿enie Operatora =
 template<typename T>
 void wsk<T>::operator= (const wsk& obj){
 	for (size_t i = 0; i < this->ilosc; i++){
-		delete this->arr[i];
+		delete this->TempWsk[i];
 	}
-	delete[] arr;
+	delete[] TempWsk;
 
-	this->initialCap = obj.initialCap;
-	this->cap = obj.cap;
+	this->iniWielkosc = obj.iniWielkosc;
+	this->Wielkosc = obj.Wielkosc;
 	this->ilosc = obj.ilosc;
 
-	this->arr = new T*[this->cap];
+	this->TempWsk = new T*[this->Wielkosc];
 
 	for (size_t i = 0; i < this->ilosc; i++){
-		this->arr[i] = new T(*obj.arr[i]);
+		this->TempWsk[i] = new T(*obj.TempWsk[i]);
 	}
 
 	this->initialize(0);
 }
 
 template<typename T>
-void wsk<T>::expand(){
-	this->cap *= 2;
-
-	T* *tempArr = new T*[this->cap];
+void wsk<T>::Powiekszenie(){
+	this->Wielkosc *= 2;
+	T* *Temp2Wsk = new T*[this->Wielkosc]; //Nowa wielkosc tymczasowa wsk
 
 	for (size_t i = 0; i < this->ilosc; i++){
-		tempArr[i] = this->arr[i];
+		Temp2Wsk[i] = this->TempWsk[i];
 	}
 
-	delete[]arr;
-
-	this->arr = tempArr;
-
+	delete[]TempWsk;
+	this->TempWsk = Temp2Wsk;
 	this->initialize(this->ilosc);
 }
 
 template<typename T>
 void wsk<T>::initialize(unsigned from){
-	for (size_t i = from; i < this->cap; i++){
-		this->arr[i] = nullptr;
+	for (size_t i = from; i < this->Wielkosc; i++){
+		this->TempWsk[i] = nullptr;
 	}
 }
 
 template<typename T>
-unsigned wsk<T>::maxCap(){
-	return this->cap;
+unsigned wsk<T>::maxWielkosc(){
+	return this->Wielkosc;
 }
 
 template<typename T>
-unsigned wsk<T>::size(){
+unsigned wsk<T>::iloscF(){
 	return this->ilosc;
 }
 
 template<typename T>
-void wsk<T>::push(const T element){
-	if (this->ilosc >= this->cap)
-		this->expand();
+void wsk<T>::Dodaj(const T element){
+	if (this->ilosc >= this->Wielkosc)
+		this->Powiekszenie();
 
-	this->arr[this->ilosc++] = new T(element);
+	this->TempWsk[this->ilosc++] = new T(element);
 }
 
 template<typename T>
-void wsk<T>::remove(const unsigned index, bool ordered){
+void wsk<T>::Usun(const unsigned index, bool ordered){
 	if (index < 0 || index >= this->ilosc)
 		cout<<"Nie ma co usun¹æ!";
-
 	if (ordered){
-		delete this->arr[index];
+		delete this->TempWsk[index];
 
 		for (size_t i = 0; i < this->ilosc - 1; i++){
-			this->arr[i] = this->arr[i + 1];
+			this->TempWsk[i] = this->TempWsk[i + 1];
 		}
-
-		this->arr[--this->ilosc] = nullptr;
+		this->TempWsk[--this->ilosc] = nullptr;
 	} else {
-		delete this->arr[index];
-
-		this->arr[index] = this->arr[this->ilosc - 1];
-
-		this->arr[--this->ilosc] = nullptr;
+		delete this->TempWsk[index];
+		this->TempWsk[index] = this->TempWsk[this->ilosc - 1];
+		this->TempWsk[--this->ilosc] = nullptr;
 	}
 }

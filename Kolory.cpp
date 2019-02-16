@@ -1,11 +1,5 @@
 #include "Kolory.h"
 
-Kolory::Kolory(){
-}
-
-Kolory::~Kolory(){
-}
-
 void Kolory::red() {
 	HANDLE hOut;
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);

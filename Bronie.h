@@ -28,9 +28,9 @@ public:
 	string nazwa, int poziom,
 	int buyValue, int sellValue, int rzadkosc);
 	virtual ~Bronie();
-	virtual Bronie* clone()const;
+	virtual Bronie* Kopiowanie()const;//Virtualka
 	string toString()const;
-	string toStringSave()const;
+	string saveString()const;
 
 	//Inline
 	inline int bronsilamin()const { return this->minsila; }

@@ -4,18 +4,21 @@
 
 class PanelAdministratorski{
 private:
-	int Mmenu;
+	bool Mmenu;
 	int wybor;
 	int activemiasto;
 	int activeMonster;
 	string plikmiasto;
 	string plikpotwor;
-	std::vector<Miasto> Miasta;
-	std::vector<Potwory> PPotwory;
-public:
-	PanelAdministratorski();
-	virtual ~PanelAdministratorski();
+	vector<Miasto> Miasta;
+	vector<Potwory> PPotwory;
 
+public:
+	//Podstawa
+	PanelAdministratorski();
+	virtual ~PanelAdministratorski() {};
+
+	//Funkcje
 	void Menu();
 	void DodawaniePlikow();
 	void saveMiasto();
@@ -24,6 +27,6 @@ public:
 	void savePotwor();
 	void loadMiasto();
 	void loadPotwor();
-	void PlikBledu(string nazwa, int kod);
+	void PlikBledu(string nazwa, int kod); //Nazwa i kod b³êdu
 };
 

@@ -2,17 +2,19 @@
 #include "Biblioteki.h"
 class Zagadka{
 private:
-	string pytanie;
-	string ciekawostka;
-	std::vector<std::string> MozliweOdpowiedzi;
+	string Pytanie;
+	string Ciekawostka;
+	vector<string> MozliweOdpowiedzi;
 	int Odp;
 
 public:
-	Zagadka(std::string plik);
-	virtual ~Zagadka();
-	std::string getAsString();
+	//Podstawa
+	Zagadka(string plik);
+	virtual ~Zagadka() {};
+	string getString();
 
+	//Inline
 	inline const int& PrawOdp()const { return this->Odp; }
-	inline const string& Ciekawosc()const { return this->ciekawostka; }
+	inline const string& Ciekawosc()const { return this->Ciekawostka; }
 };
 

@@ -4,3 +4,4 @@
 #include "Kolory.h"
 #include "Potwory.h"
 #include "Event.h"
+#include "PanelAdministratorski.h"

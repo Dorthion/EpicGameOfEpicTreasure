@@ -1,5 +1,6 @@
 #pragma once
 #include "Biblioteki.h"
+
 class Potwory{
 private:
 	string nazwa;
@@ -16,7 +17,7 @@ public:
 	//Podstawa
 	Potwory();
 	Potwory(int poziom);
-	virtual ~Potwory();
+	virtual ~Potwory() {};
 
 	//Funkcje
 	string getString()const;
@@ -41,4 +42,3 @@ public:
 	inline const string& pnazwa() const { return this->nazwa; }
 	inline const int nrpotwora() { return this->numerpotwora; }
 };
-

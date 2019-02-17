@@ -26,8 +26,8 @@ public:
 	int minszcz, int maxszcz,
 	int minobr, int maxobr,
 	string nazwa, int poziom,
-	int buyValue, int sellValue, int rzadkosc);
-	virtual ~Bronie();
+	int cenak, int cenas, int rzadkosc);
+	virtual ~Bronie() {};
 	virtual Bronie* Kopiowanie()const;//Virtualka
 	string toString()const;
 	string saveString()const;

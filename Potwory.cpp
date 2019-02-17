@@ -25,9 +25,6 @@ Potwory::Potwory(int poziom){
 	this->kasa = rand() % poziom * 10 + 1;
 }
 
-Potwory::~Potwory(){
-}
-
 void Potwory::inicjalizacja(string nazwa, int max, int poziom) {
 	//G³ówne elementy postaci
 	this->nazwa = nazwa;

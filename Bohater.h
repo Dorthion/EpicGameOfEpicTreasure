@@ -16,9 +16,9 @@ private:
 
 	//Statystyki gracza
 	int sila;			//Wojownik
-	int zrecznosc;		//£ucznik, Elf
+	int zrecznosc;		//£ucznik
 	int magia;			//Mag
-	int szczescie;		//Z³odziej, szczêœcie na itemy
+	int szczescie;		//Z³odziej
 	int obrona;			//Tank
 
 	//Dodatki
@@ -70,7 +70,7 @@ public:
 	inline const int graczkasa() { return this->kasa; }
 	inline const int graczpktum() { return this->pktum; }
 	inline const int graczmiasto() { return this->miasto; }
-	inline const int graczekwipunek()const { return this->ekwipunek.size(); }
+	inline const int graczekwipunek()const { return this->ekwipunek.IloscEkw(); }
 	inline const int graczexpnextlvl() { return this->expnextlvl; }
 	inline const int graczhp() { return this->hp; }
 	inline const int graczhpmax() { return this->hpmax; }

@@ -207,7 +207,7 @@ void Event::Walka(Bohater &bohater, Potwory& przeciwnik){
 					"Damage: " << przeciwnik.pmindmg() << " - " << przeciwnik.pmaxdmg() << endl;
 				//Attack roll
 				SzansaPrzeciwnika = (int)( przeciwnik.pobrona() + przeciwnik.pmaxdmg() + przeciwnik.plvl());
-				SzansaGracza = (int)(bohater.graczdmg() + bohater.graczzrecznosc() * 2 + bohater.graczmagia() * 2);
+				SzansaGracza = (int)(bohater.graczdmg() + (int)(bohater.graczzrecznosc() * 1.5) + bohater.graczmagia() * 2);
 				LosGracza = rand() % SzansaGracza + 1;
 				LosPrzeciwnika = rand() % SzansaPrzeciwnika + 1;
 
@@ -255,12 +255,12 @@ void Event::Walka(Bohater &bohater, Potwory& przeciwnik){
 			RuchGracza = false;
 		} 
 		if (!RuchGracza && !PorazkaGracza && !ucieczka && !PorazkaPrzeciwnika){
-			int dmgpotwora = rand() % przeciwnik.pmaxdmg() + przeciwnik.pmindmg();
+			int dmgpotwora = rand() % (przeciwnik.pmaxdmg() * 3) + przeciwnik.pmindmg();
 			cout << ">>>>>Tura przeciwnika<<<<<" << endl;
 			Czekanie();
 			
 			SzansaPrzeciwnika = (int)dmgpotwora;
-			SzansaGracza = (int)(bohater.graczobrona() + bohater.graczszczescie()*3);
+			SzansaGracza = (int)(bohater.graczobrona() + (int)(bohater.graczszczescie()*3));
 			LosGracza = rand() % SzansaGracza + 1;
 			LosPrzeciwnika = rand() % SzansaPrzeciwnika + 1;
 
@@ -306,11 +306,11 @@ void Event::Wydarzenie(Bohater &bohater){
 	bool wygrana = false;
 	int wybor = 0;
 	int szanse = (int)(rand() % 3 + 1);
-	int wygranyexp = (bohater.graczpoziom() * (rand() % 5 + 1)) + 50;
-	int wygranakasa = (bohater.graczpoziom() * (rand() % 5 + 1)) + 20;
+	int wygranyexp = (bohater.graczpoziom() * (rand() % 6 + 1)) + 80;
+	int wygranakasa = (bohater.graczpoziom() * (rand() % 6 + 1)) + 40;
 	int randomizer = rand() % 10 + 1;
-	string what = to_string(randomizer) + ".txt";
-	string temp= "Zagadki/" + what;
+	string temps = to_string(randomizer) + ".txt";
+	string temp= "./PlikiGry/Zagadki/" + temps;
 	Zagadka zagadka(temp);
 
 	while (!wygrana && szanse > 0){

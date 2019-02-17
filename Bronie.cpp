@@ -151,9 +151,6 @@ Bronie::Bronie(int mindmg, int maxdmg, int minzre, int maxzre, int minmagia, int
 	this->maxobr = maxobr;
 }
 
-Bronie::~Bronie(){
-}
-
 Bronie* Bronie::Kopiowanie()const{
 	return new Bronie(*this);
 }

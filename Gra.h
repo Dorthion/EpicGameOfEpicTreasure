@@ -28,6 +28,7 @@ public:
 
 	//G³ówne funkcje
 	void Menu();
+	void WyswietlMenu();
 	void InitGry();
 	void loadBohater();
 	void loadMiasto();
@@ -49,6 +50,7 @@ public:
 	void PreBoss();
 	void Boss();
 	void SklepWejscie();
+	void Wolniej(const string& Wiadomosc, unsigned int LiczbaMS);
 	void PlikBledu(string nazwa, int kod);
 
 	//Dodatki Inline

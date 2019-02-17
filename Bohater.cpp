@@ -68,7 +68,12 @@ void Bohater::Wyswietl() const{
 	kolor.gold(); cout << " ===============================================" << endl;
 	kolor.blue(); cout << "//"; kolor.red(); cout<< "\t\tStatystyki Bohatera : "; kolor.blue(); cout <<"\t\t\\\\" << endl;
 	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
-	kolor.blue(); cout << "||\tNazwa: "; kolor.green(); cout<< this->nazwa; kolor.blue(); cout << "\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tNazwa: "; kolor.green(); cout<< this->nazwa; kolor.blue(); 
+	if (this->nazwa.length()<9) cout << "\t\t\t\t||" << endl;
+	if (this->nazwa.length() >= 9 && this->nazwa.length() < 17) cout << "\t\t\t||" << endl;
+	if (this->nazwa.length() >= 17 && this->nazwa.length() < 25) cout << "\t\t||" << endl;
+	if (this->nazwa.length() >= 25 && this->nazwa.length() < 33) cout << "\t||" << endl;
+	if (this->nazwa.length() >= 33) cout << "||" << endl;
 	kolor.blue(); cout << "||\tPoziom: "; kolor.green(); cout << this->poziom; kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tExp: "; kolor.green(); cout << this->exp; kolor.blue(); cout << "\t\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tExp do kolejnego poziomu: "; kolor.green(); cout << this->expnextlvl; kolor.blue(); cout << "\t\t||" << endl;
@@ -80,9 +85,14 @@ void Bohater::Wyswietl() const{
 	kolor.blue(); cout << "||\tSzczescie: "; kolor.green(); cout << this->szczescie; kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tObrona: "; kolor.green(); cout << this->obrona; kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
-	kolor.blue(); cout << "||\tHp "; kolor.green(); cout << this->hp << " / " << this->hpmax; kolor.blue(); cout << "\t\t\t\t||" << endl;
-	kolor.blue(); cout << "||\tMiasto "; kolor.green(); cout << this->nazwamiasta; kolor.blue(); cout << "\t\t\t\t||" << endl;
-	kolor.blue(); cout << "||\tKasa "; kolor.green(); cout << this->kasa; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tHp: "; kolor.green(); cout << this->hp << " / " << this->hpmax; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tMiasto: "; kolor.green(); cout << this->nazwamiasta; kolor.blue(); 
+	if (this->nazwamiasta.length()<8) cout << "\t\t\t\t||" << endl;
+	if (this->nazwamiasta.length() >= 8 && this->nazwamiasta.length() < 16) cout << "\t\t\t||" << endl;
+	if (this->nazwamiasta.length() >= 16 && this->nazwamiasta.length() < 24) cout << "\t\t||" << endl;
+	if (this->nazwamiasta.length() >= 24 && this->nazwamiasta.length() < 32) cout << "\t||" << endl;
+	if (this->nazwamiasta.length() >= 32) cout << "||" << endl;
+	kolor.blue(); cout << "||\tKasa: "; kolor.green(); cout << this->kasa; kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "\\\\\t" << "\t\t\t\t\t//" << endl;
 	kolor.gold(); cout << " ===============================================" << endl;
 }
@@ -192,7 +202,7 @@ void Bohater::DodawanieStatystyk(int stat, int pkt){
 
 string Bohater::loadekwipunek(bool ladowanie){
 	string graczeq;
-	for (int i = 0; i < (int)this->ekwipunek.size(); i++){//size_t
+	for (int i = 0; i < (int)this->ekwipunek.IloscEkw(); i++){
 		if (ladowanie){
 			graczeq += to_string(i) + ": " + this->ekwipunek[i].toString() + "\n" + " - Cena sprzeda¿y: "
 				+ std::to_string(this->ekwipunek[i].przedmiotCenas()) + "\n";
@@ -205,7 +215,7 @@ string Bohater::loadekwipunek(bool ladowanie){
 
 string Bohater::saveekwipunek(){
 	string graczeq;
-	for (int i = 0; i < (int)this->ekwipunek.size(); i++){//size_t
+	for (int i = 0; i < (int)this->ekwipunek.IloscEkw(); i++){
 			graczeq += this->ekwipunek[i].saveString();
 	}
 
@@ -215,7 +225,7 @@ string Bohater::saveekwipunek(){
 }
 
 void Bohater::zalozprzedmiot(unsigned numer){
-	if (numer < 0 || numer >= (unsigned)this->ekwipunek.size()){
+	if (numer < 0 || numer >= (unsigned)this->ekwipunek.IloscEkw()){
 		cout << "Wybrano nie poprawny przedmiot z zakresu" << endl << endl;
 	} else {
 		Bronie *w = nullptr;
@@ -225,19 +235,19 @@ void Bohater::zalozprzedmiot(unsigned numer){
 			if (this->bron.przedmiotRzadkosc() >= 0)
 				this->ekwipunek.Dodprzedmiot(this->bron);
 			this->bron = *w;
-			this->ekwipunek.removeItem(numer);
+			this->ekwipunek.Usunprzedmiot(numer);
 		} else { cout << "B³¹d z broni¹" << endl; }
 	}
 }
 
 void Bohater::usunprzedmiot(const int numer){
-	if (numer < 0 || numer >= this->ekwipunek.size())
+	if (numer < 0 || numer >= this->ekwipunek.IloscEkw())
 		cout << "Nie mo¿na usun¹æ przedmiotu! B³êdny zakres." << endl;
-	else{ this->ekwipunek.removeItem(numer); }
+	else{ this->ekwipunek.Usunprzedmiot(numer); }
 }
 
 const Przedmiot& Bohater::wybranyprzedmiot(const int numer){
-	if (numer < 0 || numer >= this->ekwipunek.size()){
+	if (numer < 0 || numer >= this->ekwipunek.IloscEkw()){
 		cout << "Nie mo¿na za³o¿yæ przedmiotu!" << endl;
 	}
 	return this->ekwipunek[numer];
@@ -419,7 +429,7 @@ void Bohater::sklep(int nrbudynku){
 				cout << " - Kasa: " << graczkasa() << "\n\n";
 				graczeq.clear();
 
-				for (int i = 0; i < (int)sprzedawca.size(); i++) {//size_t
+				for (int i = 0; i < (int)sprzedawca.IloscEkw(); i++) {//size_t
 					graczeq += to_string(i) + ": " + sprzedawca[i].toString() + "\n - Cena: " + to_string(sprzedawca[i].przedmiotCenak()) + "\n";
 				}
 
@@ -430,7 +440,7 @@ void Bohater::sklep(int nrbudynku){
 
 				cin >> wybor;
 
-				while (cin.fail() || wybor > sprzedawca.size() || wybor < -1) {
+				while (cin.fail() || wybor > sprzedawca.IloscEkw() || wybor < -1) {
 					system("cls");
 
 					cout << "B³êdny zakres!" << "\n";
@@ -452,7 +462,7 @@ void Bohater::sklep(int nrbudynku){
 
 					cout << "Kupi³eœ przedmiot: " << sprzedawca[wybor].przedmiotNazwa() << " -" << sprzedawca[wybor].przedmiotCenak() << "\n";
 
-					sprzedawca.removeItem(wybor);
+					sprzedawca.Usunprzedmiot(wybor);
 				}
 				else {
 					cout << "Nie staæ Ciê na to!" << endl;

@@ -125,7 +125,7 @@ void Gra::Menu(){
 	
 	if (this->Bohaterzy[AktywnyBohater].graczgra()) {
 		if (this->Bohaterzy[AktywnyBohater].graczpktum() >= 1){
-			cout << "Posiadasz nie wykorzystane punkty!"<<endl<<endl;
+			cout << "Posiadasz nie wykorzystane punkty umiejêtnoœci!"<<endl<<endl;
 		}
 		if (this->Bohaterzy[AktywnyBohater].graczexp() >=
 			this->Bohaterzy[AktywnyBohater].graczexpnextlvl()){
@@ -135,32 +135,17 @@ void Gra::Menu(){
 			Czekanie2();
 			this->ukryj = 0;
 		}
-			
-		kolor.gold();	
-		cout << "\t>>>>>MENU<<<<<<" << endl << endl;
-
-		cout << "1 - Statystyki postaci" << endl;
-		cout << "2 - Dodawanie statystyk" << endl;
-		cout << "3 - Wyœwietlenie miasta" << endl;
-		cout << "4 - Wybór budynku" << endl;
-		cout << "5 - Zmiana miasta" << endl;
-		cout << "6 - Odpoczynek na dworze" << endl;
-		cout << "7 - Odpoczynek w mieœcie" << endl;
-		cout << "8 - Podró¿ w poszukiwaniu przygód" << endl;
-		cout << "9 - Poka¿ ekwipunek" << endl;
-		cout << "10 - Zmieñ przedmiot" << endl;
-		cout << "11 - Œwiêta Krucjata" << endl;
-		cout << "12 - Boss ostateczny" << endl;
-
-		cout << "\n-1 - Zapisz" << endl;
-		cout << "-2 - Wczytaj" << endl;
-		cout << "\n0 - Wyjscie" << endl;
-
-		cout << endl << "Jaki jest twoj wybor??: ";
-
+		WyswietlMenu();
 		cin >> this->wybor;
 		cin.clear();
 		cin.ignore();
+		while (this->wybor < -2 && this->wybor > 1001) {
+			system("cls");
+			WyswietlMenu();
+			cin >> this->wybor;
+			cin.clear();
+			cin.ignore();
+		}
 
 		switch (this->wybor) {
 		case 1:
@@ -240,6 +225,7 @@ void Gra::Menu(){
 			break;
 
 		default:
+			system("cls");
 			break;
 		}
 	}
@@ -249,6 +235,33 @@ void Gra::Menu(){
 		this->saveBohater();
 		this->loadBohater();
 	}
+}
+
+void Gra::WyswietlMenu() {
+	Kolory kolor;
+	kolor.gold(); cout << " ===============================================" << endl;
+	kolor.blue(); cout << "//\t\t"; kolor.red(); cout << ">>>>>MENU<<<<<<"; kolor.blue(); cout << "\t\t\t\\\\" << endl;
+	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t1 - "; kolor.green(); cout << "Statystyki postaci"; kolor.blue(); cout << "\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t2 - "; kolor.green(); cout << "Dodawanie statystyk"; kolor.blue(); cout << "\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t3 - "; kolor.green(); cout << "Wyœwietlenie miasta"; kolor.blue(); cout << "\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t4 - "; kolor.green(); cout << "Wybór budynku"; kolor.blue(); cout << "\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t5 - "; kolor.green(); cout << "Zmiana miasta"; kolor.blue(); cout << "\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t6 - "; kolor.green(); cout << "Odpoczynek na dworze"; kolor.blue(); cout << "\t\t||" << endl;
+	kolor.blue(); cout << "||\t7 - "; kolor.green(); cout << "Odpoczynek w mieœcie"; kolor.blue(); cout << "\t\t||" << endl;
+	kolor.blue(); cout << "||\t8 - "; kolor.green(); cout << "Podró¿ w poszukiwaniu przygód"; kolor.blue(); cout << "\t||" << endl;
+	kolor.blue(); cout << "||\t9 - "; kolor.green(); cout << "Poka¿ ekwipunek"; kolor.blue(); cout << "\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t10 - "; kolor.green(); cout << "Zmieñ przedmiot"; kolor.blue(); cout << "\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t11 - "; kolor.green(); cout << "Œwiêta Krucjata"; kolor.blue(); cout << "\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t12 - "; kolor.green(); cout << "Boss ostateczny"; kolor.blue(); cout << "\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t-1 - "; kolor.green(); cout << "Zapisz"; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t-2 - "; kolor.green(); cout << "Wczytaj"; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t0 - "; kolor.green(); cout << "Wyjœcie"; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "\\\\\t\t\t\t\t\t//" << endl;
+	kolor.gold(); cout << " ===============================================" << endl;
+	cout << endl << endl << "Jaki jest twój wybór??: ";
+	return;
 }
 
 void Gra::odpoczynek() {
@@ -728,20 +741,34 @@ void Gra::Kruci() {
 	cout << "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW" << endl;
 }
 
+void Gra::Wolniej(const string& Wiadomosc, unsigned int LiczbaMS) {
+	for (const char c : Wiadomosc){
+		cout << c << flush;
+		Sleep(LiczbaMS);
+	}
+}
+
 void Gra::PreKruci() {
 	system("cls");
-	cout << "Przychodzisz zwyk³y cz³owieku na krucjate... " << endl << endl;
+	string wiadomosc;
+	wiadomosc = "Wchodzisz, zwyk³y cz³owieku, do tajemnej komnaty... \n\n";
+	Wolniej(wiadomosc, 40);
 	Czekanie();
-	cout << "Przychodzisz po z³oto?..." << endl;
+	wiadomosc = "Przychodzisz po z³oto?...\n\n";
+	Wolniej(wiadomosc, 40);
 	Czekanie();
-	cout << "Mo¿e przychodzisz, aby zabiæ?... " << endl;
+	wiadomosc = "Mo¿e przychodzisz, aby z³o¿yæ ofiary?... \n\n";
+	Wolniej(wiadomosc, 40);
 	Czekanie();
-	cout << "ZnajdŸ swoje œwiat³o w sercu...\n\nNa pewno je odnajdziesz..." << endl;
+	wiadomosc = "Twój trud jest tutaj nadaremny s³aba istoto...\n\nNikt st¹d nie powraca ¿ywy...\n\n";
+	Wolniej(wiadomosc, 40);
 	Czekanie();
-	cout << "A teraz... PO¯EGNAJ SIÊ ZE ŒWIATEM\n\n...WITAJ W MOIM KRÓLESTWIE!" << endl;
+	wiadomosc = "A teraz... PO¯EGNAJ SIÊ ZE ŒWIATEM\n\n...WITAJ W MOIM KRÓLESTWIE!\n\n";
+	Wolniej(wiadomosc, 40);
 	Czekanie();
 	Kruci();
-	cout << "Czy chcesz walczyæ przeciwko z³owieszczej, hordziej, kruciacie?" << endl;
+	wiadomosc = "Czy chcesz walczyæ przeciwko z³owieszczej krucjacie?\n\n";
+	Wolniej(wiadomosc, 40);
 	cin >> this->wybor;
 	cin.ignore();
 	while (cin.fail() || wybor > 2 || wybor < 0) {

@@ -1,8 +1,9 @@
 Spawn 1 1 2 3
 Grunwald 2 5 4 8
-ArkaGdynia 3 2 4 6
-WatDaFak 4 1 8 1
-jeruzalem 5 2 3 4
-burdel 6 8 7 9
-Oskar 7 4 2 1
-frioegtnio 8 5 5 5
+Wyzima 3 2 4 6
+Toruñ 4 1 8 1
+Rivendell 5 5 3 1
+Novigrad 6 8 7 9
+Overworld 7 7 4 1
+Mielno 8 9 9 3
+Khorinis 9 2 3 4

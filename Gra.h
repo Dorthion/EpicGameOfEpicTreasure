@@ -50,6 +50,7 @@ public:
 	void PreBoss();
 	void Boss();
 	void SklepWejscie();
+	void UsunKonto();
 	void Wolniej(const string& Wiadomosc, unsigned int LiczbaMS);
 	void PlikBledu(string nazwa, int kod);
 

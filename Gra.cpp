@@ -20,6 +20,7 @@ void Gra::InitGry() {
 	SetConsoleTitle("EpicGameOfEpicTreasure");
 	int wyborotwarcia = 0;
 	int logowanie = 0;
+	Kolory kolor;
 	string nazwagracza = "";
 	string haslogracza = "";
 	string nazwagracza2 = "";
@@ -31,10 +32,24 @@ void Gra::InitGry() {
 	if (!pliklogowanie.is_open()) {
 		root.Menu();
 	}
-	cout << "Login: " << endl;
+	kolor.red();
+	cout << "||==============================||" << endl;
+	cout << "||\t\t\t\t||" << endl;
+	cout << "||\t "; kolor.blue(); cout << ">>> "; kolor.green(); cout << "Login"; 
+	kolor.blue(); cout << " <<<"; kolor.red(); cout << "\t\t|| " << endl;
+	cout << "||\t\t\t\t||" << endl;
+	cout << "||==============================||" << endl << endl;
+	kolor.gold(); cout << ">>>>>>>>";
+	kolor.green();
 	cin >> nazwagracza;
 	system("cls");
-	cout << "Haslo: " << endl;
+	kolor.red();
+	cout << "||==============================||" << endl;
+	cout << "||\t\t\t\t||" << endl;
+	cout << "||\t "; kolor.blue(); cout << ">>> "; kolor.green(); cout << "Has³o";
+	kolor.blue(); cout << " <<<"; kolor.red(); cout << "\t\t|| " << endl;
+	cout << "||\t\t\t\t||" << endl;
+	cout << "||==============================||" << endl << endl;
 	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
 	DWORD mode = 0;
 	GetConsoleMode(hStdin, &mode);
@@ -56,14 +71,16 @@ void Gra::InitGry() {
 			exit(0);
 		} else {
 			this->nazwakonta = nazwagracza;
-			this->plik = "./PlikiGry/" + nazwagracza + ".txt";//Mo¿e byæ tu problem
+			this->plik = "./PlikiGry/" + nazwagracza + ".txt";
 			plik.open("./PlikiGry/" + nazwagracza + ".txt");
 			this->loadBohater();
 		}
 	}
 	else {
 		system("cls");
+		kolor.blue();
 		cout << "Nie ma takiego konta, chcesz stworzyæ nowe?" << endl;
+		kolor.gold();
 		cout << "1 - tak, 0 - nie" << endl;
 		cin >> wyborotwarcia;
 		if (wyborotwarcia != 0) {
@@ -85,27 +102,34 @@ void Gra::stworzKonto() {
 	fstream plikhasla;
 	string nazwaKonta = "";
 	string hasloKonta = "";
+	Kolory kolor;
+	kolor.blue();
 	cout << "Nowy login: " << endl;
+	kolor.gold();
 	cin >> nazwaKonta;
 	cin.ignore();
 	if (nazwaKonta == "root") {
-		system("cls");
+		system("cls"); 
+		kolor.red();
 		cout << "Nie mo¿esz stworzyæ konta root!" << endl;
 		system("pause");
 		exit(0);
 	}
-	plik.open("./PlikiGry/" + nazwaKonta + ".txt");//Tutaj te¿ problem
+	plik.open("./PlikiGry/" + nazwaKonta + ".txt");
 	if (plik.is_open()) {
+		kolor.red();
 		cout << "Konto juz istnieje o takiej nazwie! (Ponowne logowanie)" << endl;
 	} else {
 		plik.close();
-		plik.open("./PlikiGry/" + nazwaKonta + ".txt", ios::out);//Tutaj te¿
+		plik.open("./PlikiGry/" + nazwaKonta + ".txt", ios::out);
 		plikhasla.open("./PlikiGry/logowanie.txt", ios::app);
 		//Atrybut do chowania plików
 		//string temp = nazwaKonta + ".txt";
 		//string x = "attrib +H " + temp; // + chowa, -odkrywa
 		//system(x.c_str());
+		kolor.blue();
 		cout << "Podaj haslo do konta: " << endl;
+		kolor.gold();
 		cin >> hasloKonta;
 		cin.clear();
 		cin.ignore();
@@ -125,7 +149,12 @@ void Gra::Menu(){
 	
 	if (this->Bohaterzy[AktywnyBohater].graczgra()) {
 		if (this->Bohaterzy[AktywnyBohater].graczpktum() >= 1){
-			cout << "Posiadasz nie wykorzystane punkty umiejêtnoœci!"<<endl<<endl;
+			kolor.green(); 
+			cout << "||===============================================||" << endl;
+			cout << "||"; kolor.red(); cout << "Posiadasz nie wykorzystane punkty umiejêtnoœci!"; 
+			kolor.green(); cout << "||" << endl;
+			cout << "||===============================================||" << endl;
+			kolor.blue();
 		}
 		if (this->Bohaterzy[AktywnyBohater].graczexp() >=
 			this->Bohaterzy[AktywnyBohater].graczexpnextlvl()){
@@ -171,7 +200,10 @@ void Gra::Menu(){
 
 		case 7:
 			if (bud1 == 2 || bud2 == 2 || bud3 == 2) Bohaterzy[AktywnyBohater].sklep(1);
-			else cout << "Nie jesteœ w mieœcie, gdzie jest Gospoda!" << endl << endl;
+			else {
+				kolor.red();
+				cout << "Nie jesteœ w mieœcie, gdzie jest Gospoda!" << endl << endl;
+			}
 			break;
 
 		case 8:
@@ -181,7 +213,7 @@ void Gra::Menu(){
 		
 		case 9:
 			system("cls");
-			if (this->Bohaterzy[this->AktywnyBohater].graczekwipunek() == 0) { cout << "Twój ekwipunek jest pusty!" << endl; break; }
+			if (this->Bohaterzy[this->AktywnyBohater].graczekwipunek() == 0) { kolor.red(); cout << "Twój ekwipunek jest pusty!" << endl; break; }
 			cout << this->Bohaterzy[this->AktywnyBohater].loadekwipunek();
 			Czekanie();
 			break;
@@ -193,13 +225,23 @@ void Gra::Menu(){
 		case 11:
 			system("cls");
 			if (Bohaterzy[AktywnyBohater].graczpoziom() > 20) PreKruci();
-			else cout << "Nie wystarczaj¹cy iloœæ poziomów! \nWymagany jest minimalny 20 poziom, aby z nim walczyæ!" << endl << endl;
+			else {
+				kolor.red();
+				cout << "Nie wystarczaj¹cy iloœæ poziomów! \nWymagany jest minimalny 20 poziom, aby z nim walczyæ!" << endl << endl;
+			}
 			break;
 			
 		case 12:
 			system("cls");
 			if (Bohaterzy[AktywnyBohater].graczpoziom() > 50) PreBoss(); 
-			else cout << "Nie wystarczaj¹cy iloœæ poziomów! \nWymagany jest minimalny 50 poziom, aby z nim walczyæ!" << endl << endl;
+			else {
+				kolor.red();
+				cout << "Nie wystarczaj¹cy iloœæ poziomów! \nWymagany jest minimalny 50 poziom, aby z nim walczyæ!" << endl << endl;
+			}
+			break;
+
+		case 999:
+			UsunKonto();
 			break;
 
 		case 1000:
@@ -209,14 +251,14 @@ void Gra::Menu(){
 
 		case -1:
 			system("cls");
-			cout << ">>>>> Zapisuje <<<<<"<<endl;
+			kolor.red(); cout << "\n\t>>>>> Zapisuje <<<<<" << endl;
 			saveBohater();
 			loadBohater();
 			break;
 
 		case -2:
 			system("cls");
-			cout << ">>>>> Wczytano bohatera <<<<<" << endl;
+			kolor.red(); cout << "\n\t>>>>> Wczytano bohatera <<<<<" << endl;
 			loadBohater();
 			break;
 
@@ -230,7 +272,9 @@ void Gra::Menu(){
 		}
 	}
 	else {
+	kolor.red();
 		cout << "Twój bohater zgin¹³" << endl;
+		Czekanie();
 		this->stworzBohatera();
 		this->saveBohater();
 		this->loadBohater();
@@ -254,6 +298,7 @@ void Gra::WyswietlMenu() {
 	kolor.blue(); cout << "||\t10 - "; kolor.green(); cout << "Zmieñ przedmiot"; kolor.blue(); cout << "\t\t\t||" << endl;
 	kolor.blue(); cout << "||\t11 - "; kolor.green(); cout << "Œwiêta Krucjata"; kolor.blue(); cout << "\t\t\t||" << endl;
 	kolor.blue(); cout << "||\t12 - "; kolor.green(); cout << "Boss ostateczny"; kolor.blue(); cout << "\t\t\t||" << endl;
+	kolor.blue(); cout << "||\t99 - "; kolor.green(); cout << "Usuñ konto"; kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\t-1 - "; kolor.green(); cout << "Zapisz"; kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\t-2 - "; kolor.green(); cout << "Wczytaj"; kolor.blue(); cout << "\t\t\t\t||" << endl;
@@ -261,6 +306,37 @@ void Gra::WyswietlMenu() {
 	kolor.blue(); cout << "\\\\\t\t\t\t\t\t//" << endl;
 	kolor.gold(); cout << " ===============================================" << endl;
 	cout << endl << endl << "Jaki jest twój wybór??: ";
+	return;
+}
+
+void Gra::UsunKonto() {
+	Kolory kolor;
+	fstream plik, temp;
+	string nazwa, haslo, plik1="./PlikiGry/Logowanie.txt", plik2="./PlikiGry/Logowanie2.txt";
+	plik.open("./PlikiGry/Logowanie.txt", ios::in);
+	temp.open("./PlikiGry/Logowanie2.txt", ios::out);
+	int kod = rand() % 99999 + 10000;
+	system("cls"); kolor.red();
+	cout << "\nCzy chcesz na pewno skasowaæ konto? Aby zaakceptowaæ przepisz wygenerowany kod." << endl << endl;
+	cout << "Kod: " << kod << endl << endl;
+	cin >> this->wybor;
+	cin.clear();
+	cin.ignore();
+	if (this->wybor == kod) {
+		while (!plik.eof()) {
+			plik >> nazwa >> haslo;
+			if (nazwa != this->nazwakonta) {
+				temp << nazwa << " " << haslo << endl;
+			}
+		}
+		string Skas = "./PlikiGry/" + this->nazwakonta + ".txt";
+		remove(Skas.c_str());
+		plik.close();
+		temp.close();
+		remove(plik1.c_str());
+		rename(plik2.c_str(), plik1.c_str());
+		exit(0);
+	}
 	return;
 }
 
@@ -296,7 +372,7 @@ void Gra::saveBohater(){
 		}
 	}
 	Bohaterzy.clear();
-	this->Bohaterzy.clear();		//Nie potrzebne??
+	this->Bohaterzy.clear();
 	
 	PlikGry.close();
 }
@@ -488,39 +564,41 @@ void Gra::loadPotwor() {
 }
 
 void Gra::poke() {
-cout << "##############@@@@@@@@########################===========#@@@@@@@@@@@@@@@@@@@@@" << endl;
-cout << "#############@@@@@@@@@@#######################===========#@@@@@@@@@@@@@@@@@@@@@" << endl;
-cout << "############@@@@@@@@@@@@#####################============#@@@@@@@@@@@@@@@@@@@@@" << endl;
-cout << "############@@@@@@@@@@@@#####################=============@@@@@@@@@@@@@@@@@@@@@" << endl;
-cout << "###########@@@@@@@@@@@@@@###################==============#@@@@@@@@@@@@@@@@@@@@" << endl;
-cout << "##########@@@##=#@@@@@@@@##################==========###==#@@@@@@@@@@@@@@@@@@@@" << endl;
-cout << "#########@@@@@@###==#@@@@##################========########@@@@@@@@@@@@@@@@@@@@" << endl;
-cout << "#########@@@@@@@@=+:::+#@@##################################@@@@@@@@@@@@@@@=**=" << endl;
-cout << "########@@@@@@@@#*+++:::::=#################################@@@@@@@@@@@=:-::::*" << endl;
-cout << "#######@@@@@@@@@=***++++:::::=@@@#@#########################@@@@@@#+:--::::::++" << endl;
-cout << "######@@@@@@@@@@#=****++++:::::+#@@@@@@@###@@@@@@@@@@@@@@###@#+:--::::::::++++*" << endl;
-cout << "######@@@@@@@@@@@===****+++++::::*@@@@@@@@@@@@@@@@@@@@@@@#+--::::::::::+++++***" << endl;
-cout << "#####@@@@@@@@@@@@@====*****+++++:::::::::::::::::::::::::::::::::::++++++*****#" << endl;
-cout << "#####@@@@@@@@@@@@@@#=====*****++++::::::::::::::::::::::::::::+++++++*******=@@" << endl;
-cout << "####@@@@@@@@@@@@@@@@@#=====***+++++:::::::::::::::::::::::::+++++*********#@@@@" << endl;
-cout << "####@@@@@@@@@@@@@@@@@@@#===****++++++:::::::::::::::::::::::+++********=#@@@@@@" << endl;
-cout << "######@@@@@@@@@@@@@@@@@@@==****++++++++++++++::::::::::::::::++****==#@@@@@@@@@" << endl;
-cout << "######@@@@@@@@@@@@@@@@@@==*******++++++++++++++++++:::::::::::+++***+=@@@@@@@@@" << endl;
-cout << "#####@@@@@@@@@@@@@@@@@@====****=###******++++++++++++*==##@=+++++++++:=@@@@@@@@" << endl;
-cout << "#####@@@@@@@@@@@@@@@@@#=====*=@@@@@#*********+++++++*#@@@@@@#++++++++++#@@@@@@@" << endl;
-cout << "####@@@@@@@@@@@@@@@@@@=======#@@@@@#***********+++++*@@@@@@@@*+++++++++*@@@@@@@" << endl;
-cout << "####@@@@@@@@@@@@@@@@@========#@@@@=***********+**++++*#@###@=+++++++++++#@@@@@@" << endl;
-cout << "###@@@@@@@@@@@@@@@@@###==========*******=@@@=+++++++++++*******+++++++**=@@@@@@" << endl;
-cout << "###@@@@@@@@@@@@@@@@###=================**********************************#@@@@@" << endl;
-cout << "##@@@@@@@@@@@@@@@@@######================******************=*************=#@@@@" << endl;
-cout << "##@@@@@@@@@@@@@@@@@#######===============@@@@@@#====******========********#@@@@" << endl;
-cout << "#@@@@@@@@@@@@@@@@@@#######==============@WWWWWW@#==================*******#@@@@" << endl;
-cout << "#@@@@@@@@@@@@@@@@@@@##########==========#@@@@@@@#==================*******=@@@@" << endl;
-cout << "@@@@@@@@@@@@@@@@@@@@@@==#################==#####==================********=@@@@" << endl;
-cout << "@@@@@@@@@@@@@@@@@@@@@@@########################===================********=#@@@" << endl;
-cout << "@@@@@@@@@@@@@@@@@@@@@#==#############################=======================@@@" << endl;
-cout << "@@@@@@@@@@@@@@@@@@#=====###############################=====================#@@" << endl;
-cout << "@@@@@@@@@@@@@@@@#=============#######################========================@@" << endl;
+	Kolory kolor;
+	kolor.gold();
+	cout << "##############@@@@@@@@########################===========#@@@@@@@@@@@@@@@@@@@@@" << endl;
+	cout << "#############@@@@@@@@@@#######################===========#@@@@@@@@@@@@@@@@@@@@@" << endl;
+	cout << "############@@@@@@@@@@@@#####################============#@@@@@@@@@@@@@@@@@@@@@" << endl;
+	cout << "############@@@@@@@@@@@@#####################=============@@@@@@@@@@@@@@@@@@@@@" << endl;
+	cout << "###########@@@@@@@@@@@@@@###################==============#@@@@@@@@@@@@@@@@@@@@" << endl;
+	cout << "##########@@@##=#@@@@@@@@##################==========###==#@@@@@@@@@@@@@@@@@@@@" << endl;
+	cout << "#########@@@@@@###==#@@@@##################========########@@@@@@@@@@@@@@@@@@@@" << endl;
+	cout << "#########@@@@@@@@=+:::+#@@##################################@@@@@@@@@@@@@@@=**=" << endl;
+	cout << "########@@@@@@@@#*+++:::::=#################################@@@@@@@@@@@=:-::::*" << endl;
+	cout << "#######@@@@@@@@@=***++++:::::=@@@#@#########################@@@@@@#+:--::::::++" << endl;
+	cout << "######@@@@@@@@@@#=****++++:::::+#@@@@@@@###@@@@@@@@@@@@@@###@#+:--::::::::++++*" << endl;
+	cout << "######@@@@@@@@@@@===****+++++::::*@@@@@@@@@@@@@@@@@@@@@@@#+--::::::::::+++++***" << endl;
+	cout << "#####@@@@@@@@@@@@@====*****+++++:::::::::::::::::::::::::::::::::::++++++*****#" << endl;
+	cout << "#####@@@@@@@@@@@@@@#=====*****++++::::::::::::::::::::::::::::+++++++*******=@@" << endl;
+	cout << "####@@@@@@@@@@@@@@@@@#=====***+++++:::::::::::::::::::::::::+++++*********#@@@@" << endl;
+	cout << "####@@@@@@@@@@@@@@@@@@@#===****++++++:::::::::::::::::::::::+++********=#@@@@@@" << endl;
+	cout << "######@@@@@@@@@@@@@@@@@@@==****++++++++++++++::::::::::::::::++****==#@@@@@@@@@" << endl;
+	cout << "######@@@@@@@@@@@@@@@@@@==*******++++++++++++++++++:::::::::::+++***+=@@@@@@@@@" << endl;
+	cout << "#####@@@@@@@@@@@@@@@@@@====****=###******++++++++++++*==##@=+++++++++:=@@@@@@@@" << endl;
+	cout << "#####@@@@@@@@@@@@@@@@@#=====*=@@@@@#*********+++++++*#@@@@@@#++++++++++#@@@@@@@" << endl;
+	cout << "####@@@@@@@@@@@@@@@@@@=======#@@@@@#***********+++++*@@@@@@@@*+++++++++*@@@@@@@" << endl;
+	cout << "####@@@@@@@@@@@@@@@@@========#@@@@=***********+**++++*#@###@=+++++++++++#@@@@@@" << endl;
+	cout << "###@@@@@@@@@@@@@@@@@###==========*******=@@@=+++++++++++*******+++++++**=@@@@@@" << endl;
+	cout << "###@@@@@@@@@@@@@@@@###=================**********************************#@@@@@" << endl;
+	cout << "##@@@@@@@@@@@@@@@@@######================******************=*************=#@@@@" << endl;
+	cout << "##@@@@@@@@@@@@@@@@@#######===============@@@@@@#====******========********#@@@@" << endl;
+	cout << "#@@@@@@@@@@@@@@@@@@#######==============@WWWWWW@#==================*******#@@@@" << endl;
+	cout << "#@@@@@@@@@@@@@@@@@@@##########==========#@@@@@@@#==================*******=@@@@" << endl;
+	cout << "@@@@@@@@@@@@@@@@@@@@@@==#################==#####==================********=@@@@" << endl;
+	cout << "@@@@@@@@@@@@@@@@@@@@@@@########################===================********=#@@@" << endl;
+	cout << "@@@@@@@@@@@@@@@@@@@@@#==#############################=======================@@@" << endl;
+	cout << "@@@@@@@@@@@@@@@@@@#=====###############################=====================#@@" << endl;
+	cout << "@@@@@@@@@@@@@@@@#=============#######################========================@@" << endl;
 }
 
 void Gra::wybormiasta(){
@@ -541,12 +619,15 @@ void Gra::wybormiasta(){
 	}
 	cin.ignore();
 	this->AktywneMiasto = this->wybor;
+	this->Bohaterzy[AktywnyBohater].graczzmianamiasta(this->wybor);
 	//£adowanie budynków
 	this->bud1 = Miasta[this->wybor].bud1();
 	this->bud2 = Miasta[this->wybor].bud2();
 	this->bud3 = Miasta[this->wybor].bud3();
 
 	cout << this->Miasta[this->AktywneMiasto].mnazwa() << " wybrano!" << "\n\n";
+
+	system("cls");
 }
 
 void Gra::Podroz() {
@@ -577,7 +658,7 @@ void Gra::DodawanieStat() {
 		cout << "4: obrona " << endl;
 		cin >> this->wybor;
 
-		while (cin.fail() || this->wybor > 4){
+		while (cin.fail() || this->wybor > 4 || this->wybor < 0){
 			cout << "Wpisz poprawn¹ cyfrê z zakresu 0 - 4!" << endl;
 			cin.clear();
 			cin.ignore();
@@ -620,7 +701,10 @@ void Gra::DodawanieStat() {
 }
 
 void Gra::Czekanie() {
+	Kolory kolor;
+	kolor.green();
 	cout << endl << "Czekanie na potwierdzenie..." << endl;
+	kolor.blue();
 	cin.clear();
 	cin.ignore();
 	system("cls");
@@ -699,6 +783,8 @@ void Gra::cheatengine() {
 }
 
 void Gra::Kruci() {
+	Kolory kolor;
+	kolor.red();
 	cout << "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW" << endl;
 	cout << "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW" << endl;
 	cout << "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW**WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW" << endl;
@@ -751,33 +837,47 @@ void Gra::Wolniej(const string& Wiadomosc, unsigned int LiczbaMS) {
 void Gra::PreKruci() {
 	system("cls");
 	string wiadomosc;
+	Kolory kolor;
+	kolor.blue(); cout << "==================================================================" << endl << endl; kolor.silver();
 	wiadomosc = "Wchodzisz, zwyk³y cz³owieku, do tajemnej komnaty... \n\n";
 	Wolniej(wiadomosc, 40);
+	kolor.blue(); cout << "==================================================================" << endl;
 	Czekanie();
+	kolor.blue(); cout << "==================================================================" << endl << endl; kolor.silver();
 	wiadomosc = "Przychodzisz po z³oto?...\n\n";
 	Wolniej(wiadomosc, 40);
+	kolor.blue(); cout << "==================================================================" << endl;
 	Czekanie();
+	kolor.blue(); cout << "==================================================================" << endl << endl; kolor.silver();
 	wiadomosc = "Mo¿e przychodzisz, aby z³o¿yæ ofiary?... \n\n";
 	Wolniej(wiadomosc, 40);
+	kolor.blue(); cout << "==================================================================" << endl;
 	Czekanie();
+	kolor.blue(); cout << "==================================================================" << endl << endl; kolor.silver();
 	wiadomosc = "Twój trud jest tutaj nadaremny s³aba istoto...\n\nNikt st¹d nie powraca ¿ywy...\n\n";
 	Wolniej(wiadomosc, 40);
+	kolor.blue(); cout << "==================================================================" << endl;
 	Czekanie();
+	kolor.blue(); cout << "==================================================================" << endl << endl; kolor.red();
 	wiadomosc = "A teraz... PO¯EGNAJ SIÊ ZE ŒWIATEM\n\n...WITAJ W MOIM KRÓLESTWIE!\n\n";
 	Wolniej(wiadomosc, 40);
+	kolor.blue(); cout << "==================================================================" << endl;
 	Czekanie();
 	Kruci();
+	kolor.gold();
 	wiadomosc = "Czy chcesz walczyæ przeciwko z³owieszczej krucjacie?\n\n";
 	Wolniej(wiadomosc, 40);
 	cin >> this->wybor;
 	cin.ignore();
 	while (cin.fail() || wybor > 2 || wybor < 0) {
 		system("cls");
+		kolor.red();
 		cout << "B³êdny zakres." << endl;
 		Kruci();
 		cin.clear();
 		cin.ignore();
-		cout << "Czy chcesz walczyæ przeciwko z³owieszczej, hordziej, kruciacie?" << endl;
+		kolor.gold();
+		cout << "Czy chcesz walczyæ przeciwko z³owieszczej krucjacie?" << endl;
 		cin >> this->wybor;
 	}
 
@@ -790,23 +890,57 @@ void Gra::PreKruci() {
 		system("cls");
 	}
 	else {
-		cout << "Stchórzy³eœ!" << endl;
+		kolor.red();
+		cout << "||============||" << endl;
+		cout << "||Stchórzy³eœ!||" << endl;
+		cout << "||============||" << endl;
 		return;
 	}
 }
 
 void Gra::PreBoss() {
+	Kolory kolor;
+	system("cls");
+	string wiadomosc;
+	wiadomosc = "Wchodzisz do tajemniczego lasu nie opodal miasta Khorinis... \n\n";
+	kolor.blue(); cout << "==================================================================" << endl << endl; kolor.red();
+	Wolniej(wiadomosc, 30);
+	kolor.blue(); cout << "==================================================================" << endl;
+	Czekanie();
+	wiadomosc = "Po wejœciu w g³¹b lasu, wyczuwasz w pobli¿u nie typowe zagro¿enie. \n\n";
+	kolor.blue(); cout << "==================================================================" << endl << endl; kolor.red();
+	Wolniej(wiadomosc, 30);
+	kolor.blue(); cout << "==================================================================" << endl;
+	Czekanie();
+	wiadomosc = "Pogoda zamienia siê w burzliw¹, makabryczn¹ noc \n\n";
+	kolor.blue(); cout << "==================================================================" << endl << endl; kolor.red();
+	Wolniej(wiadomosc, 40);
+	kolor.blue(); cout << "==================================================================" << endl;
+	Czekanie();
+	wiadomosc = "Nagle s³yszysz za sob¹ dziwny, znajomy Ci dŸwiêk... \n\n";
+	kolor.blue(); cout << "==================================================================" << endl << endl; kolor.red();
+	Wolniej(wiadomosc, 40);
+	kolor.blue(); cout << "==================================================================" << endl; 
+	Czekanie();
+	wiadomosc = "\t\tP i k a P i k a...\n\n";
+	kolor.blue(); cout << "==================================================================" << endl << endl; kolor.gold();
+	Wolniej(wiadomosc, 100);
+	kolor.blue(); cout << "==================================================================" << endl;
+	Czekanie();
 	cout << "Boss Ostateczny: " << endl << endl;
+	kolor.gold();
 	poke();
+	kolor.green();
 	cout << "Czy chcesz walczyæ przeciwko bossowi ostatecznemu?" << endl;
 	cin >> this->wybor;
 	cin.ignore();
 	while (cin.fail() || wybor > 2 || wybor < 0) {
 		system("cls");
-		cout << "B³êdny zakres." << endl;
+		kolor.red();  cout << "B³êdny zakres." << endl; kolor.gold();
 		poke();
 		cin.clear();
 		cin.ignore();
+		kolor.green();
 		cout << "Czy chcesz walczyæ przeciwko bossowi ostatecznemu?" << endl;
 		cin >> this->wybor;
 	}
@@ -818,16 +952,23 @@ void Gra::PreBoss() {
 		this->plikpotwor = "./PlikiGry/Potwor.txt";
 		loadPotwor();
 		system("cls");
-		cout << "Brawo! Pokona³eœ ostatecznego Bossa!" << endl;
 	}
 	else {
-		cout << "Stchórzy³eœ!" << endl;
+		system("cls");
+		kolor.red();
+		cout << "||============||" << endl;
+		cout << "||Stchórzy³eœ!||" << endl;
+		cout << "||============||" << endl;
 	}
 }
 
 void Gra::Boss() {
 	Event walkaboss;
 	walkaboss.Walka(this->Bohaterzy[AktywnyBohater], this->PPotwory[AktywnyPotwor]);
+	system("cls");
+	string koniec="Brawo! Pokona³eœ ostatecznego Bossa! Mo¿esz siê pochwaliæ autorowi gry, ¿e j¹ przeszed³eœ :)";
+	Wolniej(koniec, 40);
+	Czekanie();
 }
 
 void Gra::SklepWejscie() {

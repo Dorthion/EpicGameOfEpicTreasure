@@ -40,7 +40,7 @@ public:
 
 	//Funkcje
 	void inicjalizacja(const string nazwa);
-	void Wyswietl()const;
+	void Wyswietl();//const?
 	void lvlup();
 	void odczytnazwy();
 	void zlespanie();
@@ -70,6 +70,7 @@ public:
 	inline const int graczkasa() { return this->kasa; }
 	inline const int graczpktum() { return this->pktum; }
 	inline const int graczmiasto() { return this->miasto; }
+	inline const int graczzmianamiasta(int a) { return this->miasto = a; }
 	inline const int graczekwipunek()const { return this->ekwipunek.IloscEkw(); }
 	inline const int graczexpnextlvl() { return this->expnextlvl; }
 	inline const int graczhp() { return this->hp; }

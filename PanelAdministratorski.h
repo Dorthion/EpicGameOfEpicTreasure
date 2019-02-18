@@ -27,6 +27,8 @@ public:
 	void savePotwor();
 	void loadMiasto();
 	void loadPotwor();
+	void Autor();
+	void Instrukcja();
 	void PlikBledu(string nazwa, int kod); //Nazwa i kod b³êdu
 };
 

@@ -8,7 +8,7 @@ Miasto::Miasto(){
 	nrbudynku3 = 0;
 	nazwa = "";
 	activemiasto = 0;
-	plik = "Miasta.txt";
+	plik = "./PlikiGry/Miasta.txt";
 }
 
 Miasto::Miasto(int numermiasta, string nazwa, int nrbudynku1, int nrbudynku2, int nrbudynku3) {
@@ -20,12 +20,13 @@ Miasto::Miasto(int numermiasta, string nazwa, int nrbudynku1, int nrbudynku2, in
 }
 
 void Miasto::inicjalizacja(string nazwa, int max) {
+	Kolory kolor;
 	system("cls");
 	int wybor, i=1;
 	this->nazwa = nazwa;
 	this->numermiasta = max + 1;
-	cout << "Chcesz losowo czy recznie dodac budynki do miasta?" << endl;
-	cout << "1 - losowo" << endl <<"2 - recznie" << endl;
+	kolor.red();  cout << "Chcesz losowo czy rêcznie dodaæ budynki do miasta?" << endl;
+	kolor.green();  cout << "1 - Losowo" << endl << "2 - Rêcznie" << endl;
 	cin >> wybor;
 	cin.clear();
 	cin.ignore();
@@ -47,7 +48,7 @@ void Miasto::inicjalizacja(string nazwa, int max) {
 			cout << "8 - Rynek" << endl;
 			cout << "9 - Pa³ac" << endl;
 
-			cout << endl << "Jaki jest twoj wybor??: ";
+			cout << endl << "Jaki jest twój wybór??: ";
 			cin >> wybor;
 			cin.clear();
 			cin.ignore();
@@ -83,10 +84,26 @@ void Miasto::Wyswietl() const {
 	kolor.gold(); cout << " ========================================" << endl;
 	kolor.blue(); cout << "//"; kolor.red(); cout << "\t\tMiasto : "; kolor.blue(); cout << "\t\t\\\\" << endl;
 	kolor.blue(); cout << "||\t\t\t\t\t||" << endl;
-	kolor.blue(); cout << "||\tNazwa: "; kolor.green(); cout << this->nazwa; kolor.blue(); cout << endl;
-	kolor.blue(); cout << "||\tBudynek1: "; kolor.green(); cout << nazwbud1; kolor.blue(); cout << endl;
-	kolor.blue(); cout << "||\tBudynek2: "; kolor.green(); cout << nazwbud2; kolor.blue(); cout << endl;
-	kolor.blue(); cout << "||\tBudynek3: "; kolor.green(); cout << nazwbud3; kolor.blue(); cout << endl;
+	kolor.blue(); cout << "||\tNazwa: "; kolor.green(); cout << this->nazwa; kolor.blue(); 
+	if (this->nazwa.length() < 9) cout << "\t\t\t||" << endl;
+	if (this->nazwa.length() >= 9 && this->nazwa.length() < 17) cout << "\t\t||" << endl;
+	if (this->nazwa.length() >= 17 && this->nazwa.length() < 25) cout << "\t||" << endl;
+	if (this->nazwa.length() >= 25) cout << "||" << endl;
+	kolor.blue(); cout << "||\tBudynek1: "; kolor.green(); cout << nazwbud1; kolor.blue(); 
+	if (nazwbud1.length() < 6) cout << "\t\t\t||" << endl;
+	if (nazwbud1.length() >= 6 && nazwbud1.length() < 14) cout << "\t\t||" << endl;
+	if (nazwbud1.length() >= 14 && nazwbud1.length() < 22) cout << "\t||" << endl;
+	if (nazwbud1.length() >= 22) cout << "||" << endl;
+	kolor.blue(); cout << "||\tBudynek2: "; kolor.green(); cout << nazwbud2; kolor.blue();
+	if (nazwbud2.length() < 6) cout << "\t\t\t||" << endl;
+	if (nazwbud2.length() >= 6 && nazwbud2.length() < 14) cout << "\t\t||" << endl;
+	if (nazwbud2.length() >= 14 && nazwbud2.length() < 22) cout << "\t||" << endl;
+	if (nazwbud2.length() >= 22) cout << "||" << endl;
+	kolor.blue(); cout << "||\tBudynek3: "; kolor.green(); cout << nazwbud3; kolor.blue();
+	if (nazwbud3.length() < 6) cout << "\t\t\t||" << endl;
+	if (nazwbud3.length() >= 6 && nazwbud3.length() < 14) cout << "\t\t||" << endl;
+	if (nazwbud3.length() >= 14 && nazwbud3.length() < 22) cout << "\t||" << endl;
+	if (nazwbud3.length() >= 22) cout << "||" << endl;
 	kolor.blue(); cout << "\\\\\t" << "\t\t\t\t//" << endl;
 	kolor.gold(); cout << " ========================================" << endl;
 }

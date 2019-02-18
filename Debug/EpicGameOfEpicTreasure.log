@@ -1,2 +1,9 @@
-﻿  Gra.cpp
+﻿  Bohater.cpp
+  Bronie.cpp
+  Ekwipunek.cpp
+  Event.cpp
+  Gra.cpp
+  main.cpp
+  PanelAdministratorski.cpp
+  Generowanie kodu...
   EpicGameOfEpicTreasure.vcxproj -> D:\Programowanie\Smieci\EpicGameOfEpicTreasure\Debug\EpicGameOfEpicTreasure.exe

@@ -62,11 +62,12 @@ void Bohater::inicjalizacja(const string nazwa){
 	odczytnazwy();
 }
 
-void Bohater::Wyswietl() const{
+void Bohater::Wyswietl() {
 	Kolory kolor;
 	system("cls");
+	odczytnazwy();
 	kolor.gold(); cout << " ===============================================" << endl;
-	kolor.blue(); cout << "//"; kolor.red(); cout<< "\t\tStatystyki Bohatera : "; kolor.blue(); cout <<"\t\t\\\\" << endl;
+	kolor.blue(); cout << "//"; kolor.red(); cout<< "\t\tStatystyki Bohatera: "; kolor.blue(); cout <<"\t\t\\\\" << endl;
 	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tNazwa: "; kolor.green(); cout<< this->nazwa; kolor.blue(); 
 	if (this->nazwa.length()<9) cout << "\t\t\t\t||" << endl;
@@ -77,13 +78,13 @@ void Bohater::Wyswietl() const{
 	kolor.blue(); cout << "||\tPoziom: "; kolor.green(); cout << this->poziom; kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tExp: "; kolor.green(); cout << this->exp; kolor.blue(); cout << "\t\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tExp do kolejnego poziomu: "; kolor.green(); cout << this->expnextlvl; kolor.blue(); cout << "\t\t||" << endl;
-	kolor.blue(); cout << "||\tPunkty umiejetnosci: "; kolor.green(); cout << this->pktum; kolor.blue(); cout << "\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tPunkty umiejêtnoœci: "; kolor.green(); cout << this->pktum; kolor.blue(); cout << "\t\t\t||" << endl;
 	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
-	kolor.blue(); cout << "||\tSila: "; kolor.green(); cout << this->sila; kolor.blue(); cout << "\t\t\t\t||" << endl;
-	kolor.blue(); cout << "||\tZrecznosc: "; kolor.green(); cout << this->zrecznosc; kolor.blue(); cout << "\t\t\t\t||" << endl;
-	kolor.blue(); cout << "||\tMagia: "; kolor.green(); cout << this->magia; kolor.blue(); cout << "\t\t\t\t||" << endl;
-	kolor.blue(); cout << "||\tSzczescie: "; kolor.green(); cout << this->szczescie; kolor.blue(); cout << "\t\t\t\t||" << endl;
-	kolor.blue(); cout << "||\tObrona: "; kolor.green(); cout << this->obrona; kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tSi³a: "; kolor.green(); cout << this->sila << "/+" << this->bron.bronsilamax(); kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tZrêcznoœæ: "; kolor.green(); cout << this->zrecznosc << "/+" << this->bron.bronzremax(); kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tMagia: "; kolor.green(); cout << this->magia << "/+" << this->bron.bronmagiamax(); kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tSzczêœcie: "; kolor.green(); cout << this->szczescie << "/+" << this->bron.bronszczmax(); kolor.blue(); cout << "\t\t\t\t||" << endl;
+	kolor.blue(); cout << "||\tObrona: "; kolor.green(); cout << this->obrona << "/+" << this->bron.bronobrmax(); kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\t\t\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tHp: "; kolor.green(); cout << this->hp << " / " << this->hpmax; kolor.blue(); cout << "\t\t\t\t||" << endl;
 	kolor.blue(); cout << "||\tMiasto: "; kolor.green(); cout << this->nazwamiasta; kolor.blue(); 

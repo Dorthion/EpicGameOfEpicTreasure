@@ -1,24 +1,24 @@
 #include "Bronie.h"
 
 //Miecze - si³a
-string nazwy1[6] = { "Drewniany Miecz", "Szklany Miecz", "Elficki Miecz",
-"Mroczny Miecz", "Zaklêty Miecz","Miecz Zag³ady" };
+string nazwy1[6] = { "DrewnianyMiecz", "SzklanyMiecz", "ElfickiMiecz",
+"MrocznyMiecz", "ZaklêtyMiecz","MieczZag³ady" };
 
 //£uki - zrêcznoœæ
-string nazwy2[6] = { "Zwyk³y £uk", "£uk Refleksyjny", "£uk Bojowy",
-"£uk Blokowy", "Elektryczny £uk", "£uk £owcy G³ów" };
+string nazwy2[6] = { "Zwyk³y£uk", "£ukRefleksyjny", "£ukBojowy",
+"£ukBlokowy", "Elektryczny£uk", "£uk£owcyG³ów" };
 
 //Sztylety - szczêœcie
-string nazwy3[6] = { "Ostrza z Br¹zu", "Metalowe Tasaki", "Sztylety Zabójcy",
-"Zatrute Ostrza", "Sztylety Cienia", "Ostrza Skrytobójcy" };
+string nazwy3[6] = { "OstrzaZBr¹zu", "MetaloweTasaki", "SztyletyZabójcy",
+"ZatruteOstrza", "SztyletyCienia", "OstrzaSkrytobójcy" };
 
 //Ró¿d¿ki - magia
-string nazwy4[6] = { "Zwyk³a ró¿d¿ka", "Ró¿d¿ka Ziemii", "Ró¿d¿ka Powietrza",
-"Ró¿d¿ka Wody", "Ró¿d¿ka Ognia", "Ró¿d¿ka ¯ywio³ów" };
+string nazwy4[6] = { "Zwyk³aRó¿d¿ka", "Ró¿d¿kaZiemii", "Ró¿d¿kaPowietrza",
+"Ró¿d¿kaWody", "Ró¿d¿kaOgnia", "Ró¿d¿ka¯ywio³ów" };
 
 //Bu³awy i topory - obrona
-string nazwy5[6] = { "Drewniana Pa³ka", "Bu³awa Zbója", "Topory Wikinga",
-"Bu³awa Orka", "M³ot Zasiêgowy", "M³ot Thora" };
+string nazwy5[6] = { "DrewnianaPa³ka", "Bu³awaZbója", "ToporyWikinga",
+"Bu³awaOrka", "M³otZasiêgowy", "M³otThora" };
 
 Bronie::Bronie() :Przedmiot(){
 	this->maxsila = 0;

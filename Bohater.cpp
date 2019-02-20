@@ -206,7 +206,7 @@ string Bohater::loadekwipunek(bool ladowanie){
 	for (int i = 0; i < (int)this->ekwipunek.IloscEkw(); i++){
 		if (ladowanie){
 			graczeq += to_string(i) + ": " + this->ekwipunek[i].toString() + "\n" + " - Cena sprzeda¿y: "
-				+ std::to_string(this->ekwipunek[i].przedmiotCenas()) + "\n";
+				+ to_string(this->ekwipunek[i].przedmiotCenas()) + "\n";
 		} else {
 			graczeq += to_string(i) + ": " + this->ekwipunek[i].toString() + "\n";
 		}
@@ -237,7 +237,8 @@ void Bohater::zalozprzedmiot(unsigned numer){
 				this->ekwipunek.Dodprzedmiot(this->bron);
 			this->bron = *w;
 			this->ekwipunek.Usunprzedmiot(numer);
-		} else { cout << "B³¹d z broni¹" << endl; }
+		}
+		else { cout << "B³¹d z broni¹" << endl; }
 	}
 }
 
@@ -255,6 +256,8 @@ const Przedmiot& Bohater::wybranyprzedmiot(const int numer){
 }
 
 void Bohater::Czekanie() {
+	Kolory kolor;
+	kolor.green();
 	cout << endl << "Czekanie na potwierdzenie..." << endl;
 	cin.clear();
 	cin.ignore();
@@ -269,28 +272,65 @@ void Bohater::sklep(int nrbudynku){
 	int stawka = 0;
 	int losowosc = 0;
 	int ilosc = rand() % 10 + 3;
+	int koszt = rand() % 50 + 10;
+	int fart = 0;
 	Ekwipunek sprzedawca;
 	string graczeq;
+	Kolory kolor;
 
-	for (int i = 0; i < (int)ilosc; i++){//size-t
+	if (graczszczescie() > 100) {
+		fart = 100;
+	}
+	else {
+		fart = graczszczescie();
+	}
+
+	for (int i = 0; i < (int)ilosc; i++){
 		sprzedawca.Dodprzedmiot(Bronie(nrbudynku, graczpoziom() + rand() % 5, rand() % 4));
 	}
 
 	//Tawerna
 	if (nrbudynku == 0) {
 		while (graczsklep) {
-			cout << ">>>>>" << budynki[nrbudynku] << " w " << nazwamiasta << " <<<<<<<" << endl << endl;
-			cout << "0: WyjdŸ ze sklepu" << endl << "1: Zagraj w koœci" << "2: Spróbuj coœ ukraœæ" << 
-				"3: Napij siê z poszukwiaczami przygód" << endl << endl << "Wybór: ";
+			system("cls");
+			kolor.red(); cout << ">>>>>";
+			kolor.gold(); cout << budynki[nrbudynku];
+			kolor.red(); cout << " w ";
+			kolor.gold(); cout << nazwamiasta;
+			kolor.red(); cout << "<<<<<<<" << endl << endl;
+
+			kolor.blue();  cout << "0:";
+			kolor.green(); cout << " WyjdŸ ze sklepu" << endl;
+			kolor.blue(); cout << "1:";
+			kolor.green(); cout << " Zagraj w koœci" << endl;
+			kolor.blue(); cout << "2:";
+			kolor.green(); cout << " Spróbuj coœ ukraœæ";
+			kolor.blue(); cout << "3:";
+			kolor.green(); cout << " Napij siê z poszukwiaczami przygód" << endl << endl;
+			kolor.gold(); cout << "Wybór: ";
 			cin >> wybor;
 			cin.ignore();
+
 			while (cin.fail() || wybor > 3 || wybor < 0) {
 				system("cls");
-				cout << "B³êdny zakres." << endl;
+				kolor.red(); cout << "B³êdny zakres." << endl;
 				cin.clear();
 				cin.ignore();
-				cout << ">>>>>" << budynki[nrbudynku] << " w " << nazwamiasta << " <<<<<<<" << endl << endl;
-				cout << "0: WyjdŸ ze sklepu" << endl << "1: Kup" << endl << endl << "Wybór: ";
+				kolor.red(); cout << ">>>>>";
+				kolor.gold(); cout << budynki[nrbudynku];
+				kolor.red(); cout << " w ";
+				kolor.gold(); cout << nazwamiasta;
+				kolor.red(); cout << "<<<<<<<" << endl << endl;
+
+				kolor.blue();  cout << "0:";
+				kolor.green(); cout << " WyjdŸ ze sklepu" << endl;
+				kolor.blue(); cout << "1:";
+				kolor.green(); cout << " Zagraj w koœci" << endl;
+				kolor.blue(); cout << "2:";
+				kolor.green(); cout << " Spróbuj coœ ukraœæ\n" << endl; //Nie mam pojêcia dlaczego nie dzia³a poprawnie, bug visuala studio??
+				kolor.blue(); cout << "\n3:";
+				kolor.green(); cout << " Napij siê z poszukwiaczami przygód" << endl << endl;
+				kolor.gold(); cout << "Wybór: ";
 				cin >> wybor;
 			}
 			switch (wybor) {
@@ -300,43 +340,72 @@ void Bohater::sklep(int nrbudynku){
 
 			case 1:
 				if (graczkasa() == 0) {
+					kolor.red();
+					system("cls");
 					cout << "\n Nie mo¿esz graæ, je¿eli nie masz pieniêdzy!" << endl;
 					break;
 				}
 				else {
-					cout << "Podaj jak¹ kwot¹ grasz?" << endl << "Kwota: ";
-					cin >> stawka;
-					cin.ignore();
+					system("cls");
+					kolor.gold(); cout << "Podaj jak¹ kwot¹ grasz?" << endl;
+					kolor.blue(); cout << "Kwota: ";
+					kolor.gold(); cin >> stawka;
 					while (cin.fail() || stawka > graczkasa() || stawka < 0) {
 						system("cls");
-						cout << "B³êdny zakres." << endl;
+						kolor.red(); cout << "B³êdny zakres." << endl;
 						cin.clear();
 						cin.ignore();
-						cout << "Podaj jak¹ kwot¹ grasz?" << endl << "Kwota: ";
-						cin >> stawka;
+						kolor.gold(); cout << "Podaj jak¹ kwot¹ grasz?" << endl;
+						kolor.blue(); cout << "Kwota: ";
+						kolor.gold(); cin >> stawka;
 					}
-					cout << "Przeciwnik rzuca koœciami" << endl;
+					cin.clear();
+					cin.ignore();
+					system("cls");
+					kolor.blue(); cout << "||==============================================||"<<endl;
+					cout << "||\t\t\t\t\t\t||"<<endl;
+					cout << "||\t"; kolor.gold(); cout << "Przeciwnik rzuca koœciami\t\t"; kolor.blue(); cout << "||" << endl;
+					cout << "||\t\t\t\t\t\t||"<<endl;
+					cout << "||==============================================||" << endl << endl;
 					Czekanie();
 					wynik = rand() % 12 + 1;
-					cout << "Wylosowa³: " << wynik << endl;
+					kolor.blue(); cout << "||==============================||" << endl;
+					cout << "||"; kolor.gold(); cout << "Przeciwnik wylosowa³: ";
+					kolor.gold(); cout << wynik; kolor.blue(); cout << "\t||" << endl;
+					cout << "||==============================||" << endl << endl;
 					Czekanie();
-					cout << "Rzucasz koœciami" << endl;
+					kolor.blue(); cout << "||==============================================||" << endl;
+					cout << "||\t\t\t\t\t\t||" << endl;
+					cout << "||\t"; kolor.gold(); cout << "Przeciwnik rzuca koœciami\t\t"; kolor.blue(); cout << "||" << endl;
+					cout << "||\t\t\t\t\t\t||" << endl;
+					cout << "||==============================================||" << endl << endl;
 					Czekanie();
 					kosci = rand() % 12 + 1;
-					cout << "Wylosowa³eœ/aœ: " << kosci << endl;
+					kolor.blue(); cout << "||======================||" << endl;
+					cout << "||"; kolor.gold(); cout << "Wylosowa³eœ/aœ: ";
+					kolor.gold(); cout << kosci; kolor.blue(); cout << "\t||" << endl;
+					cout << "||======================||" << endl << endl;
 					Czekanie();
 					if (wynik == kosci) {
-						cout << "Mieliœcie tyle samo oczek, nikt nie wygrywa!" << endl;
+						system("cls");
+						kolor.gold(); cout << "Mieliœcie tyle samo oczek, nikt nie wygrywa!" << endl << endl;
+						Czekanie();
 					}
 					else {
 						if (wynik > kosci) {
-							cout << "Masz mniejszy wynik, przegrywasz." << endl;
-							cout << "Tracisz ustawion¹ stawkê: " << stawka << endl;
+							system("cls");
+							kolor.red(); cout << "Masz mniejszy wynik, przegrywasz." << endl << endl;
+							kolor.blue(); cout << "Tracisz ustawion¹ stawkê: ";
+							kolor.green(); cout << stawka << endl;
 							graczodekasa(stawka);
+							Czekanie();
 						} else {
-							cout << "Masz wiêkszy wynik, wygrywasz!" << endl;
-							cout << "Wygrywasz ustawion¹ stawkê" << stawka << endl;
+							system("cls");
+							kolor.green(); cout << "Masz wiêkszy wynik, wygrywasz!" << endl << endl;
+							kolor.blue(); cout << "Wygrywasz ustawion¹ stawkê: ";
+							kolor.green(); cout << stawka << endl;
 							graczdodkasa(stawka);
+							Czekanie();
 						}
 					}
 				}
@@ -344,33 +413,43 @@ void Bohater::sklep(int nrbudynku){
 
 			case 2:
 				Czekanie();
-				cout << "Twoje szczêœcie wynosi: " << graczszczescie() << endl;
+				kolor.blue(); cout << "Twoje szczêœcie wynosi: ";
+				kolor.green(); cout << graczszczescie() << endl;
 				Czekanie();
-				cout << "Przechodzisz przez t³um" << endl;
+				kolor.blue(); cout << "Przechodzisz przez t³um" << endl;
 				Czekanie();
 				stawka = rand() % (graczpoziom() + 3 * graczszczescie() + graczzrecznosc() + 5) + 1;
 				wynik = rand() % 100 + 1;
 				kosci = rand() % 100 + (graczszczescie() + 1);
 				if (wynik < kosci) {
-					cout << "Ukrad³eœ: " << stawka << endl;
+					kolor.blue(); cout << "Ukrad³eœ: ";
+					kolor.gold(); cout << stawka << endl << endl;
 					graczdodkasa(stawka);
+					Czekanie();
 				} else {
+					kolor.red();
 					cout << "Nie uda³o Ci siê nic znaleŸæ, \na przy tym ktoœ zauwa¿y³ twoje zamiary (-5hp)" << endl;
 					zlespanie();
+					Czekanie();
 				}
 				break;
 			case 3:
-				if (graczkasa() < 5) {
-					cout << "Nie staæ Ciê na alkohol" << endl;
+				if (graczkasa() < koszt) {
+					kolor.red();
+					cout << "Nie staæ Ciê na alkohol!" << endl;
 				} else {
-					cout << "Pijesz wraz z poszukiwaczami przygód, mi³o z nimi przebywa czas" << endl;
-					graczodekasa(5);
+					kolor.silver();
+					cout << "Pijesz wraz z poszukiwaczami przygód, mi³o z nimi przebywa czas" << endl << endl;
+					kolor.blue(); cout << "Zap³aci³eœ/aœ: "; kolor.green(); cout << koszt << endl << endl;
+					graczodekasa(koszt);
 					wyspanie();
 					GraczObrazenia(20);
+					Czekanie();
 				}
 				break;
 
 			default:
+				kolor.silver();
 				cout << "Wychodzisz z tawerny" << endl;
 				break;
 			}
@@ -380,25 +459,41 @@ void Bohater::sklep(int nrbudynku){
 	//Gospoda
 	if (nrbudynku == 1) {
 		system("cls");
-		cout << "Chcesz siê wyspaæ w Gospodzie?\nKosztuje to 50 gold" << endl;
+		kolor.gold(); cout << "Chcesz siê wyspaæ w Gospodzie?" << endl;
+		kolor.blue(); cout << "Kosztuje to ";
+		kolor.gold(); cout << "50";
+		kolor.blue(); cout << " z³otych monet" << endl;
 		cin >> wybor;
 		cin.ignore();
 		while (cin.fail() || wybor > 2 || wybor < 0) {
 			system("cls");
+			kolor.red();
 			cout << "B³êdny zakres." << endl;
 			cin.clear();
 			cin.ignore();
-			cout << "Chcesz siê wyspaæ w Gospodzie?" << endl;
+			kolor.gold(); cout << "Chcesz siê wyspaæ w Gospodzie?" << endl;
+			kolor.blue(); cout << "Kosztuje to ";
+			kolor.gold(); cout << "50";
+			kolor.blue(); cout << " z³otych monet" << endl;
 			cin >> wybor;
 		}
+		cin.ignore();
 		if (graczkasa() < 50) {
 			system("cls");
+			kolor.red();
 			cout << "Nie staæ Ciê na to!" << endl;
+			Czekanie();
 		} else {
-			cout << "Wyspa³eœ siê rzeœko i bez przeszkód" << endl;
-			cout << "Zap³aci³eœ za pobyt 50 z³ota" << endl;
-			wyspanie();
-			graczodekasa(50);
+			if (wybor == 1) {
+				system("cls");
+				kolor.silver(); cout << "Wyspa³eœ siê rzeœko i bez przeszkód" << endl << endl;
+				kolor.blue(); cout << "Zap³aci³eœ za pobyt ";
+				kolor.gold(); cout << "50";
+				kolor.blue(); cout << " z³otych monet" << endl;
+				wyspanie();
+				graczodekasa(50);
+				Czekanie();
+			}
 		}
 	}
 
@@ -406,19 +501,38 @@ void Bohater::sklep(int nrbudynku){
 	if (nrbudynku > 1 && nrbudynku<7) {
 		while (graczsklep) {
 			system("cls");
-			cout << ">>>>>" << budynki[nrbudynku] << " w " << nazwamiasta << " <<<<<<<" << endl << endl;
-			cout << "0: WyjdŸ ze sklepu" << endl << "1: Kup" << endl << endl << "Wybór: ";
+			kolor.red(); cout << ">>>>>";
+			kolor.gold(); cout << budynki[nrbudynku];
+			kolor.red(); cout << " w ";
+			kolor.gold(); cout << nazwamiasta;
+			kolor.red(); cout << "<<<<<<<" << endl << endl;
+
+			kolor.blue();  cout << "0:";
+			kolor.green(); cout << " WyjdŸ ze sklepu" << endl;
+			kolor.blue(); cout << "1:";
+			kolor.green(); cout << " Kup" << endl << endl;
+			kolor.gold(); cout << "Wybór: ";
 			cin >> wybor;
 			cin.ignore();
+
 			while (cin.fail() || wybor > 2 || wybor < 0) {
 				system("cls");
 				cout << "B³êdny zakres." << endl;
 				cin.clear();
 				cin.ignore();
-				cout << ">>>>>" << budynki[nrbudynku] << " w " << nazwamiasta << " <<<<<<<" << endl << endl;
-				cout << "0: WyjdŸ ze sklepu" << endl << "1: Kup" << endl << endl << "Wybór: ";
+				kolor.red(); cout << ">>>>>";
+				kolor.gold(); cout << budynki[nrbudynku];
+				kolor.red(); cout << " w ";
+				kolor.gold(); cout << nazwamiasta;
+				kolor.red(); cout << "<<<<<<<" << endl << endl;
+				kolor.blue();  cout << "0:";
+				kolor.green(); cout << " WyjdŸ ze sklepu" << endl;
+				kolor.blue(); cout << "1:";
+				kolor.green(); cout << " Kup" << endl << endl;
+				kolor.gold(); cout << "Wybór: ";
 				cin >> wybor;
 			}
+			cin.ignore();
 			system("cls");
 			switch (wybor) {
 			case 0:
@@ -426,47 +540,63 @@ void Bohater::sklep(int nrbudynku){
 				break;
 
 			case 1:
-				cout << ">>>>> Kupujesz" << " w " << budynki[nrbudynku] << " <<<<<<<" << endl << endl;
-				cout << " - Kasa: " << graczkasa() << "\n\n";
+				kolor.red(); cout << ">>>>>";
+				kolor.gold(); cout << " Kupujesz ";
+				kolor.red(); cout << " w ";
+				kolor.gold(); cout << budynki[nrbudynku];
+				kolor.red(); cout << " <<<<<<<" << endl << endl;
+				kolor.blue(); cout << "Kasa: ";
+				kolor.gold(); cout << graczkasa() << endl << endl;
+
+				kolor.silver();
 				graczeq.clear();
 
-				for (int i = 0; i < (int)sprzedawca.IloscEkw(); i++) {//size_t
+				for (int i = 0; i < (int)sprzedawca.IloscEkw(); i++) {
 					graczeq += to_string(i) + ": " + sprzedawca[i].toString() + "\n - Cena: " + to_string(sprzedawca[i].przedmiotCenak()) + "\n";
 				}
 
-				cout << graczeq << "\n";
+				cout << graczeq << endl;
 
-				cout << "Kasa: " << graczkasa() << "\n";
-				cout << "Wybierz przedmiot (-1, aby anulowaæ): ";
+				kolor.blue(); cout << "Kasa: ";
+				kolor.gold(); cout << graczkasa() << endl;
+				kolor.blue(); cout << "Wybierz przedmiot (-1, aby anulowaæ): ";
 
 				cin >> wybor;
 
 				while (cin.fail() || wybor > sprzedawca.IloscEkw() || wybor < -1) {
 					system("cls");
-
+					kolor.red();
 					cout << "B³êdny zakres!" << "\n";
 					cin.clear();
 					cin.ignore();
 
-					cout << "Kasa: " << graczkasa() << "\n";
-					cout << "Wybierz przedmiot (-1, aby wyjœæ): ";
+					kolor.blue(); cout << "Kasa: ";
+					kolor.gold(); cout << graczkasa() << endl;
+					kolor.blue(); cout << "Wybierz przedmiot (-1, aby anulowaæ): ";
 					cin >> wybor;
 				}
 				cin.ignore();
 
 				if (wybor == -1) {
-					cout << ">>>Cofniêcie<<<" << endl;
+					kolor.gold(); cout << ">>>Cofniêcie<<<" << endl;
+					Czekanie();
 				}
 				else if (graczkasa() >= sprzedawca[wybor].przedmiotCenak()) {
 					graczodekasa(sprzedawca[wybor].przedmiotCenak());
 					Dodprzedmiot(sprzedawca[wybor]);
-
-					cout << "Kupi³eœ przedmiot: " << sprzedawca[wybor].przedmiotNazwa() << " -" << sprzedawca[wybor].przedmiotCenak() << "\n";
+					kolor.blue();
+					cout << "Kupi³eœ przedmiot: ";
+					kolor.gold(); cout << sprzedawca[wybor].przedmiotNazwa();
+					kolor.blue(); cout << " - ";
+					kolor.gold(); cout << sprzedawca[wybor].przedmiotCenak() << endl;
 
 					sprzedawca.Usunprzedmiot(wybor);
+					Czekanie();
 				}
 				else {
+					kolor.red();
 					cout << "Nie staæ Ciê na to!" << endl;
+					Czekanie();
 				}
 
 				break;
@@ -480,8 +610,17 @@ void Bohater::sklep(int nrbudynku){
 	if (nrbudynku == 7) {
 		while (graczsklep) {
 			system("cls");
-			cout << ">>>>>" << budynki[nrbudynku] << " w " << nazwamiasta << " <<<<<<<" << endl << endl;
-			cout << "0: WyjdŸ ze sklepu" << endl << "1: Sprzedaj" << endl << endl << "Wybór: ";
+			kolor.red(); cout << ">>>>>";
+			kolor.gold(); cout << budynki[nrbudynku];
+			kolor.red(); cout << " w ";
+			kolor.gold(); cout << nazwamiasta;
+			kolor.red(); cout << "<<<<<<<" << endl << endl;
+
+			kolor.blue();  cout << "0:";
+			kolor.green(); cout << " WyjdŸ ze sklepu" << endl;
+			kolor.blue(); cout << "1:";
+			kolor.green(); cout << " Sprzedaj" << endl << endl;
+			kolor.gold(); cout << "Wybór: ";
 			cin >> wybor;
 			cin.ignore();
 			while (cin.fail() || wybor > 2 || wybor < 0) {
@@ -489,9 +628,13 @@ void Bohater::sklep(int nrbudynku){
 				cout << "B³êdny zakres." << endl;
 				cin.clear();
 				cin.ignore();
-				cout << ">>>>>" << budynki[nrbudynku] << " w " << nazwamiasta << " <<<<<<<" << endl << endl;
-				cout << "0: WyjdŸ ze sklepu" << endl << "1: Sprzedaj" << endl << endl << "Wybór: ";
+				kolor.blue();  cout << "0:";
+				kolor.green(); cout << " WyjdŸ ze sklepu" << endl;
+				kolor.blue(); cout << "1:";
+				kolor.green(); cout << " Sprzedaj" << endl << endl;
+				kolor.gold(); cout << "Wybór: ";
 				cin >> wybor;
+				cin.ignore();
 			}
 
 			switch (wybor) {
@@ -500,24 +643,33 @@ void Bohater::sklep(int nrbudynku){
 				break;
 
 			case 1:
+				kolor.red(); cout << ">>>>>";
+				kolor.gold(); cout << " Sprzedajesz ";
+				kolor.red(); cout << " w ";
+				kolor.gold(); cout << budynki[nrbudynku];
+				kolor.red(); cout << " <<<<<<<" << endl << endl;
+				system("cls");
+				kolor.gold();
 				cout << loadekwipunek(true) << endl;
-				cout << ">>>>> Sprzedajesz" << " w " << budynki[nrbudynku] << " <<<<<<<" << endl << endl;
-				cout << " - Kasa: " << graczkasa() << endl << endl;
+				//kolor.blue(); cout << "Kasa: ";
+				//kolor.gold(); cout << graczkasa() << endl << endl;
 
 				if (graczekwipunek() > 0) {
-					cout << "Kasa: " << graczkasa() << endl;
-					cout << "Wybierz przedmiot (-1, aby anulowaæ): ";
+					kolor.blue(); cout << "Kasa: ";
+					kolor.gold(); cout << graczkasa() << endl << endl;
+					kolor.blue(); cout << "Wybierz przedmiot (-1, aby anulowaæ): ";
 					cin >> wybor;
 
 					while (cin.fail() || wybor > graczekwipunek() || wybor < -1) {
 						system("cls");
-
+						kolor.red();
 						cout << "B³êdny zakres!" << endl;
 						cin.clear();
 						cin.ignore();
 
-						cout << "Kasa: " << graczkasa() << "\n";
-						cout << "Wybierz przedmiot (-1, aby anulowaæ): ";
+						kolor.blue(); cout << "Kasa: ";
+						kolor.gold(); cout << graczkasa() << endl << endl;
+						kolor.blue(); cout << "Wybierz przedmiot (-1, aby anulowaæ): ";
 						cin >> wybor;
 					}
 
@@ -525,17 +677,23 @@ void Bohater::sklep(int nrbudynku){
 					cout << "\n";
 
 					if (wybor == -1) {
-						cout << ">>>Cofniêcie<<<" << endl;
+						system("cls");
+						kolor.gold(); cout << ">>>Cofniêcie<<<" << endl << endl;
+						Czekanie();
 					}
 					else {
 						graczdodkasa(wybranyprzedmiot(wybor).przedmiotCenas());
 
-						cout << "Sprzedano przedmiot" << endl;
-						cout << "Zarobiono: " << wybranyprzedmiot(wybor).przedmiotCenas() << "!" << endl << endl;
+						kolor.silver(); cout << "Sprzedano przedmiot" << endl << endl;
+						kolor.blue(); cout << "Zarobiono: ";
+						kolor.gold(); cout << wybranyprzedmiot(wybor).przedmiotCenas();
+						kolor.blue(); cout << "!" << endl << endl;
 						usunprzedmiot(wybor);
+						Czekanie();
 					}
 				}
 				else {
+					kolor.blue();
 					cout << "Pusty ekwipunek" << endl;
 					Czekanie();
 				}
@@ -551,35 +709,47 @@ void Bohater::sklep(int nrbudynku){
 	if (nrbudynku == 8) {
 		wynik = 1;
 		system("cls");
-		stawka = rand() % 100 + (100 - graczszczescie());
-		cout << "Czy chcesz kupiæ losowy punkt umiejêtnoœci za " << stawka << "?" << endl;
+		stawka = rand() % 100 + (100 - fart);
+		kolor.blue(); cout << "Czy chcesz kupiæ losowy punkt umiejêtnoœci za " << endl;
+		kolor.gold(); cout << stawka;
+		kolor.blue(); cout << "?" << endl;
+
+		kolor.green();
 		cin >> wybor;
 		cin.ignore();
 		while (cin.fail() || wybor > 2 || wybor < 0) {
 			system("cls");
+			kolor.red();
 			cout << "B³êdny zakres." << endl;
 			cin.clear();
 			cin.ignore();
-			cout << "Czy chcesz kupiæ losowy punkt umiejêtnoœci?" << endl;
+			kolor.blue(); cout << "Czy chcesz kupiæ losowy punkt umiejêtnoœci za " << endl;
+			kolor.gold(); cout << stawka;
+			kolor.blue(); cout << "?" << endl << endl;
+			kolor.green();
 			cin >> wybor;
 		}
-		cout << "Ile chcesz ich kupiæ?" << endl;
-		cin >> wynik;
 		cin.ignore();
+		system("cls");
+		kolor.blue(); cout << "Ile chcesz ich kupiæ?" << endl;
+		kolor.green(); cin >> wynik;
+		cin.ignore();
+
 		while (cin.fail() || wynik < 0) {
 			system("cls");
 			cout << "B³êdny zakres." << endl;
 			cin.clear();
 			cin.ignore();
-			cout << "Ile chcesz ich kupiæ?" << endl;
-			cin >> wynik;
+			kolor.blue();  cout << "Ile chcesz ich kupiæ?" << endl;
+			kolor.green(); cin >> wynik;
 		}
-		cout << "Ró¿ne czy 1 losow¹? (0 - Ró¿ne, 1 - 1 Losowa)" << endl;
-		cin >> losowosc;
+		kolor.blue(); cout << "Ró¿ne czy 1 losow¹?";
+		kolor.gold(); cout << " (0 - Ró¿ne, 1 - 1 Losowa)" << endl;
+		kolor.green(); cin >> losowosc;
 		cin.ignore();
 		while (cin.fail() || losowosc < 0 || losowosc > 2) {
 			system("cls");
-			cout << "B³êdny zakres." << endl;
+			kolor.red(); cout << "B³êdny zakres." << endl;
 			cin.clear();
 			cin.ignore();
 			cout << "Ró¿ne czy 1 losow¹?" << endl;
@@ -587,13 +757,22 @@ void Bohater::sklep(int nrbudynku){
 		}
 		switch (wybor) {
 		case 0:
-			cout << "Wychodzisz z pa³aca" << endl;
+			kolor.silver();
+			cout << "Wychodzisz z pa³aca" << endl << endl;
+			Czekanie();
 			break;
 		case 1:
 			if (stawka*wynik > graczkasa()) {
+				kolor.red();
 				cout << "Nie staæ Ciê na to!" << endl;
+				Czekanie();
 			} else {
-				cout << "Zap³aci³eœ: " << stawka << " za " << wynik << " Punktów Umiejêtnoœci!" << endl << endl;
+				kolor.blue(); cout << "Zap³aci³eœ: ";
+				kolor.green(); cout << stawka;
+				kolor.blue(); cout << " za ";
+				kolor.green(); cout << wynik;
+				kolor.blue(); cout << " Punktów Umiejêtnoœci!" << endl << endl;
+
 				if (losowosc == 1) {
 					this->pktum += wynik;
 					kosci = rand() % 4 + 1;
@@ -609,11 +788,12 @@ void Bohater::sklep(int nrbudynku){
 			}
 			break;
 		default:
+			kolor.silver();
 			cout << "Wychodzisz z pa³aca" << endl;
 			break;
 		}
 	}
-
+	kolor.silver();
 	cout << "\n\nWychodzisz ze sklepu" << endl << endl;
 	Czekanie();
 

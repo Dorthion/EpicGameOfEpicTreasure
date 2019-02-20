@@ -203,6 +203,7 @@ void Gra::Menu(){
 			else {
 				kolor.red();
 				cout << "Nie jesteœ w mieœcie, gdzie jest Gospoda!" << endl << endl;
+				Czekanie();
 			}
 			break;
 
@@ -275,8 +276,6 @@ void Gra::Menu(){
 	kolor.red();
 		cout << "Twój bohater zgin¹³" << endl;
 		Czekanie();
-		this->stworzBohatera();
-		this->saveBohater();
 		this->loadBohater();
 	}
 }
@@ -632,7 +631,8 @@ void Gra::wybormiasta(){
 
 void Gra::Podroz() {
 	Event ev;
-	ev.LosEvent(this->Bohaterzy[AktywnyBohater], this->PPotwory[AktywnyPotwor]);
+	int los = rand() % ((int)this->PPotwory.size() - 1);
+	ev.LosEvent(this->Bohaterzy[AktywnyBohater], this->PPotwory[los]);
 }
 
 void Gra::PlikBledu(string nazwa, int kod) {

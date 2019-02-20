@@ -14,7 +14,7 @@ Potwory::Potwory() {
 }
 
 Potwory::Potwory(int poziom){
-	this->nazwa = "Random nazwa";
+	this->nazwa = "Nazwa Do Przydzia³u";
 	this->poziom = poziom;
 	this->maxhp = rand() % (poziom * 10) + (poziom * 2);
 	this->hp = this->maxhp;
@@ -39,13 +39,13 @@ void Potwory::inicjalizacja(string nazwa, int max, int poziom) {
 	this->numerpotwora = max + 1;
 }
 
-std::string Potwory::Wyswietl()const{
-	return "Poziom: " + std::to_string(this->poziom) + "\n" +
-		"Hp: " + std::to_string(this->hp) + " / " + std::to_string(this->maxhp) + "\n" +
-		"Sila: " + std::to_string(this->mindmg) + " - " + std::to_string(this->maxdmg) + "\n" +
-		"Obrona: " + std::to_string(this->obrona) + "\n" +
-		"Ilosc monet: " + std::to_string(this->kasa) + "\n" +
-		"Szansa na item: " + std::to_string(this->szansa) + "\n";
+string Potwory::Wyswietl()const{
+	return "Poziom: " + to_string(this->poziom) + "\n" +
+		"Hp: " + to_string(this->hp) + " / " + to_string(this->maxhp) + "\n" +
+		"Sila: " + to_string(this->mindmg) + " - " + to_string(this->maxdmg) + "\n" +
+		"Obrona: " + to_string(this->obrona) + "\n" +
+		"Ilosc monet: " + to_string(this->kasa) + "\n" +
+		"Szansa na blok: " + to_string(this->szansa) + "\n";
 }
 
 string Potwory::getString()const {
